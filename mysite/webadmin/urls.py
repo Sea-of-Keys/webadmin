@@ -6,4 +6,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("users", views.users, name="users"),
+    path("rooms", views.users, name="rooms"),
+    path("login", views.login, name="login"),
 ]
