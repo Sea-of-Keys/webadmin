@@ -43,9 +43,22 @@ def index (request):
     usersTotal = 10
     roomsTotal = 33
 
+    class Users:
+        def __init__(self,usersX,usersY):
+            self.usersX = usersX
+            self.usersY = usersY
+
+    usersX = ["24-09-2023", "25-09-2023","26-09-2023", "27-09-2023", "28-09-2023","29-09-2023","30-09-2023"]
+    usersY = ["20","21","24","30","32","35","40"]
+
+    
+
+    users = Users(usersX,usersY)
+
     return render(request, "webadmin/index.html",{    
         "usersTotal" : usersTotal,
-        "roomsTotal" : roomsTotal
+        "roomsTotal" : roomsTotal,
+        "users" : users,      
           
     })
 

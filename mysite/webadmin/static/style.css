@@ -74,3 +74,48 @@ width: 200px;
     margin: auto;
    
 }
+
+
+.shadow{
+    filter: drop-shadow(0 0 0.75rem rgb(155, 155, 155));
+}
+
+.info{
+
+    font-weight: bold;
+    margin: 10px;
+    width: 100px;
+    padding: 20px;
+    cursor: pointer;
+    
+    
+}
+
+.info__number{
+
+    font-weight: 400;
+
+}
+
+.info-users{
+
+background-color: #FFB547;
+
+}
+
+.info-rooms{
+
+    background-color: #66B6FF;
+    
+}
+
+.info-events{
+    background-color: #6DFF8D;
+}
+
+.info-teams{
+    background-color: #FF7373;
+}
+
+
+
