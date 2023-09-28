@@ -19,32 +19,48 @@ class NewUser(forms.Form):
     password = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
 
+class User:
+        def __init__(self, id,name, email,CreatedAt):
+            self.id = id
+            self.name = name
+            self.email = email  
+            self.CreatedAt = CreatedAt   
 
-def index (request):             
+class Team:
+        def __init__(self,id,name):
+            self.id = id
+            self.name = name
 
-    return render(request, "webadmin/index.html",{      
+class historyInstance:
+    def __init__(self, user, embedded,timestamp):
+        self.user = user
+        self.embedded = embedded
+        self.timestamp = timestamp
+
+
+def index (request):
+
+    usersTotal = 10
+    roomsTotal = 33
+
+    return render(request, "webadmin/index.html",{    
+        "usersTotal" : usersTotal,
+        "roomsTotal" : roomsTotal
+          
     })
 
-def users (request): 
-    
-
-    class historyInstance:
-        def __init__(self, user, embedded,timestamp):
-            self.user = user
-            self.embedded = embedded
-            self.timestamp = timestamp
+def users (request):     
 
     userHistory = []
+    usersList = []
 
-    time = datetime.now().strftime('%H:%M') 
+    time = datetime.now().strftime('%H:%M')  
 
 
-    userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
-    userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
-    userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
-    userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
-    userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
-    userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
+    for x in range(10):
+        usersList.append(User(x,"Morten","bindzus@mail.dk",time))
+        userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
+
 
     if request.method == "POST":
 
@@ -69,7 +85,8 @@ def users (request):
 
         return render(request, "webadmin/users.html",{  
 
-        "history" : userHistory,      
+        "history" : userHistory, 
+        "users" : usersList     
         
     })
    
@@ -77,9 +94,32 @@ def users (request):
     return render(request, "webadmin/users.html",{  
 
 
-        "history" : userHistory
+        "history" : userHistory,
+        "users" : usersList    
         
-    } )
+    })
+
+def user(request,id):
+
+    time = datetime.now().strftime("%H:%M %D")
+    currentUser = User(id,"Morten","bindzus@mail.dk",time) 
+    teams = []
+
+
+    userHistory = []
+
+    for x in range(10):   
+        userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
+
+    for x in range(5):
+        teams.append(Team(x,"Kantinedamerne"))           
+
+
+    return render(request, "webadmin/user.html",{
+        "user" : currentUser,
+        "teams" : teams,
+        "history": userHistory
+    })
 
 
 def rooms (request):

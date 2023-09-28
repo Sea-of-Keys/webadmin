@@ -71,6 +71,33 @@
 
 
   <!-- Bruger oversigt-->
+  <!-- Historik -->
+
+  <div class="row mt-5">
+    <div class="col">   
+
+      <div class="table">
+        <h1>Brugere</h1>
+        <ul>
+
+          {% for item in users %}      
+
+          <li>
+
+            <a href="/user/{{item.id}}">
+              ID: {{item.id}}.
+              Navn: {{item.name}}.
+              Email: {{item.email}}
+              CreatedAt: {{item.CreatedAt}}
+            </a>
+           
+          </li>
+
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
 
@@ -102,6 +129,8 @@
       </div>
     </div>
   </div>
+
+ 
 </div>
 
 
