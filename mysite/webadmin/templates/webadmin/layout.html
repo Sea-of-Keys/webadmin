@@ -20,12 +20,7 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
-              <ul class="navbar-nav mr-auto"> 
-                
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "index" %}">Startside</a>
-                </li>
+              <ul class="navbar-nav mr-auto">       
 
                 <li class="nav-item">
                   <a class="nav-link" href="{% url "users" %}">Brugere</a>
@@ -42,15 +37,17 @@
 
             <li class="nav-item">
               <a class="nav-link" href="{% url "login" %}">Login</a>
-          </li>
-              {%endif%}       
-            <ul>
-                
-          </nav>
-       
+            </li>
+              {%endif%}
+          </nav>       
         <div class="body">
             {% block body %}
             {% endblock %}
         </div>
+        <footer>
+<div> flot tekst</div>
+
+        </footer>
+
     </body>
 </html>
