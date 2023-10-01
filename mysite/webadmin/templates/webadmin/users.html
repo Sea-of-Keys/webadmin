@@ -8,7 +8,7 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <form class="form" action="users" method="POST">
+      <form class="form shadow" action="users" method="POST">
         <div>
           <h1>Opret bruger</h1>
           {% csrf_token %}
@@ -41,7 +41,7 @@
     </div>
     <div class="col">   
 
-      <form class="form" action="" method="POST">
+      <form class="form shadow" action="" method="POST">
         <h1>Stats</h1>
         {% csrf_token %}
 
@@ -76,25 +76,32 @@
   <div class="row mt-5">
     <div class="col">   
 
-      <div class="table">
-        <h1>Brugere</h1>
-        <ul>
+      <div class="table shadow">
+        <h2>Brugere</h2>
 
-          {% for item in users %}      
 
-          <li>
 
-            <a href="/user/{{item.id}}">
-              ID: {{item.id}}.
-              Navn: {{item.name}}.
-              Email: {{item.email}}
-              CreatedAt: {{item.CreatedAt}}
-            </a>
-           
-          </li>
+        <table style="width:100%">
+          <tr>
+            <th>ID</th>
+            <th>Navn</th>
+            <th>Email</th>
+            <th>Created At</th>
+          </tr>
+          {% for item in users %}     
+          <tr> 
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.CreatedAt}}</td>    
+            <td><a href="/user/{{item.id}}">Profil</a></td>
+          </tr> 
+          {% endfor %}    
+         
+        </table>
 
-          {% endfor %}
-        </ul>
+        
+        
       </div>
     </div>
   </div>
@@ -112,20 +119,25 @@
       </div>
   </form>     
 
-      <div class="table">
-        <h1>Historik</h1>
-        <ul>
+      <div class="table shadow">
+        <h2>Historik</h2>
 
-          {% for item in history %}      
 
-          <li>
-            Person: {{item.user}}.
-            Dør: {{item.embedded}}.
-            Tidspunkt: {{item.timestamp}}
-          </li>
-
-          {% endfor %}
-        </ul>
+        <table style="width:100%">
+          <tr>
+            <th>Person</th>
+            <th>Dør</th>
+            <th>Tidspunkt</th>            
+          </tr>
+          {% for item in history %}     
+          <tr> 
+            <td>{{item.user}}</td>
+            <td>{{item.embedded}}</td>
+            <td>{{item.timestamp}}</td>           
+          </tr> 
+          {% endfor %}   
+         
+        </table>      
       </div>
     </div>
   </div>
