@@ -37,10 +37,16 @@ class historyInstance:
         self.embedded = embedded
         self.timestamp = timestamp
 
+
+class Room:
+        def __init__(self,id,name):
+            self.id = id
+            self.name = name
+
 def NewPaginator(request,list, itemsPerPage, param):
 
     paginator = Paginator(list, itemsPerPage)   
-    page_number = request.GET.get("" + param) 
+    page_number = request.GET.get(param) 
     page = paginator.get_page(page_number)
 
     return page
@@ -147,7 +153,29 @@ def user(request,id):
 
 
 def rooms (request):
+
+
+    rooms = []
+
+
+    for x in range(10):   
+        rooms.append(Room(x,"Mødelokale 1"))
+
+    
+    roomsPage = NewPaginator(request,rooms,3,"roomsPage")
+
+
     return render(request, "webadmin/rooms.html",{
+
+        "roomsPage" : roomsPage
+
+    })
+
+def room(request,id):
+
+    return render(request, "webadmin/room.html",{
+
+
 
     })
 
