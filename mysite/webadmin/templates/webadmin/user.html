@@ -1,8 +1,8 @@
 {% extends "webadmin/layout.html" %} {% block body%} {% load static %}
 
-<link rel="stylesheet" href="{% static 'multiselect.css' %}" />
+
 <link rel="stylesheet" href="{% static 'style.css' %}" />
-<script src="{% static 'multiselect.js' %}"></script>
+<script src="{% static 'pagination.js' %}"></script>
 
 <div class="container">
 
@@ -15,8 +15,7 @@
       <h3>Created at {{user.CreatedAt}}</h3>      
           
     </div>   
-    
-    
+        
     <div class="table shadow mt-5">
       <h2>Alle hold</h2>
     
@@ -25,7 +24,7 @@
           <th>ID</th>
           <th>Navn</th>  
         </tr>
-        {% for item in teams  %}           
+        {% for item in teamPage.object_list  %}           
         <tr> 
           <td>{{item.id}}</td>
           <td>{{item.name}}</td>    
@@ -35,11 +34,11 @@
         
               
       </table>       
-      {% if userPage.has_previous %}
-      <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+      {% if teamPage.has_previous %}
+      <a id="team-previous" data-page="{{teamPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
       {% endif %}
-      {% if userPage.has_next %}
-      <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+      {% if teamPage.has_next %}
+      <a id="team-next" data-page="{{teamPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
       {% endif %} 
       
     </div>      
@@ -69,7 +68,7 @@
       <th>Dør</th>
       <th>Tidspunkt</th>  
     </tr>
-    {% for item in history  %}           
+    {% for item in historyPage.object_list  %}           
     <tr> 
       <td>{{item.embedded}}</td>
       <td>{{item.timestamp}}</td>    
@@ -79,11 +78,11 @@
     
           
   </table>       
-  {% if userPage.has_previous %}
-  <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+  {% if historyPage.has_previous %}
+  <a id="user-history-previous" data-page="{{historyPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
   {% endif %}
-  {% if userPage.has_next %}
-  <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+  {% if historyPage.has_next %}
+  <a id="user-history-next" data-page="{{historyPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
   {% endif %} 
   
 </div> 

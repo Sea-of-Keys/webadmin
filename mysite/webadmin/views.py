@@ -37,6 +37,14 @@ class historyInstance:
         self.embedded = embedded
         self.timestamp = timestamp
 
+def NewPaginator(request,list, itemsPerPage, param):
+
+    paginator = Paginator(list, itemsPerPage)   
+    page_number = request.GET.get("" + param) 
+    page = paginator.get_page(page_number)
+
+    return page
+
 
 def index (request):
 
@@ -75,15 +83,10 @@ def users (request):
 
     for x in range(10):
         usersList.append(User(x,"Morten","bindzus@mail.dk",time))
-        userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
-    
-    users_paginator = Paginator(usersList, 3)       
-    page_number = request.GET.get("userPage") 
-    user_page = users_paginator.get_page(page_number)
+        userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
 
-    history_paginator = Paginator(userHistory, 3)       
-    page_number = request.GET.get("historyPage") 
-    history_page = history_paginator.get_page(page_number)
+    user_page = NewPaginator(request,usersList,3,"userPage")
+    history_page = NewPaginator(request,userHistory,3,"historyPage")
     
     if request.method == "POST":
 
@@ -122,20 +125,24 @@ def user(request,id):
     currentUser = User(id,"Morten","bindzus@mail.dk",time) 
     teams = []
 
-
     userHistory = []
 
     for x in range(10):   
         userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
 
     for x in range(5):
-        teams.append(Team(x,"Kantinedamerne"))           
+        teams.append(Team(x,"Kantinedamerne"))
 
+    #Pagination
+    team_page = NewPaginator(request,teams,3,"teamPage")
+    history_page = NewPaginator(request,userHistory,3,"userHistory")
 
     return render(request, "webadmin/user.html",{
         "user" : currentUser,
         "teams" : teams,
-        "history": userHistory
+        "history": userHistory,
+        "teamPage" : team_page,
+        "historyPage" : history_page
     })
 
 

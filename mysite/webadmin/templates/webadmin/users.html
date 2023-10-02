@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{% static 'multiselect.css' %}" />
 <link rel="stylesheet" href="{% static 'style.css' %}" />
 <script src="{% static 'multiselect.js' %}"></script>
-<script src="{% static 'users.js' %}"></script>
+<script src="{% static 'pagination.js' %}"></script>
 
 
 <div class="container">
@@ -95,10 +95,10 @@
                 
         </table>       
         {% if userPage.has_previous %}
-        <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+        <a id="users-previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
         {% endif %}
         {% if userPage.has_next %}
-        <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+        <a id="users-next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
         {% endif %} 
         
       </div>
@@ -141,7 +141,7 @@
         <a id="history-previous" data-page="{{historyPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
         {% endif %}
         {% if historyPage.has_next %}
-        <a id="history-next" data-page="{{historyPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+        <a id="history-next" data-page="{{historyPage.next_page_number}}" class="btn next-previous btn-primary ">Next</a>
         {% endif %} 
       </div>
     </div>
