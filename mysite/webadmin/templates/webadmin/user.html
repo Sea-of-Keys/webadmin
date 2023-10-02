@@ -10,25 +10,43 @@
     <div class="col-12">
     
     <div class="d-flex" style="align-items: center; flex-direction: column;">
-      <h1>{{user.id}} {{user.name}}</h1>
-      <h2>{{user.email}}</h2>
-      <h2>Created at {{user.CreatedAt}}</h2>      
+      <h2>{{user.id}} {{user.name}}</h2>
+      <h3>{{user.email}}</h3>
+      <h3>Created at {{user.CreatedAt}}</h3>      
           
-    </div>      
+    </div>   
+    
+    
+    <div class="table shadow mt-5">
+      <h2>Alle hold</h2>
+    
+          <table style="width:100%">
+        <tr>
+          <th>ID</th>
+          <th>Navn</th>  
+        </tr>
+        {% for item in teams  %}           
+        <tr> 
+          <td>{{item.id}}</td>
+          <td>{{item.name}}</td>    
+          <td><a href="/user/{{item.id}}">Hold</a></td>
+        </tr> 
+        {% endfor %}  
+        
+              
+      </table>       
+      {% if userPage.has_previous %}
+      <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+      {% endif %}
+      {% if userPage.has_next %}
+      <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+      {% endif %} 
       
-      <div class="d-flex mt-3" style="align-items: center; flex-direction: column;">
-        <h3>Alle hold</h3> 
-        {% for item in teams %}
-        <div>
-          {{item.name}}  
-          {{item.id}}
-        </div>
-        {% endfor %}           
-      </div>
+    </div>      
   </div>
 </div>
 
-<div class="row">
+
   <div class="col-12">
 
 <form method="post" style="justify-content: space-evenly; align-items: center;" class="d-flex flex-row mt-5 mb-3">
@@ -40,23 +58,35 @@
     <div>
       <input type="submit" class="btn btn-primary" value="Søg">
     </div>
-</form>     
+</form>   
 
-    <div class="table shadow">
-      <h1>Historik</h1>
-      <ul>
 
-        {% for item in history %}      
+<div class="table shadow mt-5">
+  <h2>Historik</h2>
 
-        <li>
-          Person: {{item.user}}.
-          Dør: {{item.embedded}}.
-          Tidspunkt: {{item.timestamp}}
-        </li>
-
-        {% endfor %}
-      </ul>
-    </div>
+      <table style="width:100%">
+    <tr>
+      <th>Dør</th>
+      <th>Tidspunkt</th>  
+    </tr>
+    {% for item in history  %}           
+    <tr> 
+      <td>{{item.embedded}}</td>
+      <td>{{item.timestamp}}</td>    
+      <td><a href="/user/{{item.id}}">Lokale</a></td>
+    </tr> 
+    {% endfor %}  
+    
+          
+  </table>       
+  {% if userPage.has_previous %}
+  <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+  {% endif %}
+  {% if userPage.has_next %}
+  <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+  {% endif %} 
+  
+</div> 
   </div>
 </div>
 
