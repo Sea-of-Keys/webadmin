@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{% static 'multiselect.css' %}" />
 <link rel="stylesheet" href="{% static 'style.css' %}" />
 <script src="{% static 'multiselect.js' %}"></script>
+<script src="{% static 'users.js' %}"></script>
 
 
 <div class="container">
@@ -65,11 +66,6 @@
 
  
   </div>
-
-
-
-
-
   <!-- Bruger oversigt-->
   <!-- Historik -->
 
@@ -79,16 +75,14 @@
       <div class="table shadow">
         <h2>Brugere</h2>
 
-
-
-        <table style="width:100%">
+            <table style="width:100%">
           <tr>
             <th>ID</th>
             <th>Navn</th>
             <th>Email</th>
             <th>Created At</th>
           </tr>
-          {% for item in users %}     
+          {% for item in userPage.object_list  %}           
           <tr> 
             <td>{{item.id}}</td>
             <td>{{item.name}}</td>
@@ -96,11 +90,16 @@
             <td>{{item.CreatedAt}}</td>    
             <td><a href="/user/{{item.id}}">Profil</a></td>
           </tr> 
-          {% endfor %}    
-         
-        </table>
-
-        
+          {% endfor %}  
+          
+                
+        </table>       
+        {% if userPage.has_previous %}
+        <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary">Previous</a>
+        {% endif %}
+        {% if userPage.has_next %}
+        <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary">Next</a>
+        {% endif %} 
         
       </div>
     </div>
@@ -129,15 +128,21 @@
             <th>Dør</th>
             <th>Tidspunkt</th>            
           </tr>
-          {% for item in history %}     
+          {% for item in historyPage.object_list %}     
           <tr> 
             <td>{{item.user}}</td>
             <td>{{item.embedded}}</td>
             <td>{{item.timestamp}}</td>           
           </tr> 
-          {% endfor %}   
-         
+          {% endfor %}            
         </table>      
+
+        {% if historyPage.has_previous %}
+        <a id="history-previous" data-page="{{historyPage.previous_page_number}}" class="btn next-previous btn-secondary">Previous</a>
+        {% endif %}
+        {% if historyPage.has_next %}
+        <a id="history-next" data-page="{{historyPage.next_page_number}}" class="btn next-previous btn-primary">Next</a>
+        {% endif %} 
       </div>
     </div>
   </div>

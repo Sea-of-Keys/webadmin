@@ -49,11 +49,14 @@ def index (request):
             self.usersY = usersY
 
     usersX = ["24-09-2023", "25-09-2023","26-09-2023", "27-09-2023", "28-09-2023","29-09-2023","30-09-2023"]
-    usersY = ["20","21","24","30","32","35","40"]
+    usersY = ["20","21","24","30","32","35","40"]   
+
+    users = Users(usersX,usersY)
 
     
 
-    users = Users(usersX,usersY)
+
+
 
     return render(request, "webadmin/index.html",{    
         "usersTotal" : usersTotal,
@@ -73,8 +76,15 @@ def users (request):
     for x in range(10):
         usersList.append(User(x,"Morten","bindzus@mail.dk",time))
         userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
+    
+    users_paginator = Paginator(usersList, 3)       
+    page_number = request.GET.get("userPage") 
+    user_page = users_paginator.get_page(page_number)
 
-
+    history_paginator = Paginator(userHistory, 3)       
+    page_number = request.GET.get("historyPage") 
+    history_page = history_paginator.get_page(page_number)
+    
     if request.method == "POST":
 
         #HHis man har sat en dato
@@ -82,7 +92,6 @@ def users (request):
         newUser = NewUser(request.POST)
 
         if newUser.is_valid():
-
 
             name = newUser.cleaned_data["name"]
             email = newUser.cleaned_data["email"]
@@ -96,19 +105,14 @@ def users (request):
             start = timeperiodForm.cleaned_data["start"]
             end = timeperiodForm.cleaned_data["end"]
 
-        return render(request, "webadmin/users.html",{  
-
-        "history" : userHistory, 
-        "users" : usersList     
-        
-    })
    
-
     return render(request, "webadmin/users.html",{  
 
 
         "history" : userHistory,
-        "users" : usersList    
+        "users" : usersList,
+        "userPage" : user_page,
+        "historyPage" : history_page
         
     })
 
