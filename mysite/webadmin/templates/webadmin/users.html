@@ -11,7 +11,7 @@
     <div class="col">
       <form class="form shadow" action="users" method="POST">
         <div>
-          <h1>Opret bruger</h1>
+          <h2>Opret bruger</h2>
           {% csrf_token %}
 
           <input required name="name" class="form__select" placeholder="Navn" />
@@ -43,7 +43,7 @@
     <div class="col">   
 
       <form class="form shadow" action="" method="POST">
-        <h1>Stats</h1>
+        <h2>Stats</h2>
         {% csrf_token %}
 
         <div class="fields">
@@ -95,10 +95,10 @@
                 
         </table>       
         {% if userPage.has_previous %}
-        <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary">Previous</a>
+        <a id="previous" data-page="{{userPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
         {% endif %}
         {% if userPage.has_next %}
-        <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary">Next</a>
+        <a id="next" data-page="{{userPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
         {% endif %} 
         
       </div>
