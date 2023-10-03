@@ -124,6 +124,8 @@ background-color: #FFB547;
 .pagination-button{
 
     color: white !important;    
+    min-width: auto !important;
+    
 
 }
 
@@ -137,3 +139,12 @@ footer{
     height: 2.5rem;   
 
 }
+
+
+.create{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
