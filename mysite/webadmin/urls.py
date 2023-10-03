@@ -10,6 +10,8 @@ urlpatterns = [
     path("user/<int:id>", views.user, name="user"),
     path("rooms", views.rooms, name="rooms"),
     path("room/<int:id>", views.room, name="room"),
+    path("teams",views.teams, name="teams"),
+    path("team/<int:id>", views.team, name="team"),
     path("login", views.login, name="login"),
     
 ]

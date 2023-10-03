@@ -4,6 +4,7 @@
 <html lang="en">
     <head>
         <title>{% block title %}Admin{% endblock %}</title>
+        <link rel="icon" href="{% static "media/icon.png" %}">        
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         
           <link href="{% static 'styles.css' %}" rel="stylesheet">        
@@ -15,6 +16,7 @@
     <body>
        
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <img style="height: 20px;" class="mr-2" src="{% static "media/icon.png" %}">
             <a class="navbar-brand" href="{% url 'index' %}">X - Sea of Keys</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -27,7 +29,10 @@
               </li>                
                 <li class="nav-item">
                     <a class="nav-link" href="{% url "rooms" %}">Lokaler</a>
-                </li>          
+                </li>    
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url "teams" %}">Hold</a>
+              </li>      
               {% if request.session.token %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url "logout" %}">Logout</a>
@@ -44,6 +49,11 @@
             {% block body %}
             {% endblock %}
         </div>
+
+<footer class="mt-5">
+  Copyright Sea of Keys © 2023
+</footer>
+
 
     </body>
 </html>

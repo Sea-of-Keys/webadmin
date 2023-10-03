@@ -10,9 +10,8 @@
     <div class="col-12">
     
     <div class="d-flex" style="align-items: center; flex-direction: column;">
-      <h2>{{user.id}} {{user.name}}</h2>
-      <h3>{{user.email}}</h3>
-      <h3>Created at {{user.CreatedAt}}</h3>      
+      <h2>{{room.id}} {{room.name}}</h2>      
+      <h3>Created at {{room.timestamp}}</h3>      
           
     </div>   
         
@@ -24,21 +23,21 @@
           <th>ID</th>
           <th>Navn</th>  
         </tr>
-        {% for item in teamPage.object_list  %}           
+        {% for item in teamRoomsPage.object_list  %}           
         <tr> 
           <td>{{item.id}}</td>
           <td>{{item.name}}</td>    
-          <td><a href="/user/{{item.id}}">Hold</a></td>
+          <td><a href="/team/{{item.id}}">Hold</a></td>
         </tr> 
         {% endfor %}  
         
               
       </table>       
-      {% if teamPage.has_previous %}
-      <a id="team-previous" data-page="{{teamPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+      {% if teamRoomsPage.has_previous %}
+      <a id="room-team-previous" data-page="{{teamRoomsPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
       {% endif %}
-      {% if teamPage.has_next %}
-      <a id="team-next" data-page="{{teamPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+      {% if teamRoomsPage.has_next %}
+      <a id="room-team-next" data-page="{{teamRoomsPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
       {% endif %} 
       
     </div>      

@@ -32,16 +32,18 @@ class Team:
             self.name = name
 
 class historyInstance:
-    def __init__(self, user, embedded,timestamp):
+    def __init__(self, user, embedded, id, timestamp):
         self.user = user
         self.embedded = embedded
+        self.id = id
         self.timestamp = timestamp
 
 
 class Room:
-        def __init__(self,id,name):
+        def __init__(self,id,name, timestamp):
             self.id = id
             self.name = name
+            self.timestamp = timestamp
 
 def NewPaginator(request,list, itemsPerPage, param):
 
@@ -67,10 +69,6 @@ def index (request):
 
     users = Users(usersX,usersY)
 
-    
-
-
-
 
     return render(request, "webadmin/index.html",{    
         "usersTotal" : usersTotal,
@@ -87,12 +85,12 @@ def users (request):
     time = datetime.now().strftime('%H:%M')  
 
 
-    for x in range(10):
+    for x in range(100):
         usersList.append(User(x,"Morten","bindzus@mail.dk",time))
-        userHistory.append(historyInstance("Kronborg","Mødelokale 1", time))   
+        userHistory.append(historyInstance("Kronborg","Mødelokale 1",x, time))   
 
-    user_page = NewPaginator(request,usersList,3,"userPage")
-    history_page = NewPaginator(request,userHistory,3,"historyPage")
+    user_page = NewPaginator(request,usersList,5,"userPage")
+    history_page = NewPaginator(request,userHistory,9,"historyPage")
     
     if request.method == "POST":
 
@@ -134,7 +132,7 @@ def user(request,id):
     userHistory = []
 
     for x in range(10):   
-        userHistory.append(historyInstance("Kronborg","Mødelokale 1", time)) 
+        userHistory.append(historyInstance("Kronborg","Mødelokale 1", x, time)) 
 
     for x in range(5):
         teams.append(Team(x,"Kantinedamerne"))
@@ -157,9 +155,9 @@ def rooms (request):
 
     rooms = []
 
-
+    time = datetime.now().strftime("%H:%M %D")
     for x in range(10):   
-        rooms.append(Room(x,"Mødelokale 1"))
+        rooms.append(Room(x,"Mødelokale 1", time))
 
     
     roomsPage = NewPaginator(request,rooms,3,"roomsPage")
@@ -173,9 +171,33 @@ def rooms (request):
 
 def room(request,id):
 
+
+    room = Room(1,"Mødelokale")
+    teams = []
+
+    for x in range(10):
+        teams.append(Team(x,"Kantinedamerne"))        
+
+
+    teamRoomsPage = NewPaginator(request,teams,3,"teamRoomsPage")
+
+
     return render(request, "webadmin/room.html",{
 
+        "room" : room,
+        "teams" : teams,
+        "teamRoomsPage" : teamRoomsPage,
 
+    })
+
+def teams(request):
+
+    return render(request, "webadmin/teams.html",{
+
+    })
+
+def team(request,id):
+    return render(request, "webadmin/team.html",{
 
     })
 
