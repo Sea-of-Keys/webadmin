@@ -41,8 +41,10 @@ document.addEventListener("DOMContentLoaded", function(){
     SetPagination("history-next","history-previous","historyPage")
     SetPagination("users-next","users-previous","userPage")
     SetPagination("teams-next","teams-previous","teamPage")
+    SetPagination("teams-next","teams-previous","teamsPage")
     SetPagination("user-history-next","user-history-previous","userHistory")
     SetPagination("rooms-next","rooms-previous","roomsPage")
-    SetPagination("room-team-next","room-team-previous","teamRoomsPage")
+    SetPagination("room-team-next","room-team-previous","teamRoomsPage");
+    SetPagination("team-user-next", "team-user-previous","teamUsersPage")
 
 })

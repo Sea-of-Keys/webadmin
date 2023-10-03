@@ -54,6 +54,8 @@ def NewPaginator(request,list, itemsPerPage, param):
     return page
 
 
+time = datetime.now().strftime('%H:%M')  
+
 def index (request):
 
     usersTotal = 10
@@ -156,11 +158,11 @@ def rooms (request):
     rooms = []
 
     time = datetime.now().strftime("%H:%M %D")
-    for x in range(10):   
+    for x in range(27):   
         rooms.append(Room(x,"Mødelokale 1", time))
 
     
-    roomsPage = NewPaginator(request,rooms,3,"roomsPage")
+    roomsPage = NewPaginator(request,rooms,5,"roomsPage")
 
 
     return render(request, "webadmin/rooms.html",{
@@ -172,8 +174,9 @@ def rooms (request):
 def room(request,id):
 
 
-    room = Room(1,"Mødelokale")
     teams = []
+    time = datetime.now().strftime("%H:%M %D")    
+    room = Room(1,"Mødelokale",time)
 
     for x in range(10):
         teams.append(Team(x,"Kantinedamerne"))        
@@ -192,12 +195,38 @@ def room(request,id):
 
 def teams(request):
 
+
+
+    teams = []
+
+    for x in range(33):
+        teams.append(Team(x,"Køkkendamerne"))
+
+    teamsPage = NewPaginator(request,teams,6,"teamsPage")
+
     return render(request, "webadmin/teams.html",{
+
+        "teamsPage" : teamsPage
 
     })
 
 def team(request,id):
+
+    users = []
+    team = Team(1,"Køkkendamerne")
+
+
+    for x in range(25):
+
+        users.append(User(x,"Morten","morten@mail.dk",time))
+
+    teamUsersPage = NewPaginator(request,users,5,"teamUsersPage")
+
     return render(request, "webadmin/team.html",{
+
+        "teamUsersPage" : teamUsersPage,
+        "team" : team,
+       
 
     })
 

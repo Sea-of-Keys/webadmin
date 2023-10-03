@@ -1,16 +1,14 @@
-{% extends "webadmin/layout.html" %}   {% load static %}
+{% extends "webadmin/layout.html" %} {% block body%} {% load static %}
 
 
 <link rel="stylesheet" href="{% static 'style.css' %}" />
-{% block body %}
 
 
-
-<div class="col-12 d-flex" style="justify-content: center">
+<div class="col-12 d-flex mt-5" style="justify-content: center">
 
 <form class="d-flex" style="align-items: center; flex-direction: column;" id="login" action="{% url 'login' %}" method="post">
   {% csrf_token %}
-  <h2>Login</h2>
+  <h2 class="mb-3">Login</h2>
   <div class="form-group">
     <input
       autofocus

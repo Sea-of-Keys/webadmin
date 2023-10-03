@@ -148,3 +148,9 @@ footer{
     flex-direction: column;
 }
 
+
+.row{
+
+    min-height: 550px !important;
+
+}

@@ -11,13 +11,13 @@
     
     <div class="d-flex" style="align-items: center; flex-direction: column;">
       <h2>{{room.id}} {{room.name}}</h2>      
-      <h3>Created at {{room.timestamp}}</h3>      
+      <div>Created at {{room.timestamp}}</div>    
+      <div>Tilmeldte hold: {{teamRoomsPage.paginator.count}}</div>  
           
     </div>   
         
     <div class="table shadow mt-5">
-      <h2>Alle hold</h2>
-    
+      <h2>Tilmeldte hold</h2>    
           <table style="width:100%">
         <tr>
           <th>ID</th>
@@ -31,13 +31,13 @@
         </tr> 
         {% endfor %}  
         
-              
+
       </table>       
       {% if teamRoomsPage.has_previous %}
-      <a id="room-team-previous" data-page="{{teamRoomsPage.previous_page_number}}" class="next-previous pagination-button">Previous</a>
+      <a id="room-team-previous" data-page="{{teamRoomsPage.previous_page_number}}" class="btn btn-primary pagination-button">Previous</a>
       {% endif %}
       {% if teamRoomsPage.has_next %}
-      <a id="room-team-next" data-page="{{teamRoomsPage.next_page_number}}" class="next-previous pagination-button">Next</a>
+      <a id="room-team-next" data-page="{{teamRoomsPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
       {% endif %} 
       
     </div>      

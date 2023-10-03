@@ -7,17 +7,16 @@
 
 
 <div class="container">
-  <div class="row">
-    <div class="col">
+  <div class="row" style="min-height: 500px;">
+
+
+    <div class="col-6">
       <form class="form shadow" action="users" method="POST">
-        <div>
+        <div class="create">
           <h2>Opret lokale</h2>
           {% csrf_token %}
 
-          <input required name="name" class="form__select" placeholder="Navn" />
-          <input required name="email" class="form__select" placeholder="Email" />
-          <input required name="password" class="form__select" placeholder="Password" />               
-               
+          <input required name="name" class="form__select" placeholder="Navn" />   
           <div id="myMultiselect" class="multiselect mb-3">
             <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
               <select required name="teams" class="form-select">
@@ -39,40 +38,11 @@
         </div>
         <input class="btn btn-primary form_button" type="submit" value="Save" />
       </form>
-    </div>
-    <div class="col">   
+    </div> 
 
-      <form class="form shadow" action="" method="POST">
-        <h2>Stats</h2>
-        {% csrf_token %}
+    <div class="col-6">   
 
-        <div class="fields">
-          <select name="user_id">
-            <option value="" disabled selected>User ID</option>
-            <option value="" disabled selected>User ID</option>
-            <option value="" disabled selected>User ID</option>
-
-           
-          </select>
-          <p>{{form.elo}}</p>
-          <p>{{form.points}}</p>
-          <p>{{form.wins}}</p>
-          <p>{{form.losses}}</p>
-        </div>
-
-        <input class="btn btn-primary form_button" type="submit" value="Save" />
-      </form>
-    </div>
-
- 
-  </div>
-  <!-- Bruger oversigt-->
-  <!-- Historik -->
-
-  <div class="row mt-5">
-    <div class="col">   
-
-      <div class="table shadow">
+      <div class="table shadow h-100 d-flex flex-column">
         <h2>Lokaler</h2>
 
             <table style="width:100%">
@@ -90,63 +60,23 @@
           
                 
         </table>       
-        {% if roomsPage.has_previous %}
-        <a id="rooms-previous" data-page="{{roomsPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
-        {% endif %}
-        {% if roomsPage.has_next %}
-        <a id="rooms-next" data-page="{{roomsPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
-        {% endif %} 
+
+        <div class="h-100 d-flex flex-column justify-content-end">
+        <div>
+          {% if roomsPage.has_previous %}
+          <a id="rooms-previous" data-page="{{roomsPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+          {% endif %}
+          {% if roomsPage.has_next %}
+          <a id="rooms-next" data-page="{{roomsPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+          {% endif %} 
+        </div>     
         
       </div>
     </div>
+    
+
+
   </div>
-
-
-  {% comment %} <div class="row">
-    <div class="col">
-
-  <form method="post" style="justify-content: space-evenly; align-items: center;" class="d-flex flex-row mt-5 mb-3">
-    {% csrf_token %}
-    <label for="exampleFormControlInput1" class="form-label">Tidspunkt fra</label>
-    <input style="width: 300px;" type="date" class="form-control" id="exampleFormControlInput1" name="start">    
-      <label for="exampleFormControlInput1" class="form-label">Til</label>
-      <input style="width: 300px;" type="date" class="form-control" id="exampleFormControlInput1" name="end">
-      <div>
-        <input type="submit" class="btn btn-primary" value="Søg">
-      </div>
-  </form>     
-
-      <div class="table shadow">
-        <h2>Historik</h2>
-
-
-        <table style="width:100%">
-          <tr>
-            <th>Person</th>
-            <th>Dør</th>
-            <th>Tidspunkt</th>            
-          </tr>
-          {% for item in historyPage.object_list %}     
-          <tr> 
-            <td>{{item.user}}</td>
-            <td>{{item.embedded}}</td>
-            <td>{{item.timestamp}}</td>           
-          </tr> 
-          {% endfor %}            
-        </table>      
-
-        {% if historyPage.has_previous %}
-        <a id="history-previous" data-page="{{historyPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
-        {% endif %}
-        {% if historyPage.has_next %}
-        <a id="history-next" data-page="{{historyPage.next_page_number}}" class="btn next-previous btn-primary ">Next</a>
-        {% endif %} 
-      </div>
-
-
-      
-    </div>
-  </div> {% endcomment %}
 
  
 </div>

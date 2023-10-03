@@ -60,7 +60,7 @@
 </form>   
 
 
-<div class="table shadow mt-5">
+<div class="table shadow mt-5 d-flex flex-column">
   <h2>Historik</h2>
 
       <table style="width:100%">
@@ -78,13 +78,18 @@
     
           
   </table>       
+
+<div class="h-100 d-flex flex-column justify-content-end">
+  <div>
   {% if historyPage.has_previous %}
   <a id="user-history-previous" data-page="{{historyPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
   {% endif %}
   {% if historyPage.has_next %}
   <a id="user-history-next" data-page="{{historyPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
-  {% endif %} 
-  
+  {% endif %}   
+  </div>
+</div>
+
 </div> 
   </div>
 </div>
