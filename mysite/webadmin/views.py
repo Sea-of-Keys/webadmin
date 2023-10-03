@@ -175,14 +175,16 @@ def room(request,id):
 
 
     teams = []
+    history = []
     time = datetime.now().strftime("%H:%M %D")    
     room = Room(1,"Mødelokale",time)
 
-    for x in range(10):
-        teams.append(Team(x,"Kantinedamerne"))        
+    for x in range(23):
+        teams.append(Team(x,"Kantinedamerne"))      
+        history.append(historyInstance("Bruger","Dør 1",x,time))
 
-
-    teamRoomsPage = NewPaginator(request,teams,3,"teamRoomsPage")
+    teamRoomsPage = NewPaginator(request,teams,5,"teamRoomsPage")
+    historyPage = NewPaginator(request,history,5,"historyPage")
 
 
     return render(request, "webadmin/room.html",{
@@ -190,7 +192,7 @@ def room(request,id):
         "room" : room,
         "teams" : teams,
         "teamRoomsPage" : teamRoomsPage,
-
+        "historyPage" : historyPage
     })
 
 def teams(request):
