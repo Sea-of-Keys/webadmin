@@ -228,6 +228,7 @@ def team(request,id):
 
         "teamUsersPage" : teamUsersPage,
         "team" : team,
+        "users" : users,
        
 
     })
