@@ -35,16 +35,38 @@ document.addEventListener("DOMContentLoaded", function(){
         url.search = search_params.toString();        
         var new_url = url.toString();  
         window.location = new_url;  
-}
+}   
 
-    SetPagination("team-next","team-previous","teamPage")
-    SetPagination("history-next","history-previous","historyPage")
-    SetPagination("users-next","users-previous","userPage")
-    SetPagination("teams-next","teams-previous","teamPage")
-    SetPagination("teams-next","teams-previous","teamsPage")
-    SetPagination("user-history-next","user-history-previous","userHistory")
-    SetPagination("rooms-next","rooms-previous","roomsPage")
-    SetPagination("room-team-next","room-team-previous","teamRoomsPage");
-    SetPagination("team-user-next", "team-user-previous","teamUsersPage")
+class Paginator {
+    constructor(next, previous, param) 
+    {
+        this.next = next;
+        this.previous = previous;
+        this.param = param;
+    }  
+
+   
+
+
+  }
+
+    var paginators = []
+
+    paginators.push(new Paginator("team-next","team-previous","teamPage"))
+    paginators.push(new Paginator("history-next","history-previous","historyPage"))
+    paginators.push(new Paginator("teams-next","teams-previous","teamPage"))
+    paginators.push(new Paginator("users-next","users-previous","userPage"))
+    paginators.push(new Paginator("user-history-next","user-history-previous","userHistory"))
+    paginators.push(new Paginator("rooms-next","rooms-previous","roomsPage"))
+    paginators.push(new Paginator("room-team-next","room-team-previous","teamRoomsPage"))
+    paginators.push(new Paginator("team-user-next", "team-user-previous","teamUsersPage"))
+
+    paginators.forEach(function (item){        
+
+        SetPagination(item.next,item.previous,item.param)
+
+    })
+   
+  
 
 })

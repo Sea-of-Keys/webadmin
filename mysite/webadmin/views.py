@@ -297,8 +297,5 @@ def login(request):
 def logout(request):
 
     request.session['token'] = None
-
-    return render(request, "webadmin/login.html",{        
-
-
-    })
+    
+    return HttpResponseRedirect(reverse("login"))
