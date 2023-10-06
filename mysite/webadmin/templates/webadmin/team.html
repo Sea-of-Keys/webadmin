@@ -46,10 +46,10 @@
                 
         </table>       
         {% if teamUsersPage.has_previous %}
-        <a id="team-user-previous" data-page="{{teamUsersPage.previous_page_number}}" class="btn next-previous btn-secondary pagination-button">Previous</a>
+        <a id="team-user-previous" data-page="{{teamUsersPage.previous_page_number}}" data-param="teamUsersPage" class="btn next-previous btn-secondary pagination-button">Previous</a>
         {% endif %}
         {% if teamUsersPage.has_next %}
-        <a id="team-user-next" data-page="{{teamUsersPage.next_page_number}}" class="btn next-previous btn-primary pagination-button">Next</a>
+        <a id="team-user-next" data-page="{{teamUsersPage.next_page_number}}" data-param="teamUsersPage" class="btn next-previous btn-primary pagination-button">Next</a>
         {% endif %} 
         
       </div>
