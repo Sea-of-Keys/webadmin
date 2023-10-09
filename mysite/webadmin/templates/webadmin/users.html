@@ -45,7 +45,10 @@
 
 	//Sets id of what to edit
 	var editUsers = document.querySelectorAll(".edit")
+	var deleteUsers = document.querySelectorAll(".delete")
+
 	var editId = document.getElementById("edit-id");
+	var deleteId = document.getElementById("delete-id");
 
 	editUsers.forEach(function (item){
 
@@ -55,6 +58,22 @@
 
 		})
 	})
+
+
+	deleteUsers.forEach(function (item){
+
+
+		item.addEventListener("click", function (){
+
+
+			deleteId.value = item.dataset.id;
+
+		})
+
+	})
+
+
+
 	
 })
 
@@ -185,6 +204,8 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
+
+				{% csrf_token %}
 				<div class="modal-header">						
 					<h4 class="modal-title">Rediger bruger</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -192,7 +213,7 @@
 				<div class="modal-body">	
 					
 					
-					<input id="edit-id" value="test">
+					<input name="id" type="hidden" id="edit-id" value="test">
 
 					<div class="form-group">
 						<label>Name</label>
@@ -223,18 +244,19 @@
 <div id="deleteUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form action="deleteuser" method="POST">
+				{% csrf_token %}
+				<input name="id" id="delete-id" type="hidden">
 				<div class="modal-header">						
-					<h4 class="modal-title">Delete Employee</h4>
+					<h4 class="modal-title">Slet bruger</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<p>Are you sure you want to delete these Records?</p>
-					<p class="text-warning"><small>This action cannot be undone.</small></p>
+					<p>Er du sikker på du vil fjerne denne bruger?</p>				
 				</div>
 				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-danger" value="Slet">
 				</div>
 			</form>
 		</div>

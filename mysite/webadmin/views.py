@@ -23,7 +23,8 @@ class NewUser(forms.Form):
     teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
 
 
-
+class DeleteUser(forms.Form):
+     id = forms.CharField(label="id", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
 
 class User:
         def __init__(self, id,name, email,CreatedAt):
@@ -62,6 +63,7 @@ def NewPaginator(request,list, itemsPerPage, param):
 
 time = datetime.now().strftime('%H:%M')  
 
+api_url = "https://api.seaofkeys.com"
 
 
 
@@ -92,7 +94,28 @@ def index (request):
           
     })
 
-def users (request):     
+def users (request):    
+
+
+    print(request.method) 
+
+    if request.method == "DELETE":        
+
+        print(request.method)
+
+        
+    # _deleteUser = DeleteUser(request.POST)
+
+    # if _deleteUser.is_valid:            
+            
+    #     id = _deleteUser["id"]
+
+    #     url = "https://api.seaofkeys.com/user/" + str(id)      
+    #     x = requests.post(url)
+    #     json_response = x.json()    
+
+    #     return HttpResponseRedirect(reverse("users"))
+
 
     if request.session.get("token") == None:            
             return redirect("/login")   
@@ -113,16 +136,15 @@ def users (request):
 
     user_page = NewPaginator(request,json_response["users"],5,"userPage")
     history_page = NewPaginator(request,userHistory,9,"historyPage")
+
+
     
     if request.method == "POST":
-
-  
-        print("hej hej")
 
         #HHis man har sat en dato
         timeperiodForm = Timeperiod(request.POST)
         newUser = NewUser(request.POST)
-        
+
 
         if newUser.is_valid():
 
@@ -143,6 +165,10 @@ def users (request):
             start = timeperiodForm.cleaned_data["start"]
             end = timeperiodForm.cleaned_data["end"]
 
+
+    
+   
+    
    
     return render(request, "webadmin/users.html",{  
 
@@ -153,6 +179,21 @@ def users (request):
         "historyPage" : history_page
         
     })
+
+
+def deleteuser(request):
+
+    if request.method == "POST":         
+
+        id = request.POST["id"]
+        endpoint = "/user/"
+        url = api_url + endpoint + str(id)           
+        x = requests.delete(url)              
+
+    return HttpResponseRedirect(reverse("users"))
+     
+
+
 
 def user(request,id):
 
