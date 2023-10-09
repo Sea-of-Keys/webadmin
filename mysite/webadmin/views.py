@@ -122,10 +122,7 @@ def users (request):
         #HHis man har sat en dato
         timeperiodForm = Timeperiod(request.POST)
         newUser = NewUser(request.POST)
-
-
-
-
+        
 
         if newUser.is_valid():
 
@@ -147,7 +144,7 @@ def users (request):
             end = timeperiodForm.cleaned_data["end"]
 
    
-    return render(request, "webadmin/test.html",{  
+    return render(request, "webadmin/users.html",{  
 
 
         "history" : userHistory,
