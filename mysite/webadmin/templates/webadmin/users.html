@@ -14,104 +14,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="{% static 'style.css' %}" />
 <script src="{% static 'multiselect.js' %}"></script>
+<script src="{% static 'user.js' %}"></script>
   
-
-
-<script>
-
-	document.addEventListener("DOMContentLoaded", function (){
-
-		var selectAll = document.getElementById("selectAll")
-		var allCheckboxes = document.querySelectorAll(".item-checkbox")
-		var deleteMultiple = document.getElementById("deleteMultiple");	
-		var deleteIds = document.getElementById("delete-ids");
-
-		var allusers = document.getElementById("all-users");
-
-		var toBeDeleted = [];		
-
-		selectAll.addEventListener("click", function(item){
-
-
-			var isChecked = selectAll.checked;
-			allCheckboxes.forEach(function (item){
-
-				if(isChecked){
-					item.checked = true;								
-				}
-				else{
-					item.checked = false;				
-				}	
-
-			})
-		
-		})	
-
-
-		deleteMultiple.addEventListener("click", function(){
-
-			toBeDeleted = []
-			allusers.innerHTML = " brugere er valgt";
-			deleteIds.value = "";
-
-			allCheckboxes.forEach(function (item){
-
-				if(item.checked == true){
-
-					toBeDeleted.push(item.dataset.id);
-
-				}
-			})
-
-			toBeDeleted.forEach(function (item){
-
-				deleteIds.value += item + ","
-
-			})
-
-			allusers.innerHTML = toBeDeleted.length + allusers.innerHTML;
-
-		})
-
-
-
-	//Sets id of what to edit
-	var editUsers = document.querySelectorAll(".edit")
-	var deleteUsers = document.querySelectorAll(".delete")
-
-	var editId = document.getElementById("edit-id");
-	var deleteId = document.getElementById("delete-id");
-
-	
-
-
-
-
-	editUsers.forEach(function (item){
-
-		item.addEventListener("click", function(){
-
-			editId.value = item.dataset.id;
-
-		})
-	})
-
-
-	deleteUsers.forEach(function (item){
-
-
-		item.addEventListener("click", function (){
-
-
-			deleteId.value = item.dataset.id;
-
-		})
-	})	
-})
-
-
-</script>
-
 
 
 <div class="container-xl">
@@ -147,8 +51,8 @@
 							</span>
 						</td>
 						<td>{{item.id}}</td>
-						<td>{{item.name}}</td>
-						<td>{{item.email}}</td>
+						<td data-id="{{item.id}}" class="user-name">{{item.name}}</td>
+						<td data-id="{{item.id}}" class="user-email">{{item.email}}</td>
 						<td>{{item.CreatedAt}}</td>					
 						<td>
 							<a data-id="{{item.id}}" href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -247,19 +151,19 @@
 
 					<div class="form-group">
 						<label>Name</label>
-						<input name="name" type="text" class="form-control" required>
+						<input name="name" type="text" id="edit-name" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Email</label>
-						<input name="email" type="email" class="form-control" required>
+						<input name="email" type="email" id="edit-mail" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Password</label>
-						<input name="password" type="password" class="form-control" required>
+						<input name="password" type="password" id="edit-password" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Code</label>
-						<input name="code" type="text" class="form-control" required>
+						<input name="code" type="text" id="edit-code" class="form-control" required>
 					</div>					
 				</div>
 				<div class="modal-footer">

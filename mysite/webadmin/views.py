@@ -188,18 +188,11 @@ def edituser(request):
 
         url = "https://api.seaofkeys.com/user"
         myobj = {"id" : int(id), "name" : name, 'email': email, "password": password, "code" : code} 
-
-
-        print(myobj)  
+    
         x = requests.put(url, json=myobj)
         json_response = x.json()   
 
-
-        print(x.status_code)
-
-
-    return HttpResponseRedirect(reverse("users"))
-    
+    return HttpResponseRedirect(reverse("users"))    
           
 
 def user(request,id):
