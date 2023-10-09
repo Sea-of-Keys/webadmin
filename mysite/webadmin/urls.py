@@ -14,6 +14,8 @@ urlpatterns = [
     path("room/<int:id>", views.room, name="room"),
     path("teams",views.teams, name="teams"),
     path("team/<int:id>", views.team, name="team"),
+    path("deleteteam", views.deleteteam, name="deleteteam"),
+    path("editteam", views.editteam, name="editteam"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
     

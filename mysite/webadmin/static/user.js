@@ -4,11 +4,7 @@ document.addEventListener("DOMContentLoaded", function (){
   var allCheckboxes = document.querySelectorAll(".item-checkbox")
   var deleteMultiple = document.getElementById("deleteMultiple");	
   var deleteIds = document.getElementById("delete-ids");
-
   var allusers = document.getElementById("all-users");
-
-
-
 
   var toBeDeleted = [];		
 
@@ -25,10 +21,8 @@ document.addEventListener("DOMContentLoaded", function (){
         item.checked = false;				
       }	
 
-    })
-  
+    })  
   })	
-
 
   deleteMultiple.addEventListener("click", function(){
 
@@ -55,15 +49,12 @@ document.addEventListener("DOMContentLoaded", function (){
 
   })
 
-
-
 //Sets id of what to edit
 var editUsers = document.querySelectorAll(".edit")
 var deleteUsers = document.querySelectorAll(".delete")
 
 var editId = document.getElementById("edit-id");
 var deleteId = document.getElementById("delete-id");
-
 
 
 function SetEditText(userId){
@@ -88,12 +79,6 @@ function SetEditText(userId){
 
 }
 
-
-
-
-
-
-
 editUsers.forEach(function (item){
 
   item.addEventListener("click", function(){
@@ -109,9 +94,7 @@ editUsers.forEach(function (item){
 
 deleteUsers.forEach(function (item){
 
-
   item.addEventListener("click", function (){
-
 
     deleteId.value = item.dataset.id;
 
