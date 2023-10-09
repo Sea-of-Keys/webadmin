@@ -8,42 +8,39 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <script src="{% static 'pagination.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="{% static 'style.css' %}" />
-
+<script src="{% static 'multiselect.js' %}"></script>
   
 
 
 <script>
 
-$(document).ready(function(){
-	// Activate tooltip
-	$('[data-toggle="tooltip"]').tooltip();
-	
-	// Select/Deselect checkboxes
-	var checkbox = $('table tbody input[type="checkbox"]');
-	$("#selectAll").click(function(){
-		if(this.checked){
-			checkbox.each(function(){
-				this.checked = true;                        
-			});
-		} else{
-			checkbox.each(function(){
-				this.checked = false;                        
-			});
-		} 
-	});
-	checkbox.click(function(){
-		if(!this.checked){
-			$("#selectAll").prop("checked", false);
-		}
-	});
-});
+	document.addEventListener("DOMContentLoaded", function (){
 
+		var selectAll = document.getElementById("selectAll")
+		var allCheckboxes = document.querySelectorAll(".item-checkbox")
+
+		selectAll.addEventListener("click", function(item){
+
+
+			var isChecked = selectAll.checked;
+			allCheckboxes.forEach(function (item){
+
+				if(isChecked){
+					item.checked = true;
+				}
+				else{
+					item.checked = false;
+				}		
+
+			})
+		})
+
+})
 
 
 </script>
@@ -51,8 +48,8 @@ $(document).ready(function(){
 	<div class="table-responsive">
 		<div class="table-wrapper">
 			<div class="table-title d-flex">		
-						<a href="#addEmployeeModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger m-0" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>					
+						<a href="#addEmployeeModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tilføj bruger</span></a>
+						<a href="#deleteEmployeeModal" class="btn btn-danger m-0" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Slet</span></a>					
 			</div>
 			<table class="table table-striped table-hover">
 				<thead>
@@ -65,7 +62,7 @@ $(document).ready(function(){
 						</th>
 						<th>Name</th>
 						<th>Email</th>
-						<th>Created At</th>
+						<th>Oprettet</th>
 						
 					</tr>
 				</thead>
@@ -74,7 +71,7 @@ $(document).ready(function(){
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{forloop.counter}}" name="options[]" value="{{forloop.counter}}">
+								<input class="item-checkbox" type="checkbox" id="checkbox{{forloop.counter}}" name="options[]" value="{{forloop.counter}}">
 								<label for="checkbox1"></label>
 							</span>
 						</td>
@@ -82,8 +79,8 @@ $(document).ready(function(){
 						<td>{{item.email}}</td>
 						<td>{{item.CreatedAt}}</td>					
 						<td>
-							<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-id="{{forloop.counter}}" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-id={{forloop.counter}} data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
                     {% endfor %}
@@ -110,47 +107,71 @@ $(document).ready(function(){
 <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form action="users" method="POST">
+				{% csrf_token %}
+
 				<div class="modal-header">						
-					<h4 class="modal-title">Add Employee</h4>
+					<h4 class="modal-title">Tilføj bruger</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
+				<div class="modal-body">						
+				
 					<div class="form-group">
 						<label>Name</label>
-						<input type="text" class="form-control" required>
+						<input name="name" type="text" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Email</label>
-						<input type="email" class="form-control" required>
+						<input name="email" type="email" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label>Address</label>
-						<textarea class="form-control" required></textarea>
+						<label>Password</label>
+						<input name="password" type="password" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label>Phone</label>
-						<input type="text" class="form-control" required>
-					</div>					
+						<label>Code</label>
+						<input name="code" type="text" class="form-control" required>
+					</div>		
+					
+					<div id="myMultiselect" class="multiselect mb-3">
+						<div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+						  <select required name="teams" class="form-select">
+							<option></option>
+						  </select>
+						  <div class="overSelect"></div>
+						</div>
+						<div id="mySelectOptions">
+						  <label for="1"><input type="checkbox" id="1" onchange="checkboxStatusChange()" value="Team 1" /> Team 1</label>   
+						  <label for="2"><input type="checkbox" id="2" onchange="checkboxStatusChange()" value="Team 2" /> Team 2</label>   
+						  <label for="3"><input type="checkbox" id="3" onchange="checkboxStatusChange()" value="Team 3" /> Team 3</label>   
+						  <label for="4"><input type="checkbox" id="4" onchange="checkboxStatusChange()" value="Team 4" /> Team 4</label>   
+						  <label for="5"><input type="checkbox" id="5" onchange="checkboxStatusChange()" value="Team 5" /> Team 5</label>   
+						  <label for="6"><input type="checkbox" id="6" onchange="checkboxStatusChange()" value="Team 6" /> Team 6</label>     
+						</div>
+					  </div>
 				</div>
 				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-success" value="Add">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-success" value="Tilføj">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 <!-- Edit Modal HTML -->
-<div id="editEmployeeModal" class="modal fade">
+<div id="editUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Edit Employee</h4>
+					<h4 class="modal-title">Rediger bruger</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
+				<div class="modal-body">	
+					
+					
+					<input id="edit-id" value="test">
+
 					<div class="form-group">
 						<label>Name</label>
 						<input type="text" class="form-control" required>
@@ -160,11 +181,11 @@ $(document).ready(function(){
 						<input type="email" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label>Address</label>
+						<label>Password</label>
 						<textarea class="form-control" required></textarea>
 					</div>
 					<div class="form-group">
-						<label>Phone</label>
+						<label>Code</label>
 						<input type="text" class="form-control" required>
 					</div>					
 				</div>
@@ -177,7 +198,7 @@ $(document).ready(function(){
 	</div>
 </div>
 <!-- Delete Modal HTML -->
-<div id="deleteEmployeeModal" class="modal fade">
+<div id="deleteUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>

@@ -19,7 +19,11 @@ class NewUser(forms.Form):
     name = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     email = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     password = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+    code = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+
+
+
 
 class User:
         def __init__(self, id,name, email,CreatedAt):
@@ -100,13 +104,8 @@ def users (request):
     
 
     url = "https://api.seaofkeys.com/user"
-
     x = requests.get(url)
     json_response = x.json()  
-    
-    print(json_response["users"])
-    
-
 
     for x in range(100):
         usersList.append(User(x,"Morten","bindzus@mail.dk",time))
@@ -115,23 +114,32 @@ def users (request):
     user_page = NewPaginator(request,json_response["users"],5,"userPage")
     history_page = NewPaginator(request,userHistory,9,"historyPage")
     
-    
-    
-    
     if request.method == "POST":
+
+  
+        print("hej hej")
 
         #HHis man har sat en dato
         timeperiodForm = Timeperiod(request.POST)
         newUser = NewUser(request.POST)
+
+
+
+
 
         if newUser.is_valid():
 
             name = newUser.cleaned_data["name"]
             email = newUser.cleaned_data["email"]
             password = newUser.cleaned_data["password"]
+            code = newUser.cleaned_data["code"]
             teams = newUser.cleaned_data["teams"]
-            print(teams)
 
+            url = "https://api.seaofkeys.com/user"
+            myobj = {"name" : name, 'email': email, "password": password, "code" : code}           
+            x = requests.post(url, json=myobj)
+            json_response = x.json()    
+    
 
         if timeperiodForm.is_valid():
 
