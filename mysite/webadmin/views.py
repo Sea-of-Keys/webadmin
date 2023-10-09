@@ -96,27 +96,6 @@ def index (request):
 
 def users (request):    
 
-
-    print(request.method) 
-
-    if request.method == "DELETE":        
-
-        print(request.method)
-
-        
-    # _deleteUser = DeleteUser(request.POST)
-
-    # if _deleteUser.is_valid:            
-            
-    #     id = _deleteUser["id"]
-
-    #     url = "https://api.seaofkeys.com/user/" + str(id)      
-    #     x = requests.post(url)
-    #     json_response = x.json()    
-
-    #     return HttpResponseRedirect(reverse("users"))
-
-
     if request.session.get("token") == None:            
             return redirect("/login")   
 
@@ -134,7 +113,7 @@ def users (request):
         usersList.append(User(x,"Morten","bindzus@mail.dk",time))
         userHistory.append(historyInstance("Kronborg","Mødelokale 1",x, time))   
 
-    user_page = NewPaginator(request,json_response["users"],5,"userPage")
+    user_page = NewPaginator(request,json_response,5,"userPage")
     history_page = NewPaginator(request,userHistory,9,"historyPage")
 
 
@@ -165,10 +144,6 @@ def users (request):
             start = timeperiodForm.cleaned_data["start"]
             end = timeperiodForm.cleaned_data["end"]
 
-
-    
-   
-    
    
     return render(request, "webadmin/users.html",{  
 
@@ -186,9 +161,29 @@ def deleteuser(request):
     if request.method == "POST":         
 
         id = request.POST["id"]
-        endpoint = "/user/"
-        url = api_url + endpoint + str(id)           
-        x = requests.delete(url)              
+        id = id.split(",")
+
+        ids = list()
+
+        for item in id:
+             
+             if item != "":
+                  
+                  ids.append({ "id":  int(item) })                  
+        
+
+        print(ids)
+        
+
+
+        endpoint = "/user/del/"
+        url = api_url + endpoint    
+        x = requests.post(url, json=ids)
+        
+        print(x.status_code)
+        
+
+             
 
     return HttpResponseRedirect(reverse("users"))
      

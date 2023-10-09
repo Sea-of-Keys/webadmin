@@ -23,6 +23,12 @@
 
 		var selectAll = document.getElementById("selectAll")
 		var allCheckboxes = document.querySelectorAll(".item-checkbox")
+		var deleteMultiple = document.getElementById("deleteMultiple");	
+		var deleteIds = document.getElementById("delete-ids");
+
+		var allusers = document.getElementById("all-users");
+
+		var toBeDeleted = [];		
 
 		selectAll.addEventListener("click", function(item){
 
@@ -31,15 +37,41 @@
 			allCheckboxes.forEach(function (item){
 
 				if(isChecked){
-					item.checked = true;
+					item.checked = true;								
 				}
 				else{
-					item.checked = false;
-				}		
+					item.checked = false;				
+				}	
 
 			})
-		})
+		
+		})	
 
+
+		deleteMultiple.addEventListener("click", function(){
+
+			toBeDeleted = []
+			allusers.innerHTML = " brugere er valgt";
+			deleteIds.value = "";
+
+			allCheckboxes.forEach(function (item){
+
+				if(item.checked == true){
+
+					toBeDeleted.push(item.dataset.id);
+
+				}
+			})
+
+			toBeDeleted.forEach(function (item){
+
+				deleteIds.value += item + ","
+
+			})
+
+			allusers.innerHTML = toBeDeleted.length + allusers.innerHTML;
+
+		})
 
 
 
@@ -49,6 +81,11 @@
 
 	var editId = document.getElementById("edit-id");
 	var deleteId = document.getElementById("delete-id");
+
+	
+
+
+
 
 	editUsers.forEach(function (item){
 
@@ -69,12 +106,7 @@
 			deleteId.value = item.dataset.id;
 
 		})
-
-	})
-
-
-
-	
+	})	
 })
 
 
@@ -82,15 +114,12 @@
 
 
 
-
-
-
 <div class="container-xl">
 	<div class="table-responsive">
 		<div class="table-wrapper">
 			<div class="table-title d-flex">		
-						<a href="#addUserModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tilføj bruger</span></a>
-						<a href="#deleteUserModal" class="btn btn-danger m-0" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Slet</span></a>					
+				<a href="#addUserModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tilføj bruger</span></a>
+				<a href="#deleteMultipleModal" id="deleteMultiple" class="btn btn-danger m-0" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Slet</span></a>					
 			</div>
 			<table class="table table-striped table-hover">
 				<thead>
@@ -101,6 +130,7 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
+						<th>ID</th>
 						<th>Name</th>
 						<th>Email</th>
 						<th>Oprettet</th>
@@ -112,10 +142,11 @@
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input class="item-checkbox" type="checkbox" id="checkbox{{forloop.counter}}" name="options[]" value="{{forloop.counter}}">
+								<input class="item-checkbox" data-id="{{item.id}}" type="checkbox" id="checkbox{{forloop.counter}}" name="options[]" value="{{forloop.counter}}">
 								<label for="checkbox1"></label>
 							</span>
 						</td>
+						<td>{{item.id}}</td>
 						<td>{{item.name}}</td>
 						<td>{{item.email}}</td>
 						<td>{{item.CreatedAt}}</td>					
@@ -241,6 +272,7 @@
 	</div>
 </div>
 <!-- Delete Modal HTML -->
+
 <div id="deleteUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -262,6 +294,30 @@
 		</div>
 	</div>
 </div>
+
+<div id="deleteMultipleModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="deleteuser" method="POST">
+				{% csrf_token %}
+				<input name="id" id="delete-ids" type="hidden">
+				<div class="modal-header">						
+					<h4 class="modal-title">Slet brugere</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Er du sikker på du vil fjerne disse brugere?</p>				
+					<p id="all-users"></p>
+				</div>
+				<div class="modal-footer">
+					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-danger" value="Slet">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 
 
 {% endblock %}
