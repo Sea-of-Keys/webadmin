@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function (){
   deleteMultiple.addEventListener("click", function(){
 
     toBeDeleted = []
-    allusers.innerHTML = " brugere er valgt";
+    allusers.innerHTML = " er valgt";
     deleteIds.value = "";
 
     allCheckboxes.forEach(function (item){

@@ -291,7 +291,7 @@ def teams(request):
 
     users = GetAPI("/user").json()
     teams = GetAPI("/team").json()["team"]  
-    teamsPage = NewPaginator(request,teams,3,"teamsPage")
+    teamsPage = NewPaginator(request,teams,6,"teamsPage")
 
 
 
@@ -315,7 +315,7 @@ def teams(request):
 
 def deleteteam(request):
      
-    deleteMultiple(request,"/team")  
+    deleteMultiple(request,"/team/del")  
     return HttpResponseRedirect(reverse("teams"))   
 
 def editteam(request):   
