@@ -97,14 +97,26 @@ def users (request):
     usersList = []
 
     time = datetime.now().strftime('%H:%M')  
+    
+
+    url = "https://api.seaofkeys.com/user"
+
+    x = requests.get(url)
+    json_response = x.json()  
+    
+    print(json_response["users"])
+    
 
 
     for x in range(100):
         usersList.append(User(x,"Morten","bindzus@mail.dk",time))
         userHistory.append(historyInstance("Kronborg","Mødelokale 1",x, time))   
 
-    user_page = NewPaginator(request,usersList,5,"userPage")
+    user_page = NewPaginator(request,json_response["users"],5,"userPage")
     history_page = NewPaginator(request,userHistory,9,"historyPage")
+    
+    
+    
     
     if request.method == "POST":
 
@@ -127,7 +139,7 @@ def users (request):
             end = timeperiodForm.cleaned_data["end"]
 
    
-    return render(request, "webadmin/users.html",{  
+    return render(request, "webadmin/test.html",{  
 
 
         "history" : userHistory,
@@ -299,3 +311,13 @@ def logout(request):
     request.session['token'] = None
     
     return HttpResponseRedirect(reverse("login"))
+
+
+def test(request):
+    
+    
+    return render(request, "webadmin/test.html",{
+        
+        
+        
+    })
