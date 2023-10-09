@@ -100,7 +100,6 @@ def users (request):
             return redirect("/login")   
 
     userHistory = []
-    usersList = []
 
     time = datetime.now().strftime('%H:%M')  
     
@@ -109,21 +108,18 @@ def users (request):
     x = requests.get(url)
     json_response = x.json()  
 
-    for x in range(100):
-        usersList.append(User(x,"Morten","bindzus@mail.dk",time))
+    for x in range(100):      
         userHistory.append(historyInstance("Kronborg","Mødelokale 1",x, time))   
 
     user_page = NewPaginator(request,json_response,5,"userPage")
     history_page = NewPaginator(request,userHistory,9,"historyPage")
 
-
     
     if request.method == "POST":
 
-        #HHis man har sat en dato
+        #Hvis man har sat en dato
         timeperiodForm = Timeperiod(request.POST)
         newUser = NewUser(request.POST)
-
 
         if newUser.is_valid():
 
@@ -151,8 +147,7 @@ def users (request):
     return render(request, "webadmin/users.html",{  
 
 
-        "history" : userHistory,
-        "users" : usersList,
+        "history" : userHistory,        
         "userPage" : user_page,
         "historyPage" : history_page
         
@@ -172,18 +167,40 @@ def deleteuser(request):
              
              if item != "":
                   
-                  ids.append({ "id":  int(item) })
+                  ids.append({ "id": int(item) })
 
         endpoint = "/user/del/"
         url = api_url + endpoint    
         x = requests.delete(url, json=ids)       
 
-             
-
     return HttpResponseRedirect(reverse("users"))
      
 
+def edituser(request):
+     
+    if request.method == "POST":          
 
+        id = request.POST["id"]
+        name = request.POST["name"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        code = request.POST["code"]
+
+        url = "https://api.seaofkeys.com/user"
+        myobj = {"id" : int(id), "name" : name, 'email': email, "password": password, "code" : code} 
+
+
+        print(myobj)  
+        x = requests.put(url, json=myobj)
+        json_response = x.json()   
+
+
+        print(x.status_code)
+
+
+    return HttpResponseRedirect(reverse("users"))
+    
+          
 
 def user(request,id):
 

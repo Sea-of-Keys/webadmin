@@ -234,33 +234,32 @@
 <div id="editUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form action="edituser" method="post">
 
 				{% csrf_token %}
 				<div class="modal-header">						
 					<h4 class="modal-title">Rediger bruger</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">	
-					
+				<div class="modal-body">						
 					
 					<input name="id" type="hidden" id="edit-id" value="test">
 
 					<div class="form-group">
 						<label>Name</label>
-						<input type="text" class="form-control" required>
+						<input name="name" type="text" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Email</label>
-						<input type="email" class="form-control" required>
+						<input name="email" type="email" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Password</label>
-						<textarea class="form-control" required></textarea>
+						<input name="password" type="password" class="form-control" required>
 					</div>
 					<div class="form-group">
 						<label>Code</label>
-						<input type="text" class="form-control" required>
+						<input name="code" type="text" class="form-control" required>
 					</div>					
 				</div>
 				<div class="modal-footer">

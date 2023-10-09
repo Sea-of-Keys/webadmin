@@ -9,6 +9,7 @@ urlpatterns = [
     path("users", views.users, name="users"),
     path("user/<int:id>", views.user, name="user"),
     path("deleteuser", views.deleteuser, name="deleteuser"),
+    path("edituser", views.edituser, name="edituser"),
     path("rooms", views.rooms, name="rooms"),
     path("room/<int:id>", views.room, name="room"),
     path("teams",views.teams, name="teams"),
