@@ -136,7 +136,10 @@ def users (request):
             url = "https://api.seaofkeys.com/user"
             myobj = {"name" : name, 'email': email, "password": password, "code" : code}           
             x = requests.post(url, json=myobj)
-            json_response = x.json()    
+            json_response = x.json()   
+
+
+            return HttpResponseRedirect(reverse("users"))
     
 
         if timeperiodForm.is_valid():
@@ -169,19 +172,11 @@ def deleteuser(request):
              
              if item != "":
                   
-                  ids.append({ "id":  int(item) })                  
-        
-
-        print(ids)
-        
-
+                  ids.append({ "id":  int(item) })
 
         endpoint = "/user/del/"
         url = api_url + endpoint    
-        x = requests.post(url, json=ids)
-        
-        print(x.status_code)
-        
+        x = requests.delete(url, json=ids)       
 
              
 
