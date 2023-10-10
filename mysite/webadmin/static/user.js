@@ -8,6 +8,61 @@ document.addEventListener("DOMContentLoaded", function (){
 
   var toBeDeleted = [];		
 
+
+  var url = "https://api.seaofkeys.com"
+
+	function getvals(id, endpoint){
+		return fetch(url +  endpoint + id ,
+		{
+			method: "GET",
+		  headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		  },
+		})
+		.then((response) => response.json())
+		.then((responseData) => {		  
+		  return responseData["team"]["users"];
+		})
+		.catch(error => console.warn(error));
+	  }
+
+
+	  function setResponse(response){		
+
+
+
+
+     
+
+      var edit_list =  document.getElementById("mySelectOptions");
+
+
+
+      response.forEach(function (item){
+
+        const node = document.createElement("li");    
+        const textnode = document.createTextNode(item.name);
+
+        node.dataset.id = item.id;       
+        
+        node.appendChild(textnode);
+        edit_list.appendChild(node);
+  
+      })    
+
+
+
+
+      console.log(response[0])
+		
+
+	  }	  
+	  
+
+
+
+
   selectAll.addEventListener("click", function(item){
 
 
@@ -66,6 +121,8 @@ function SetEditText(userId){
       document.getElementById("edit-mail").value = item.innerHTML
     }
 
+
+
   })
 
   names = document.querySelectorAll(".user-name").forEach(function (item){
@@ -84,9 +141,9 @@ editUsers.forEach(function (item){
   item.addEventListener("click", function(){
 
     editId.value = item.dataset.id;
-
     SetEditText(item.dataset.id);
-    
+
+    getvals(item.dataset.id, "/team/").then(response => setResponse(response));   
 
   })
 })

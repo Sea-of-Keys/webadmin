@@ -176,9 +176,7 @@ def deleteMultiple(request,endpoint):
                   
                   ids.append({ "id": int(item) })
         
-        url = api_url + endpoint  
-
-        print(url)  
+        url = api_url + endpoint          
         x = requests.delete(url, json=ids)       
 
 def deleteuser(request):
@@ -298,9 +296,22 @@ def teams(request):
     if request.method == "POST":
          
         name = request.POST["name"]   
+        newUsers = request.POST["users"].split(",")       
         
-        obj = {"name" : name, "users" : None} 
-        PostAPI("/team",obj)
+        userObj = list()       
+        
+        for item in newUsers:
+            
+            userObj.append({"id" : int(item)})                
+        
+        obj = {"name" : name, "users" : userObj}        
+        
+        
+        print(obj)
+        
+        statuscode = PostAPI("/team",obj).status_code
+
+        print(statuscode)
 
         return HttpResponseRedirect(reverse("teams"))    
         
