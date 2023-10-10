@@ -10,7 +10,9 @@ urlpatterns = [
     path("user/<int:id>", views.user, name="user"),
     path("deleteuser", views.deleteuser, name="deleteuser"),
     path("edituser", views.edituser, name="edituser"),
+    path("editroom", views.editroom, name="editroom"),
     path("rooms", views.rooms, name="rooms"),
+    path("deleteroom", views.deleteroom, name="deleteroom"),  
     path("room/<int:id>", views.room, name="room"),
     path("teams",views.teams, name="teams"),
     path("team/<int:id>", views.team, name="team"),
@@ -18,5 +20,6 @@ urlpatterns = [
     path("editteam", views.editteam, name="editteam"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
+    
     
 ]

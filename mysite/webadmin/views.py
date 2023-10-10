@@ -171,6 +171,9 @@ def deleteMultiple(request,endpoint):
              if item != "":
                   
                   ids.append({ "id": int(item) })
+
+
+        print(ids)
         
         url = api_url + endpoint          
         x = requests.delete(url, json=ids)       
@@ -232,24 +235,48 @@ def user(request,id):
 def rooms (request):
 
     if request.session.get("token") == None:            
-            return redirect("/login")   
+            return redirect("/login")      
 
 
-    rooms = []
+    if request.method == "POST":         
 
-    time = datetime.now().strftime("%H:%M %D")
-    for x in range(27):   
-        rooms.append(Room(x,"Mødelokale 1", time))
+        print(request.POST["name"])
 
+        obj = {"name" : request.POST["name"]}
+        PostAPI("/room", obj)  
+
+    rooms = GetAPI("/room").json()["room"]
     
     roomsPage = NewPaginator(request,rooms,5,"roomsPage")
-
 
     return render(request, "webadmin/rooms.html",{
 
         "roomsPage" : roomsPage
 
     })
+
+
+def deleteroom(request):        
+
+    deleteMultiple(request,"/room")
+    return HttpResponseRedirect(reverse("rooms"))
+
+
+def editroom(request):     
+
+    if request.method == "POST":          
+
+        id = request.POST["id"]
+        name = request.POST["name"]       
+
+        url = "https://api.seaofkeys.com/room"
+        myobj = {"id" : int(id), "name" : name} 
+    
+        x = requests.put(url, json=myobj)
+        json_response = x.json()   
+
+    return HttpResponseRedirect(reverse("rooms"))
+     
 
 def room(request,id):
 
