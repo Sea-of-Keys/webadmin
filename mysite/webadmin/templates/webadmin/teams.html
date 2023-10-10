@@ -16,6 +16,8 @@
 <script src="{% static 'multiselect.js' %}"></script>
 <script src="{% static 'user.js' %}"></script>
 <script src="{% static 'search.js' %}"></script>
+<script src="{% static 'multiadd.js' %}"></script>
+<script src="{% static 'multiedit.js' %}"></script>
   
 
 <div class="container-xl">
@@ -109,8 +111,6 @@
 						</div>
 					</div>
 
-
-
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
@@ -137,17 +137,18 @@
 						<label>Name</label>
 						<input name="name" type="text" id="edit-name" class="form-control" required>
 					</div>
-				</div>
+
+						<input id="editusers" type="hidden" name="editusers">
+	
+						<input class="multiedit" style="display: none;" type="checkbox" id="multiTemplateInputEdit" name="checkbox" id="checkbox_id" value="value">
+						<label style="display: none;" id="multiTemplateLabelEdit" for="checkbox_id">Test</label>		
+						<div id="mySelectOptionsEdit">							
+						</div>
+					
 
 
 
-				<ul id="editlist"> 
-
-
-				</ul>
-
-		
-				<input id="allusers" name="name" type="text" id="edit-name" class="form-control" required>
+				</div>				
 					
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

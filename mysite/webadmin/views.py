@@ -10,8 +10,6 @@ import json
 import hashlib
 import requests
 
-
-
 class Timeperiod(forms.Form):
     start = forms.DateField(label="Start", required=True)
     end = forms.DateField(label="End", required=True, )
@@ -139,11 +137,9 @@ def users (request):
             url = "https://api.seaofkeys.com/user"
             myobj = {"name" : name, 'email': email, "password": password, "code" : code}           
             x = requests.post(url, json=myobj)
-            json_response = x.json()   
+            json_response = x.json()
 
-
-            return HttpResponseRedirect(reverse("users"))
-    
+            return HttpResponseRedirect(reverse("users"))    
 
         if timeperiodForm.is_valid():
 
@@ -331,11 +327,13 @@ def editteam(request):
     if request.method == "POST":          
 
         id = request.POST["id"]
-        name = request.POST["name"]         
+        name = request.POST["name"] 
 
         url = api_url + "/team"
        
-        myobj = {"id" : int(id), "name" : name} 
+        myobj = {"id" : int(id), "name" : name}   
+        
+              
     
         x = requests.put(url, json=myobj)
         json_response = x.json()   
