@@ -295,8 +295,10 @@ def teams(request):
         userObj = list()       
         
         for item in newUsers:
+
+            if(item != ""):
             
-            userObj.append({"id" : int(item)})                
+                userObj.append({"id" : int(item)})                
         
         obj = {"name" : name, "users" : userObj}    
 
@@ -328,12 +330,9 @@ def editteam(request):
 
         id = request.POST["id"]
         name = request.POST["name"] 
-
         url = api_url + "/team"
        
-        myobj = {"id" : int(id), "name" : name}   
-        
-              
+        myobj = {"id" : int(id), "name" : name}                
     
         x = requests.put(url, json=myobj)
         json_response = x.json()   

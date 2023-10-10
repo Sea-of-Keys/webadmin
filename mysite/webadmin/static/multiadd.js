@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   var url = "https://api.seaofkeys.com"
   var addItemTop = document.getElementById("addItem");
+  var editusersInput = document.getElementById("usersToBeAdded");
 
   function getvals(id, endpoint){
     return fetch(url +  endpoint + id ,
@@ -36,7 +37,23 @@ document.addEventListener("DOMContentLoaded", function(){
         newDiv.classList.add("d-flex");
   
         parent.appendChild(newDiv);
-  
+
+        inputClone.addEventListener("change", function(){
+
+          editusersInput.value = "";               
+          allEditInputs = document.querySelectorAll(".multiEditInput");
+
+          allEditInputs.forEach(function (item){
+
+            if(item.checked == true){
+
+              editusersInput.value += item.value + ",";
+            }
+
+          })     
+
+        });
+
         inputClone.value = item.id;
         labelClone.innerHTML = item.name;
   
@@ -48,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function(){
   
         inputClone.classList.remove("template");
         labelClone.classList.remove("template");
+
+        inputClone.classList.add("multiEditInput");
       
         newDiv.appendChild(inputClone);
         newDiv.appendChild(labelClone);

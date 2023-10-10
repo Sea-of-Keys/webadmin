@@ -2,9 +2,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   var url = "https://api.seaofkeys.com"
 
-  var addItemTop = document.getElementById("addItem");
   var editButton = document.querySelectorAll(".edit");
-
   var editusersInput = document.getElementById("editusers");
 
   function getvals(id, endpoint){
@@ -107,10 +105,6 @@ document.addEventListener("DOMContentLoaded", function(){
       })
   
     })	  
-
-
-    
-
 })
 
 
