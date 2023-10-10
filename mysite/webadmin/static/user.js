@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", function (){
   var deleteIds = document.getElementById("delete-ids");
   var allusers = document.getElementById("all-users");
 
+
+
+  var addItemTop = document.getElementById("addItem");
+
   var toBeDeleted = [];		
 
 
@@ -22,46 +26,56 @@ document.addEventListener("DOMContentLoaded", function (){
 		})
 		.then((response) => response.json())
 		.then((responseData) => {		  
-		  return responseData["team"]["users"];
+		  return responseData;
 		})
 		.catch(error => console.warn(error));
 	  }
 
 
-	  function setResponse(response){		
+	  function setResponse(response){		  
+      
+      
+      var parent = document.getElementById("mySelectOptions");
+      var multiTemplateInput = document.getElementById("multiTemplateInput");
+      var multiTemplateLabel = document.getElementById("multiTemplateLabel");
 
-
-
-
-     
-
-      var edit_list =  document.getElementById("mySelectOptions");
-
-
+      parent.innerHTML = "";   
 
       response.forEach(function (item){
 
-        const node = document.createElement("li");    
-        const textnode = document.createTextNode(item.name);
+        const inputClone = multiTemplateInput.cloneNode(true);       
+        const labelClone = multiTemplateLabel.cloneNode(true);     
 
-        node.dataset.id = item.id;       
-        
-        node.appendChild(textnode);
-        edit_list.appendChild(node);
+        const newDiv = document.createElement("div");
+        newDiv.classList.add("d-flex");
+
+        parent.appendChild(newDiv);
+
+        inputClone.value = item.id;
+        labelClone.innerHTML = item.name;
+
+        labelClone.classList.add("m-0");
+        labelClone.classList.add("m-1");
+
+        inputClone.style.display = "block";
+        labelClone.style.display = "block";
+
+        inputClone.classList.remove("template");
+        labelClone.classList.remove("template");
+      
+        newDiv.appendChild(inputClone);
+        newDiv.appendChild(labelClone);
   
       })    
 
-
-
-
-      console.log(response[0])
-		
-
 	  }	  
-	  
 
 
+    addItemTop.addEventListener("click", function(){
+      
+      getvals("","/user").then(response => setResponse(response));   
 
+    })
 
   selectAll.addEventListener("click", function(item){
 
@@ -142,8 +156,6 @@ editUsers.forEach(function (item){
 
     editId.value = item.dataset.id;
     SetEditText(item.dataset.id);
-
-    getvals(item.dataset.id, "/team/").then(response => setResponse(response));   
 
   })
 })

@@ -72,7 +72,7 @@ def GetAPI(endpoint):
     return x    
 
 def PostAPI(endpoint, obj):
-    x = requests.post(api_url + endpoint,obj)
+    x = requests.post(api_url + endpoint,json=obj)
     return x
 
 def index (request):
@@ -291,8 +291,6 @@ def teams(request):
     teams = GetAPI("/team").json()["team"]  
     teamsPage = NewPaginator(request,teams,6,"teamsPage")
 
-
-
     if request.method == "POST":
          
         name = request.POST["name"]   
@@ -304,11 +302,10 @@ def teams(request):
             
             userObj.append({"id" : int(item)})                
         
-        obj = {"name" : name, "users" : userObj}        
-        
-        
-        print(obj)
-        
+        obj = {"name" : name, "users" : userObj}    
+
+        print(obj)    
+                
         statuscode = PostAPI("/team",obj).status_code
 
         print(statuscode)

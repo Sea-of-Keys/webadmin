@@ -22,7 +22,7 @@
 	<div class="table-responsive">
 		<div class="table-wrapper">
 			<div class="table-title d-flex">		
-				<a href="#addUserModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tilføj hold</span></a>
+				<a id="addItem" href="#addUserModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tilføj hold</span></a>
 				<a href="#deleteMultipleModal" id="deleteMultiple" class="btn btn-danger m-0" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Slet</span></a>					
 			</div>
 			<table class="table table-striped table-hover">
@@ -93,30 +93,19 @@
 						<input name="name" type="text" class="form-control" required>
 					</div>	
 
-					<div class="form-group">
-						<label>Brugere</label>
-						<input name="users" type="text" class="form-control" required>
-					</div>
 
 					<div id="myMultiselect" class="multiselect mb-3">
 						<div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
-						  <select required name="teams" class="form-select">
+						  <select name="users" style="display: none;" required name="teams" class="form-select">
 							<option></option>
 						  </select>
 						  <div class="overSelect"></div>
 						</div>
-						<div id="mySelectOptions">
 
-
-						  <label for="1"><input type="checkbox" id="1" onchange="checkboxStatusChange()" value="Team 1" /> Team 1</label>   
-						  <label for="2"><input type="checkbox" id="2" onchange="checkboxStatusChange()" value="Team 2" /> Team 2</label>   
-						  <label for="3"><input type="checkbox" id="3" onchange="checkboxStatusChange()" value="Team 3" /> Team 3</label>   
-						  <label for="4"><input type="checkbox" id="4" onchange="checkboxStatusChange()" value="Team 4" /> Team 4</label>   
-						  <label for="5"><input type="checkbox" id="5" onchange="checkboxStatusChange()" value="Team 5" /> Team 5</label>   
-						  <label for="6"><input type="checkbox" id="6" onchange="checkboxStatusChange()" value="Team 6" /> Team 6</label>  
-						  
-						  
-						  
+						<input style="display: none;" type="checkbox" id="multiTemplateInput" name="checkbox" id="checkbox_id" onchange="checkboxStatusChange()" value="value">
+							<label style="display: none;" id="multiTemplateLabel" for="checkbox_id">Test</label>	
+						
+						<div id="mySelectOptions">							
 						</div>
 					</div>
 
