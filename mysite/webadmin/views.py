@@ -115,8 +115,18 @@ def GetTeams(result):
         instance = {"id" : item["id"], "name" : item["name"]}
         teams.append(instance)  
 
-
     return teams
+
+def GetUsers(result):
+     
+    users = list()      
+
+    for item in result:
+        instance = {"id" : item["id"], "name" : item["name"]}
+        users.append(instance)  
+
+    return users
+
 
 
 def SplitIds(itemList):
@@ -331,12 +341,16 @@ def teams(request):
 
     if request.session.get("token") == None:            
             return redirect("/login")   
+    
+  
 
     users = GetAPI("/user").json()
+
     teams = GetAPI("/team").json()["team"]  
     teamsPage = NewPaginator(request,teams,6,"teamsPage")
 
-    teamsPage = usersAmount(teamsPage)
+    teamsPage = usersAmount(teamsPage)    
+    users = GetUsers(users)
 
     if request.method == "POST":
          

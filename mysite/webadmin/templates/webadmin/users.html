@@ -116,7 +116,11 @@
 
 
 							{% for item in teams %}		
-							<label class="m-0" for="{{item.id}}"><input type="checkbox" id="{{item.id}}" onchange="checkboxStatusChange()" value="{{item.id}}" /> {{item.name}}</label>  
+
+							<div class="d-flex">
+								<label class="m-0" for="{{item.id}}"><input type="checkbox" id="{{item.id}}" onchange="checkboxStatusChange()" value="{{item.id}}" /> {{item.name}}</label>  
+							</div>
+						
 							{% endfor %}
 
 					  

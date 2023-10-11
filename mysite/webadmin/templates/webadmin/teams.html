@@ -16,7 +16,7 @@
 <script src="{% static 'multiselect.js' %}"></script>
 <script src="{% static 'user.js' %}"></script>
 <script src="{% static 'search.js' %}"></script>
-<script src="{% static 'multiadd.js' %}"></script>
+<!-- <script src="{% static 'multiadd.js' %}"></script> -->
 <script src="{% static 'multiedit.js' %}"></script>
 <script src="{% static 'multidelete.js' %}"></script>
   
@@ -104,9 +104,23 @@
 
 					<input id="usersToBeAdded" name="users" type="hidden">
 
-						<div id="mySelectOptions">							
-						</div>					
-
+									
+					<div id="myMultiselect" class="multiselect mb-3">
+						<div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+						  <select style="display: none;" required name="users" class="form-select">
+							<option></option>
+						  </select>
+						  <div class="overSelect"></div>
+						</div>												
+						<div id="mySelectOptions">		
+							{% for item in users %}								
+							<div class="d-flex">
+								<label class="m-0" for="{{item.id}}"><input type="checkbox" id="{{item.id}}" onchange="checkboxStatusChange()" value="{{item.id}}" /> {{item.name}}</label>  								
+							</div>
+							{% endfor %}
+						</div>
+						
+					</div>
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">

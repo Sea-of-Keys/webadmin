@@ -71,8 +71,7 @@ document.addEventListener("DOMContentLoaded", function(){
         newDiv.appendChild(inputClone);
         newDiv.appendChild(labelClone);
   
-      })    
-  
+      })  
     }
   
     addItemTop.addEventListener("click", function(){
