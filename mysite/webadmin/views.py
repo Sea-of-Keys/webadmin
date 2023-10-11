@@ -128,7 +128,6 @@ def GetUsers(result):
     return users
 
 
-
 def SplitIds(itemList):
      
     allTeams = itemList.split(",")
@@ -168,7 +167,6 @@ def users (request):
     result = GetAPI("/team").json()["team"]
     teams = GetTeams(result)
  
-    
     if request.method == "POST":
 
         #Hvis man har sat en dato
@@ -284,19 +282,25 @@ def rooms (request):
 
     if request.method == "POST":         
 
-        print(request.POST["name"])
+        print(request.POST["teams"])
 
         obj = {"name" : request.POST["name"]}
         PostAPI("/room", obj)  
 
     rooms = GetAPI("/room").json()["room"]
+
+    result = GetAPI("/team").json()["team"]
+    teams = GetTeams(result)
+
+    print(teams)
     
     roomsPage = NewPaginator(request,rooms,5,"roomsPage")
     
 
     return render(request, "webadmin/rooms.html",{
 
-        "roomsPage" : roomsPage
+        "roomsPage" : roomsPage,
+        "teams" : teams,
 
     })
 
@@ -305,7 +309,6 @@ def deleteroom(request):
 
     deleteMultiple(request,"/room/del/many")
     return HttpResponseRedirect(reverse("rooms"))
-
 
 def editroom(request):     
 
@@ -320,8 +323,7 @@ def editroom(request):
         x = requests.put(url, json=myobj)
         json_response = x.json()   
 
-    return HttpResponseRedirect(reverse("rooms"))
-     
+    return HttpResponseRedirect(reverse("rooms"))     
 
 def room(request,id):
 
@@ -397,8 +399,7 @@ def teams(request):
 
 
 
-def teamsdeleteusers(request):
-
+def teamsaddusers(request):
 
     if request.method == "POST":
 
@@ -412,6 +413,25 @@ def teamsdeleteusers(request):
         url = api_url + "/team/add"
 
         x = requests.post(url,json=obj)
+
+        print(x.status_code)
+
+    return HttpResponseRedirect(reverse("teams"))  
+    
+
+def teamsdeleteusers(request):
+
+    if request.method == "POST":
+
+        id = request.POST["id"]        
+        ids = request.POST["ids"]             
+        ids = SplitIdsNoId(ids)     
+
+        obj = {"team_id" : int(id), "users" : ids}      
+
+        url = api_url + "/team/remove"
+
+        x = requests.delete(url,json=obj)
 
         print(x.status_code)
 

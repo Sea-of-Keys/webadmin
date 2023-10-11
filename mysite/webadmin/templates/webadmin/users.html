@@ -16,7 +16,8 @@
 <script src="{% static 'multiselect.js' %}"></script>
 <script src="{% static 'user.js' %}"></script>
 <script src="{% static 'multidelete.js' %}"></script>
-  
+<script src="{% static 'AddNoneExisting.js' %}"></script>
+<script src="{% static 'DeleteExisting.js' %}"></script>
 
 
 
@@ -26,6 +27,7 @@
 			<div class="table-title d-flex">		
 				<a href="#addUserModal" class="btn btn-success mr-3" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tilføj bruger</span></a>
 				<a href="#deleteMultipleModal" id="deleteMultiple" class="btn btn-danger m-0" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Slet</span></a>					
+				
 			</div>
 			<table class="table table-striped">
 				<thead>
@@ -59,7 +61,8 @@
 						<td>
 							<a data-id="{{item.id}}" href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a data-id="{{item.id}}" href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-
+							<a data-id="{{item.id}}" href="#addUsersModal" class="addNone" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Add users">&#xE147;</i></a>
+							<a data-id="{{item.id}}" href="#deleteUsersModal" class="deleteExisting" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE15C;</i></a>
 							
 						</td>
 					</tr>
@@ -224,6 +227,62 @@
 	</div>
 </div>
 
+
+<div id="addUsersModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="teamsaddusers" method="POST">
+				{% csrf_token %}
+
+				<input name="id" id="add-id" type="hidden">
+				<input name="ids" id="add-ids" type="hidden">
+
+				<div class="modal-header">						
+					<h4 class="modal-title">Tilføj hold</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-2" id="addOptions">
+					</div>
+					<p>Er du sikker på du vil tilføje disse hold?</p>					
+				</div>				
+				<div class="modal-footer">
+					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-success" value="Tilføj">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteUsersModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="teamsdeleteusers" method="POST">
+				{% csrf_token %}
+
+				<input name="id" id="delete-users-id" type="hidden">
+				<input name="ids" id="delete-users-ids" type="hidden">
+
+				<div class="modal-header">						
+					<h4 class="modal-title">Slet hold</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">				
+					
+					<div class="mb-2" id="deleteOptions">
+					</div>
+					<p>Er du sikker på du vil fjerne disse hold?</p>				
+				
+				</div>
+				<div class="modal-footer">
+					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-danger" value="Slet">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
 
 {% endblock %}
