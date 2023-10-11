@@ -18,6 +18,7 @@ urlpatterns = [
     path("team/<int:id>", views.team, name="team"),
     path("deleteteam", views.deleteteam, name="deleteteam"),
     path("editteam", views.editteam, name="editteam"),
+    path("teamsdeleteusers", views.teamsdeleteusers, name="teamsdeleteusers"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
     

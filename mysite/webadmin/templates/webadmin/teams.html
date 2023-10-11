@@ -19,6 +19,7 @@
 <!-- <script src="{% static 'multiadd.js' %}"></script> -->
 <script src="{% static 'multiedit.js' %}"></script>
 <script src="{% static 'multidelete.js' %}"></script>
+<script src="{% static 'AddNoneExisting.js' %}"></script>
   
   
 
@@ -59,7 +60,7 @@
 						<td>
 							<a data-id="{{item.id}}" href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a data-id="{{item.id}}" href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-							<a data-id="{{item.id}}" href="#addUsersModal" class="" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE7FE;</i></a>
+							<a data-id="{{item.id}}" href="#addUsersModal" class="addNone" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Add users">&#xE7FE;</i></a>
 							<a data-id="{{item.id}}" href="#deleteUsersModal" class="" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xef66;</i></a>							
 						</td>
 					</tr>
@@ -216,26 +217,29 @@
 <div id="addUsersModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="deleteteam" method="POST">
+			<form action="teamsdeleteusers" method="POST">
 				{% csrf_token %}
-				<input name="id" id="delete-ids" type="hidden">
+
+				<input name="id" id="add-id" type="hidden">
+				<input name="ids" id="add-ids" type="hidden">
+
 				<div class="modal-header">						
 					<h4 class="modal-title">Tilføj brugere</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">					
-					<p>Er du sikker på du vil tilføje disse brugere?</p>				
-					<p id="all-delete-items"></p>
-				</div>
+				<div class="modal-body">
+					<div class="mb-2" id="addOptions">
+					</div>
+					<p>Er du sikker på du vil tilføje disse brugere?</p>					
+				</div>				
 				<div class="modal-footer">
 					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
-					<input type="submit" class="btn btn-danger" value="Slet">
+					<input type="submit" class="btn btn-success" value="Tilføj">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-
 
 <div id="deleteUsersModal" class="modal fade">
 	<div class="modal-dialog">

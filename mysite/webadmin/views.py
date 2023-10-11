@@ -142,6 +142,21 @@ def SplitIds(itemList):
     return result
 
 
+
+def SplitIdsNoId(itemList):
+     
+    allTeams = itemList.split(",")
+    result = list()       
+
+    for item in allTeams:
+        if(item != ""):
+
+            result.append(int(item))
+
+    return result
+
+
+
 def users (request):    
 
     if request.session.get("token") == None:            
@@ -190,7 +205,7 @@ def users (request):
         
     })
 
-def deleteMultiple(request,endpoint):     
+def deleteMultiple(request,endpoint):  
 
     if request.method == "POST":         
 
@@ -379,6 +394,29 @@ def teams(request):
 
     })
 
+
+
+
+def teamsdeleteusers(request):
+
+
+    if request.method == "POST":
+
+        id = request.POST["id"]        
+        ids = request.POST["ids"]
+        ids = SplitIdsNoId(ids)
+        obj = {"team_id" : int(id), "users" : ids}      
+
+        print(obj)  
+
+        url = api_url + "/team/add"
+
+        x = requests.post(url,json=obj)
+
+        print(x.status_code)
+
+    return HttpResponseRedirect(reverse("teams"))  
+    
 
 def deleteteam(request):
      

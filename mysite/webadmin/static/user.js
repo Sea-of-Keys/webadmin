@@ -7,16 +7,13 @@ var deleteUsers = document.querySelectorAll(".delete")
 var editId = document.getElementById("edit-id");
 var deleteId = document.getElementById("delete-id");
 
-
 function SetEditText(userId){
 
   emails = document.querySelectorAll(".user-email").forEach(function (item){
 
-
     if(item.dataset.id == userId){
       document.getElementById("edit-mail").value = item.innerHTML
     }
-
 
   })
 
