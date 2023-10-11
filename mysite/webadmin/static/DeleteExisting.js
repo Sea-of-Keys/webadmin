@@ -2,8 +2,23 @@ document.addEventListener("DOMContentLoaded", function(){
 
   var url = "https://api.seaofkeys.com"
 
-  var currentId = document.getElementById("delete-users-id");
-  var currentIds = document.getElementById("delete-users-ids");
+  var currentId = document.getElementById("delete-items-id");
+  var currentIds = document.getElementById("delete-items-ids");
+
+  var info = document.getElementById("info");
+
+    
+  function clear(){
+
+    var warnings = document.querySelectorAll(".warning");
+    warnings.forEach(function (item){
+      item.remove();
+    })  
+    var parent = document.getElementById("deleteOptions");
+    parent.innerHTML = "";  
+
+  }
+
 
   function getvals(id, endpoint){
     return fetch(url +  endpoint + id ,
@@ -23,9 +38,20 @@ document.addEventListener("DOMContentLoaded", function(){
   
     function setResponse(response){    
 
-      response = response["team"]["users"]
 
-      console.log(response)
+      console.log(info.dataset.title)
+
+      if(info.dataset.title == "teams")
+      {
+        response = response["team"]["users"]
+      }
+      
+      if(info.dataset.title == "users")
+      {
+        response = response["user"]["teams"]
+      }
+
+
       var parent = document.getElementById("deleteOptions");      
 
       if(response.length > 0){
@@ -84,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function(){
       {
 
         const p = document.createElement("p");
-        p.innerHTML = "Ikke flere brugere";
+        p.innerHTML = "Ikke flere " + info.dataset.items;
         p.classList.add("warning")
         parent.appendChild(p);       
 
@@ -100,21 +126,10 @@ document.addEventListener("DOMContentLoaded", function(){
         clear();
         
         currentId.value = item.dataset.id;
-        getvals(item.dataset.id,"/team/").then(response => setResponse(response));
+        getvals(item.dataset.id,info.dataset.deleteendpoint).then(response => setResponse(response));
         
       })
 
     })
 
 })
-
-function clear(){
-
-  var warnings = document.querySelectorAll(".warning");
-  warnings.forEach(function (item){
-    item.remove();
-  })  
-  var parent = document.getElementById("deleteOptions");
-  parent.innerHTML = "";  
-
-}

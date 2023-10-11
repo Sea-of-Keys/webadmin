@@ -20,6 +20,15 @@
 <script src="{% static 'DeleteExisting.js' %}"></script>
 
 
+<info id="info" data-title="users" data-items="hold" data-deleteendpoint="/user/" data-addendpoint="/user/team/">
+
+
+<input class="multiedit" style="display: none;" type="checkbox" id="multiTemplateInputEdit" name="checkbox" id="checkbox_id" value="value">
+<label style="display: none;" id="multiTemplateLabelEdit" for="checkbox_id">Test</label>	
+
+
+
+</info>
 
 <div class="container-xl">
 	<div class="table-responsive">
@@ -261,8 +270,8 @@
 			<form action="teamsdeleteusers" method="POST">
 				{% csrf_token %}
 
-				<input name="id" id="delete-users-id" type="hidden">
-				<input name="ids" id="delete-users-ids" type="hidden">
+				<input name="id" id="delete-items-id" type="hidden">
+				<input name="ids" id="delete-items-ids" type="hidden">
 
 				<div class="modal-header">						
 					<h4 class="modal-title">Slet hold</h4>
@@ -283,6 +292,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 {% endblock %}

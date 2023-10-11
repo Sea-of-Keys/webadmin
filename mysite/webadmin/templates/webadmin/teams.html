@@ -20,9 +20,16 @@
 <script src="{% static 'multiedit.js' %}"></script>
 <script src="{% static 'multidelete.js' %}"></script>
 <script src="{% static 'AddNoneExisting.js' %}"></script>
-<script src="{% static 'DeleteExisting.js' %}"></script>
+<script src="{% static 'DeleteExisting.js' %}"></script>  
   
-  
+
+<info id="info" data-title="teams" data-items="brugere" data-deleteendpoint="/team/" data-addendpoint="/team/users/">
+
+	
+<input class="multiedit" style="display: none;" type="checkbox" id="multiTemplateInputEdit" name="checkbox" id="checkbox_id" value="value">
+<label style="display: none;" id="multiTemplateLabelEdit" for="checkbox_id">Test</label>	
+
+</info>
 
 <div class="container-xl">
 	<div class="table-responsive">
@@ -150,10 +157,7 @@
 						<input name="name" type="text" id="edit-name" class="form-control" required>
 					</div>
 
-						<input id="editusers" type="hidden" name="editusers">
-	
-						<input class="multiedit" style="display: none;" type="checkbox" id="multiTemplateInputEdit" name="checkbox" id="checkbox_id" value="value">
-						<label style="display: none;" id="multiTemplateLabelEdit" for="checkbox_id">Test</label>		
+						<input id="editusers" type="hidden" name="editusers">				
 						<div id="mySelectOptionsEdit">							
 						</div>
 				</div>				
@@ -248,8 +252,8 @@
 			<form action="teamsdeleteusers" method="POST">
 				{% csrf_token %}
 
-				<input name="id" id="delete-users-id" type="hidden">
-				<input name="ids" id="delete-users-ids" type="hidden">
+				<input name="id" id="delete-items-id" type="hidden">
+				<input name="ids" id="delete-items-ids" type="hidden">
 
 				<div class="modal-header">						
 					<h4 class="modal-title">Slet brugere</h4>
@@ -270,7 +274,6 @@
 		</div>
 	</div>
 </div>
-
 
 
 {% endblock %}

@@ -5,6 +5,18 @@ document.addEventListener("DOMContentLoaded", function(){
   var currentId = document.getElementById("add-id");
   var currentIds = document.getElementById("add-ids");
 
+  var info = document.getElementById("info");
+
+  function clear(){
+
+    var warnings = document.querySelectorAll(".warning");
+    warnings.forEach(function (item){
+      item.remove();
+    })  
+    var parent = document.getElementById("addOptions");
+    parent.innerHTML = "";  
+  }
+  
   function getvals(id, endpoint){
     return fetch(url +  endpoint + id ,
     {
@@ -23,12 +35,21 @@ document.addEventListener("DOMContentLoaded", function(){
   
     function setResponse(response){    
 
-      response = response["users"]
-      var parent = document.getElementById("addOptions");
 
+
+      if(info.dataset.title == "teams"){
+        response = response["users"]
+      }
+      else if(info.dataset.title == "users")
+      {
+        response = response["teams"]
+      }   
+
+
+      var parent = document.getElementById("addOptions");     
       
 
-      if(response.length > 0){
+      if(response.length > 0){        
   
         var multiTemplateInput = document.getElementById("multiTemplateInputEdit");
         var multiTemplateLabel = document.getElementById("multiTemplateLabelEdit");
@@ -84,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function(){
       {
 
         const p = document.createElement("p");
-        p.innerHTML = "Ikke flere brugere";
+        p.innerHTML = "Ikke flere " + info.dataset.items;
         p.classList.add("warning")
         parent.appendChild(p);       
 
@@ -100,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function(){
         clear()
         
         currentId.value = item.dataset.id;
-        getvals(item.dataset.id,"/team/users/").then(response => setResponse(response));
+        getvals(item.dataset.id,info.dataset.addendpoint).then(response => setResponse(response));
         
       })
 
@@ -108,12 +129,3 @@ document.addEventListener("DOMContentLoaded", function(){
 
 })
 
-function clear(){
-
-  var warnings = document.querySelectorAll(".warning");
-  warnings.forEach(function (item){
-    item.remove();
-  })  
-  var parent = document.getElementById("addOptions");
-  parent.innerHTML = "";  
-}
