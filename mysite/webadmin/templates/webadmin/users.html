@@ -19,6 +19,7 @@
   
 
 
+
 <div class="container-xl">
 	<div class="table-responsive">
 		<div class="table-wrapper">
@@ -102,30 +103,23 @@
 					<div class="form-group">
 						<label>Email</label>
 						<input name="email" type="email" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label>Password</label>
-						<input name="password" type="password" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label>Code</label>
-						<input name="code" type="text" class="form-control" required>
-					</div>		
+					</div>				 
 					
 					<div id="myMultiselect" class="multiselect mb-3">
 						<div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
-						  <select required name="teams" class="form-select">
+						  <select style="display: none;" required name="teams" class="form-select">
 							<option></option>
 						  </select>
 						  <div class="overSelect"></div>
 						</div>
 						<div id="mySelectOptions">
-						  <label for="1"><input type="checkbox" id="1" onchange="checkboxStatusChange()" value="Team 1" /> Team 1</label>   
-						  <label for="2"><input type="checkbox" id="2" onchange="checkboxStatusChange()" value="Team 2" /> Team 2</label>   
-						  <label for="3"><input type="checkbox" id="3" onchange="checkboxStatusChange()" value="Team 3" /> Team 3</label>   
-						  <label for="4"><input type="checkbox" id="4" onchange="checkboxStatusChange()" value="Team 4" /> Team 4</label>   
-						  <label for="5"><input type="checkbox" id="5" onchange="checkboxStatusChange()" value="Team 5" /> Team 5</label>   
-						  <label for="6"><input type="checkbox" id="6" onchange="checkboxStatusChange()" value="Team 6" /> Team 6</label>     
+
+
+							{% for item in teams %}		
+							<label class="m-0" for="{{item.id}}"><input type="checkbox" id="{{item.id}}" onchange="checkboxStatusChange()" value="{{item.id}}" /> {{item.name}}</label>  
+							{% endfor %}
+
+					  
 						</div>
 					</div>
 

@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", function (){
-
- 
+document.addEventListener("DOMContentLoaded", function (){ 
 
 //Sets id of what to edit
 var editUsers = document.querySelectorAll(".edit")

@@ -79,24 +79,8 @@ document.addEventListener("DOMContentLoaded", function(){
       
       getvals("","/user").then(response => setResponse(response));   
   
-    })
+    }) 
   
-  selectAll.addEventListener("click", function(item){
-  
-  
-    var isChecked = selectAll.checked;
-    allCheckboxes.forEach(function (item){
-  
-      if(isChecked){
-        item.checked = true;								
-      }
-      else{
-        item.checked = false;				
-      }	
-  
-    })  
-  })	  
-
 })
 
 

@@ -40,6 +40,7 @@
 						</th>
 						<th>ID</th>
 						<th>Name</th>
+						<th>Brugere i alt</th>
 											
 					</tr>
 				</thead>
@@ -54,12 +55,12 @@
 						</td>
 						<td>{{item.id}}</td>
 						<td data-id="{{item.id}}" class="user-name">{{item.name}}</td>
+						<td>{{item.totalUsers}}</td>
 						<td>
 							<a data-id="{{item.id}}" href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a data-id="{{item.id}}" href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-							<a data-id="{{item.id}}" href="#addUser" class="" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE7FE;</i></a>
-							<a data-id="{{item.id}}" href="#deleteUser" class="" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xef66;</i></a>
-							
+							<a data-id="{{item.id}}" href="#addUsersModal" class="" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE7FE;</i></a>
+							<a data-id="{{item.id}}" href="#deleteUsersModal" class="" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xef66;</i></a>							
 						</td>
 					</tr>
                     {% endfor %}
@@ -139,10 +140,6 @@
 						<label style="display: none;" id="multiTemplateLabelEdit" for="checkbox_id">Test</label>		
 						<div id="mySelectOptionsEdit">							
 						</div>
-					
-
-
-
 				</div>				
 					
 				<div class="modal-footer">
@@ -189,6 +186,55 @@
 				</div>
 				<div class="modal-body">					
 					<p>Er du sikker på du vil fjerne disse hold?</p>				
+					<p id="all-delete-items"></p>
+				</div>
+				<div class="modal-footer">
+					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-danger" value="Slet">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="addUsersModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="deleteteam" method="POST">
+				{% csrf_token %}
+				<input name="id" id="delete-ids" type="hidden">
+				<div class="modal-header">						
+					<h4 class="modal-title">Tilføj brugere</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Er du sikker på du vil tilføje disse brugere?</p>				
+					<p id="all-delete-items"></p>
+				</div>
+				<div class="modal-footer">
+					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-danger" value="Slet">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div id="deleteUsersModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="deleteteam" method="POST">
+				{% csrf_token %}
+				<input name="id" id="delete-ids" type="hidden">
+				<div class="modal-header">						
+					<h4 class="modal-title">Slet brugere</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Er du sikker på du vil fjerne disse brugere?</p>				
 					<p id="all-delete-items"></p>
 				</div>
 				<div class="modal-footer">
