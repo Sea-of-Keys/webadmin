@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function(){
     function setResponse(response){    
 
 
-
       if(info.dataset.title == "teams"){
         response = response["users"]
       }
