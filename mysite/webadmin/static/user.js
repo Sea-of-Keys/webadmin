@@ -1,53 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (){
 
-  var selectAll = document.getElementById("selectAll")
-  var allCheckboxes = document.querySelectorAll(".item-checkbox")
-  var deleteMultiple = document.getElementById("deleteMultiple");	
-  var deleteIds = document.getElementById("delete-ids");
-  var allusers = document.getElementById("all-users");
-
-  var toBeDeleted = [];		
-
-  selectAll.addEventListener("click", function(item){
-
-
-    var isChecked = selectAll.checked;
-    allCheckboxes.forEach(function (item){
-
-      if(isChecked){
-        item.checked = true;								
-      }
-      else{
-        item.checked = false;				
-      }	
-
-    })  
-  })	
-
-  deleteMultiple.addEventListener("click", function(){
-
-    toBeDeleted = []
-    allusers.innerHTML = " er valgt";
-    deleteIds.value = "";
-
-    allCheckboxes.forEach(function (item){
-
-      if(item.checked == true){
-
-        toBeDeleted.push(item.dataset.id);
-
-      }
-    })
-
-    toBeDeleted.forEach(function (item){
-
-      deleteIds.value += item + ","
-
-    })
-
-    allusers.innerHTML = toBeDeleted.length + allusers.innerHTML;
-
-  })
+ 
 
 //Sets id of what to edit
 var editUsers = document.querySelectorAll(".edit")
@@ -65,7 +18,6 @@ function SetEditText(userId){
     if(item.dataset.id == userId){
       document.getElementById("edit-mail").value = item.innerHTML
     }
-
 
 
   })

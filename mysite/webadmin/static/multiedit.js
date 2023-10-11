@@ -90,9 +90,9 @@ document.addEventListener("DOMContentLoaded", function(){
         newDiv.appendChild(inputClone);
         newDiv.appendChild(labelClone);
 
-        index++;        
+        index++;       
   
-      })    
+      })
   
     }
 

@@ -18,6 +18,8 @@
 <script src="{% static 'search.js' %}"></script>
 <script src="{% static 'multiadd.js' %}"></script>
 <script src="{% static 'multiedit.js' %}"></script>
+<script src="{% static 'multidelete.js' %}"></script>
+  
   
 
 <div class="container-xl">
@@ -187,7 +189,7 @@
 				</div>
 				<div class="modal-body">					
 					<p>Er du sikker på du vil fjerne disse hold?</p>				
-					<p id="all-users"></p>
+					<p id="all-delete-items"></p>
 				</div>
 				<div class="modal-footer">
 					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
