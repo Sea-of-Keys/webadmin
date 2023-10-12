@@ -287,10 +287,7 @@ def rooms (request):
         obj = {"name" : request.POST["name"]}
         PostAPI("/room", obj)  
 
-    rooms = GetAPI("/room").json()["room"]
-
-    result = GetAPI("/team").json()["team"]
-    teams = GetTeams(result)
+    rooms = GetAPI("/room").json()["room"]  
 
     print(teams)
     
@@ -299,8 +296,7 @@ def rooms (request):
 
     return render(request, "webadmin/rooms.html",{
 
-        "roomsPage" : roomsPage,
-        "teams" : teams,
+        "roomsPage" : roomsPage,        
 
     })
 
@@ -357,17 +353,16 @@ def room(request,id):
 def teams(request):
 
     if request.session.get("token") == None:            
-            return redirect("/login")   
-    
-  
+            return redirect("/login") 
 
     users = GetAPI("/user").json()
+    users = GetUsers(users)
 
     teams = GetAPI("/team").json()["team"]  
     teamsPage = NewPaginator(request,teams,6,"teamsPage")
 
     teamsPage = usersAmount(teamsPage)    
-    users = GetUsers(users)
+    
 
     if request.method == "POST":
          
@@ -395,9 +390,6 @@ def teams(request):
         "users": users,
 
     })
-
-
-
 
 def teamsaddusers(request):
 
@@ -480,6 +472,23 @@ def team(request,id):
         "users" : users,       
 
     })
+
+def permissions(request):
+
+
+    rooms = GetAPI("/room").json()["room"]
+    users = GetAPI("/user").json()   
+    users = GetUsers(users)            
+
+
+    return render(request, "webadmin/permissions.html",{
+
+        "users" : users,
+        "rooms" : rooms,
+
+
+
+     })
 
 
 def login(request):    
