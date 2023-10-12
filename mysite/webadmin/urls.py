@@ -22,6 +22,7 @@ urlpatterns = [
     #User
     path("deleteuser", views.deleteuser, name="deleteuser"),
     path("edituser", views.edituser, name="edituser"),
+    path("usersdeleteteam", views.usersdeleteteam, name="usersdeleteteam"),
     #Room
     path("editroom", views.editroom, name="editroom"),    
     path("deleteroom", views.deleteroom, name="deleteroom"),  

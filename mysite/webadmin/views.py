@@ -211,6 +211,22 @@ def users (request):
         
     })
 
+
+def usersdeleteteam(request):
+
+    if request.method == "POST":
+
+        userId = request.POST["id"]
+        teamIds = request.POST["ids"]
+
+        teamsFormatted = SplitIdsNoId(teamIds)
+
+        myobj = {"user_id" : int(userId), 'teams': teamsFormatted}   
+        x = requests.delete(api_url + "/team/user",json=myobj)
+
+    return HttpResponseRedirect(reverse("users"))
+
+
 def deleteMultiple(request,endpoint):  
 
     if request.method == "POST":         
@@ -251,6 +267,7 @@ def edituser(request):
         json_response = x.json()   
 
     return HttpResponseRedirect(reverse("users"))    
+
           
 
 def user(request,id):
@@ -487,13 +504,10 @@ def permissions(request):
     rooms = GetAPI("/room").json()["room"]
     users = GetAPI("/user").json()   
     users = GetUsers(users)           
-    teams = GetAPI("/team").json()["team"]   
-    
+    teams = GetAPI("/team").json()["team"] 
     
 
     if request.method == "POST":
-         
-
 
         form = NewPermission(request.POST)
 
@@ -505,15 +519,7 @@ def permissions(request):
             newTeams = form.cleaned_data["teams"]
             startDate = form.cleaned_data["startDate"]
             endDate = form.cleaned_data["endDate"]
-
-            print(name)
-            print(newUsers)
-            print(newRooms)
-            print(days)
-            print(newTeams)   
-            print(startDate)
-            print(endDate)                  
-       
+            
 
     return render(request, "webadmin/permissions.html",{
 
