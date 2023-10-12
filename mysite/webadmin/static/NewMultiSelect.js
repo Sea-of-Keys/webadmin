@@ -6,7 +6,7 @@ class MultiSelect {
         this.elementName = elementName;    
     } 
 
-    Select()
+    Init()
     {        
         var resultElement = document.getElementById(this.elementName);  
         var itemInputs = [];             
@@ -16,8 +16,7 @@ class MultiSelect {
                         
             if(item.dataset.multiselect == elementName)            
             {
-                itemInputs.push(item);               
-            
+                itemInputs.push(item); 
             }
         })       
 
@@ -48,7 +47,7 @@ class MultiSelect {
         items.forEach(function (item){            
 
             var multiSelect = new MultiSelect(item.dataset.multiselect);           
-            multiSelect.Select();  
+            multiSelect.Init();  
 
         })
     }

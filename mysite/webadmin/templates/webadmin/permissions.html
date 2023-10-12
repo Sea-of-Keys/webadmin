@@ -99,7 +99,7 @@
 <div id="addUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="teams" method="POST">
+			<form action="permissions" method="POST">
 				{% csrf_token %}
 
 				<div class="modal-header">						
@@ -111,25 +111,67 @@
 					<div class="form-group">
 						<label>Name</label>
 						<input name="name" type="text" class="form-control" required>
-					</div>	
-
+					</div>
 
 					<input id="usersToBeAdded" name="users" type="hidden">		
-					<input id="roomsToBeAdded" name="rooms" type="hidden">		
+					<input id="roomsToBeAdded" name="rooms" type="hidden">	
+					<input id="daysOfTheWeek" name="days" type="hidden">	
+					<input id="teamsToBeAdded" name="teams" type="hidden">
 
 					<div>Tilføj brugere</div>				
 						
 					{% for item in users %}								
 					<div class="d-flex">
-						<label class="m-0" for="{{item.id}}"><input data-multiselect="usersToBeAdded" class="usersToBeAdded multiSelectItem" type="checkbox" id="{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+						<label class="m-0" for="user{{item.id}}"><input data-multiselect="usersToBeAdded" class="usersToBeAdded multiSelectItem" type="checkbox" id="user{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
 					{% endfor %}	
 					<div>Tilføj lokaler</div>
 					{% for item in rooms %}								
 					<div class="d-flex">
-						<label class="m-0" for="{{item.id}}"><input data-multiselect="roomsToBeAdded" class="roomsToBeAdded multiSelectItem" type="checkbox" id="{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+						<label class="m-0" for="room{{item.id}}"><input data-multiselect="roomsToBeAdded" class="roomsToBeAdded multiSelectItem" type="checkbox" id="room{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
-					{% endfor %}						
+					{% endfor %}	
+					<div>Tilføj hold</div>
+					{% for item in teams %}								
+					<div class="d-flex">
+						<label class="m-0" for="team{{item.id}}"><input data-multiselect="teamsToBeAdded" class="teamsToBeAdded multiSelectItem" type="checkbox" id="team{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+					</div>
+					{% endfor %}	
+					
+					<!--Date-->
+					<label for="exampleFormControlInput1" class="form-label">Tidspunkt fra</label>
+					<input style="width: 300px;" type="date" class="form-control" name="startDate">    
+					<label for="exampleFormControlInput1" class="form-label">Til</label>
+					<input style="width: 300px;" type="date" class="form-control" name="endDate">
+					<!--Weekdays-->
+
+					<div class="d-flex">
+						<label class="m-0" for="monday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="monday" value="0" /> Mandag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="tuesday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="tuesday" value="1" /> Tirsdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="wednesday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="wednesday" value="2" /> Onsdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="thursday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="thursday" value="3" /> Torsdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="friday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="friday" value="4" /> Fredag</label>  								
+					</div>
+					<div class="d-flex">
+						<label class="m-0" for="saturday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="saturday" value="5" /> Lørdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="sunday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="sunday" value="6" /> Søndag</label>  								
+					</div>
+
 						
 					
 				</div>

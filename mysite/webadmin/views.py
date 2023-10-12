@@ -19,6 +19,14 @@ class NewUser(forms.Form):
     email = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
 
+class NewPermission(forms.Form):
+    name = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+    users = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+    rooms = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+    teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+    days = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+    startDate = forms.DateField()
+    endDate = forms.DateField()
 
 class DeleteUser(forms.Form):
      id = forms.CharField(label="id", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
@@ -478,13 +486,40 @@ def permissions(request):
 
     rooms = GetAPI("/room").json()["room"]
     users = GetAPI("/user").json()   
-    users = GetUsers(users)            
+    users = GetUsers(users)           
+    teams = GetAPI("/team").json()["team"]   
+    
+    
 
+    if request.method == "POST":
+         
+
+
+        form = NewPermission(request.POST)
+
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            newUsers = form.cleaned_data["users"]
+            newRooms = form.cleaned_data["rooms"]
+            days = form.cleaned_data["days"]
+            newTeams = form.cleaned_data["teams"]
+            startDate = form.cleaned_data["startDate"]
+            endDate = form.cleaned_data["endDate"]
+
+            print(name)
+            print(newUsers)
+            print(newRooms)
+            print(days)
+            print(newTeams)   
+            print(startDate)
+            print(endDate)                  
+       
 
     return render(request, "webadmin/permissions.html",{
 
         "users" : users,
         "rooms" : rooms,
+        "teams": teams
 
 
 
