@@ -212,7 +212,31 @@ def users (request):
     })
 
 
+def addOrDeleteTeam(add, userId, teamIds):
+     
+    teamsFormatted = SplitIdsNoId(teamIds)
+
+    myobj = {"user_id" : int(userId), 'teams': teamsFormatted}  
+
+    if add is True:
+        x = requests.post(api_url + "/team/user",json=myobj)
+    else:
+        x = requests.delete(api_url + "/team/user",json=myobj)
+         
+
+
 def usersdeleteteam(request):
+
+    if request.method == "POST":
+
+        userId = request.POST["id"]
+        teamIds = request.POST["ids"]
+
+        addOrDeleteTeam(False,userId,teamIds)
+
+    return HttpResponseRedirect(reverse("users"))
+
+def useraddteam(request):
 
     if request.method == "POST":
 
@@ -225,6 +249,10 @@ def usersdeleteteam(request):
         x = requests.delete(api_url + "/team/user",json=myobj)
 
     return HttpResponseRedirect(reverse("users"))
+
+
+
+
 
 
 def deleteMultiple(request,endpoint):  
