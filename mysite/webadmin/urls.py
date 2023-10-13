@@ -34,6 +34,7 @@ urlpatterns = [
     path("teamsdeleteusers", views.teamsdeleteusers, name="teamsdeleteusers"),   
     #Permission
     path("deletepermission", views.deletepermission, name="deletepermission"),
+    path("editpermission", views.editpermission, name="editpermission"),
 
 
     #Login/Logout

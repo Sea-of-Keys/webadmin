@@ -17,7 +17,7 @@
 <script src="{% static 'user.js' %}"></script>
 <!-- <script src="{% static 'search.js' %}"></script> -->
 <!-- <script src="{% static 'multiadd.js' %}"></script> -->
-<script src="{% static 'multiedit.js' %}"></script>
+<script src="{% static 'EditPermission.js' %}"></script>
 <script src="{% static 'multidelete.js' %}"></script>
 <script src="{% static 'AddNoneExisting.js' %}"></script>
 <script src="{% static 'DeleteExisting.js' %}"></script>  
@@ -53,6 +53,8 @@
 						<th>Bruger ID</th>
 						<th>Start dato</th>
 						<th>Slut dato</th>
+						<th>Start tid </th>
+						<th>Slut tid</th>
 						<th>Ugedage</th>
 
 											
@@ -73,6 +75,8 @@
 						<td>{{item.user_id}}</td>
 						<td>{{item.start_date}}</td>
 						<td>{{item.end_date}}</td>
+						<td>{{item.start_time}}</td>
+						<td>{{item.end_time}}</td>
 						<td>		
 						{% for day in item.weekdays  %}
 
@@ -82,9 +86,7 @@
 						</td>		
 						<td>
 							<a data-id="{{item.id}}" href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a data-id="{{item.id}}" href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-							<a data-id="{{item.id}}" href="#addUsersModal" class="addNone" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Add users">&#xE7FE;</i></a>
-							<a data-id="{{item.id}}" href="#deleteUsersModal" class="deleteExisting" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xef66;</i></a>							
+							<a data-id="{{item.id}}" href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE872;</i></a>												
 						</td>
 					</tr>
                     {% endfor %}
@@ -105,10 +107,6 @@
 		</div>
 	</div>        
 </div>
-
-
-
-
 
 
 
@@ -149,17 +147,12 @@
 				
 					<div style="display:none" id="user-option">
 
-
-						
-					<div>Tilføj brugere</div>		
+					<div>Tilføj brugere</div>	
 						
 					{% for item in users %}								
 					<div class="d-flex">
 						<label class="m-0" for="user{{item.id}}"><input name="user-option" data-multiselect="usersToBeAdded" class="usersToBeAdded multiSelectItem" type="radio" id="user{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
-					</div>
-
-
-					
+					</div>					
 					{% endfor %}	
 
 					</div>
@@ -187,30 +180,30 @@
 					<!--Weekdays-->
 
 					<div class="d-flex">
-						<label class="m-0" for="monday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="monday" value="0" /> Mandag</label>  								
+						<label class="m-0" for="monday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="monday" value="1" /> Mandag</label>  								
 					</div>
 
 					<div class="d-flex">
-						<label class="m-0" for="tuesday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="tuesday" value="1" /> Tirsdag</label>  								
+						<label class="m-0" for="tuesday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="tuesday" value="2" /> Tirsdag</label>  								
 					</div>
 
 					<div class="d-flex">
-						<label class="m-0" for="wednesday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="wednesday" value="2" /> Onsdag</label>  								
+						<label class="m-0" for="wednesday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="wednesday" value="3" /> Onsdag</label>  								
 					</div>
 
 					<div class="d-flex">
-						<label class="m-0" for="thursday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="thursday" value="3" /> Torsdag</label>  								
+						<label class="m-0" for="thursday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="thursday" value="4" /> Torsdag</label>  								
 					</div>
 
 					<div class="d-flex">
-						<label class="m-0" for="friday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="friday" value="4" /> Fredag</label>  								
+						<label class="m-0" for="friday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="friday" value="5" /> Fredag</label>  								
 					</div>
 					<div class="d-flex">
-						<label class="m-0" for="saturday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="saturday" value="5" /> Lørdag</label>  								
+						<label class="m-0" for="saturday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="saturday" value="6" /> Lørdag</label>  								
 					</div>
 
 					<div class="d-flex">
-						<label class="m-0" for="sunday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="sunday" value="6" /> Søndag</label>  								
+						<label class="m-0" for="sunday"><input data-multiselect="daysOfTheWeek" class="daysOfTheWeek multiSelectItem" type="checkbox" id="sunday" value="7" /> Søndag</label>  								
 					</div>
 
 						
@@ -254,40 +247,111 @@
 
 
 
-
-
-
 	
 	
 </script>
 
 
+
+
 <!-- Edit Modal HTML -->
 <div id="editUserModal" class="modal fade">
+
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="editteam" method="post">
-
+			<form action="editpermission" method="POST">
 				{% csrf_token %}
+
 				<div class="modal-header">						
-					<h4 class="modal-title">Rediger hold</h4>
+					<h4 class="modal-title">Tilføj tilladelse</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">	
-					<input name="id" type="hidden" id="edit-id" value="test">
-					<div class="form-group">
-						<label>Name</label>
-						<input name="name" type="text" id="edit-name" class="form-control" required>
+
+					<input id="permissionToBeEdited" name="id" value="" type="hidden">
+					<input id="usersToBeEdited" name="users" value="." type="hidden">		
+					<input id="roomsToBeEdited" name="rooms" value="." type="hidden">	
+					<input id="daysOfTheWeekEdited" name="days" value="." type="hidden">	
+					<input id="teamsToBeEdited" name="teams" value="." type="hidden">						
+					
+					<div style="display:block" id="team-option">
+						
+					<div>Tilføj hold</div>
+					{% for item in teams %}								
+					<div class="d-flex">
+						<label class="m-0" for="team{{item.id}}"><input name="team-option" data-multiselect="teamsToBeEdited" class="teamsToBeEdited multiSelectItem" type="radio" id="team{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+					</div>
+					{% endfor %}
+
+				</div>					
+				
+					<div style="display:block" id="user-option">
+
+					<div>Tilføj brugere</div>	
+						
+					{% for item in users %}								
+					<div class="d-flex">
+						<label class="m-0" for="user{{item.id}}"><input name="user-option" data-multiselect="usersToBeEdited" class="usersToBeEdited multiSelectItem" type="radio" id="user{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+					</div>					
+					{% endfor %}	
+
+					</div>
+					<div>Tilføj lokaler</div>
+					{% for item in rooms %}								
+					<div class="d-flex">
+						<label class="m-0" for="room{{item.id}}"><input name="room-option" data-multiselect="roomsToBeEdited" class="roomsToBeEdited multiSelectItem" type="radio" id="room{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+					</div>
+					{% endfor %}	
+					
+					
+					<!--Date-->
+					<label for="startDate" class="form-label">Tidspunkt fra</label>
+					<input style="width: 300px;" type="date" id="startDateEdit" class="form-control" name="startDate">    
+					<label for="endDate" class="form-label">Til</label>
+					<input style="width: 300px;" type="date" id="endDateEdit" class="form-control" name="endDate">
+
+
+					<!--Time-->
+					<label for="startTime">Start tid:</label>
+					<input type="time" id="startTimeEdit" name="startTime" min="00:00" max="23:59" required />
+					<label for="endTime">Slut tid</label>
+					<input type="time" id="endTimeEdit" name="endTime" min="00:00" max="23:59" required />
+
+					<!--Weekdays-->
+
+					<div class="d-flex">
+						<label class="m-0" for="mondayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="mondayEdit" value="1" /> Mandag</label>  								
 					</div>
 
-						<input id="editusers" type="hidden" name="editusers">				
-						<div id="mySelectOptionsEdit">							
-						</div>
-				</div>				
+					<div class="d-flex">
+						<label class="m-0" for="tuesdayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="tuesdayEdit" value="2" /> Tirsdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="wednesdayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="wednesdayEdit" value="3" /> Onsdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="thursdayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="thursdayEdit" value="4" /> Torsdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="fridayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="fridayEdit" value="5" /> Fredag</label>  								
+					</div>
+					<div class="d-flex">
+						<label class="m-0" for="saturdayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="saturdayEdit" value="6" /> Lørdag</label>  								
+					</div>
+
+					<div class="d-flex">
+						<label class="m-0" for="sundayEdit"><input data-multiselect="daysOfTheWeekEdited" class="daysOfTheWeekEdited multiSelectItem" type="checkbox" id="sundayEdit" value="7" /> Søndag</label>  								
+					</div>
+
+						
 					
+				</div>
 				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-info" value="Save">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
+					<input type="submit" class="btn btn-success" value="Tilføj">
 				</div>
 			</form>
 		</div>
@@ -341,62 +405,6 @@
 </div>
 
 
-
-<div id="addUsersModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="teamsaddusers" method="POST">
-				{% csrf_token %}
-
-				<input name="id" id="add-id" type="hidden">
-				<input name="ids" id="add-ids" type="hidden">
-
-				<div class="modal-header">						
-					<h4 class="modal-title">Tilføj brugere</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					<div class="mb-2" id="addOptions">
-					</div>
-					<p>Er du sikker på du vil tilføje disse brugere?</p>					
-				</div>				
-				<div class="modal-footer">
-					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
-					<input type="submit" class="btn btn-success" value="Tilføj">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<div id="deleteUsersModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="teamsdeleteusers" method="POST">
-				{% csrf_token %}
-
-				<input name="id" id="delete-items-id" type="hidden">
-				<input name="ids" id="delete-items-ids" type="hidden">
-
-				<div class="modal-header">						
-					<h4 class="modal-title">Slet brugere</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">				
-					
-					<div class="mb-2" id="deleteOptions">
-					</div>
-					<p>Er du sikker på du vil fjerne disse brugere?</p>				
-				
-				</div>
-				<div class="modal-footer">
-					<input id="deleteMultipleCancel" type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
-					<input type="submit" class="btn btn-danger" value="Slet">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
 
 
 {% endblock %}

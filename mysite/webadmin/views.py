@@ -554,7 +554,6 @@ def permissions(request):
     users = GetUsers(users)           
     teams = GetAPI("/team").json()["team"]
     permissions = GetAPI("/permission").json()["permissions"]    
-
     permissionsPage = NewPaginator(request,permissions, 10,"permissionsPage")
 
     if request.method == "POST":
@@ -609,6 +608,50 @@ def deletepermission(request):
      
     deleteMultiple(request,"/permission/del")  
     return HttpResponseRedirect(reverse("permissions"))   
+
+
+def editpermission(request):
+
+ if request.method == "POST":
+
+        form = NewPermission(request.POST)        
+
+        if form.is_valid():            
+          
+            newUser = ReplaceCommas(form.cleaned_data["users"])
+            newRoom = ReplaceCommas(form.cleaned_data["rooms"])
+            days =  ReplaceCommas(form.cleaned_data["days"])
+            newTeam = ReplaceCommas(form.cleaned_data["teams"])
+            startDate = form.cleaned_data["startDate"]
+            endDate = form.cleaned_data["endDate"]     
+            startTime = form.cleaned_data["startTime"] + ":00"
+            endTime = form.cleaned_data["endTime"] + ":00"      
+
+
+            id = request.POST["id"];  
+
+            days = SplitIds(days)
+            startDate = str(startDate)
+            endDate = str(endDate)
+          
+            obj = {
+                "id" : int(id),
+                "room_id": newRoom,
+                "team_id": newTeam,
+                "user_id": newUser,
+                "start_date": startDate,
+                "end_date": endDate,
+                "start_time": startTime,
+                "end_time": endTime,
+                "weekdays": days
+            }
+
+            print(obj)
+
+            x = requests.put(api_url + "/permission/",json=obj) 
+
+        return HttpResponseRedirect(reverse("permissions")) 
+
 
 def login(request):    
 
