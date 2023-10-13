@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", function(){
   var sundayEdit = document.getElementById("sundayEdit");
 
 
+  
+  var usersTotal = document.getElementById("usersToBeEdited");
+  var roomsTotal = document.getElementById("roomsToBeEdited");
+  var daysTotal = document.getElementById("daysOfTheWeekEdited");
+  var teamsTotal = document.getElementById("teamsToBeEdited");
 
 
   EditItems.push(mondayEdit,tuesdayEdit,wednesdayEdit,thursdayEdit,fridayEdit,saturdayEdit,sundayEdit)  
@@ -65,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if(item.value == roomId)
         {
           item.checked = true;
+          roomsTotal.value = roomId;
         }  
         else{
           item.checked = false;
@@ -76,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if(item.value == teamId)
         {
             item.checked = true;
+            teamsTotal.value = teamId;
         }
         else{
           item.checked = false;
@@ -87,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         if(item.value == userId){
           item.checked = true;
+          usersTotal.value = userId;
         }
         else{
           item.checked = false;
@@ -106,24 +114,38 @@ document.addEventListener("DOMContentLoaded", function(){
         switch (weekday.name) {
           case "Monday":
             mondayEdit.checked = true;
+            
+            daysTotal.value += weekday.id + ","
             break;
           case "Tuesday":       
             tuesdayEdit.checked = true;
+            
+            daysTotal.value += weekday.id + ","
             break;
           case "Wednesday":
             wednesdayEdit.checked = true;
+            
+            daysTotal.value += weekday.id + ","
             break;
           case "Thursday":
             thursdayEdit.checked = true;
+            
+            daysTotal.value += weekday.id + ","
             break;
           case "Friday":
             fridayEdit.checked = true;
+            
+            daysTotal.value += weekday.id + ","
             break;
           case "Saturday":
             saturdayEdit.checked = true;
+            
+            daysTotal.value += weekday.id + ","
             break;
           case "Sunday":
             sundayEdit.checked = true;
+           
+            daysTotal.value += weekday.id + ","
             break;
         }
       })     
@@ -137,17 +159,20 @@ document.addEventListener("DOMContentLoaded", function(){
 
         permissionToBeEdited.value = item.dataset.id
 
-        clear()   
+        clear();
   
         getvals(item.dataset.id,"/permission/").then(response => setResponse(response));           
   
       })
   
-    })	  
-
-
+    })
 
     function clear(){
+
+      usersTotal.value = ".";
+      roomsTotal.value = ".";
+      daysTotal.value = "";
+      teamsTotal.value = ".";    
 
       roomsInput.forEach(function (item){
 

@@ -137,8 +137,10 @@ def GetUsers(result):
     return users
 
 
-def SplitIds(itemList):
-     
+def SplitIds(itemList):       
+
+    
+
     allTeams = itemList.split(",")
     result = list()       
 
@@ -148,6 +150,8 @@ def SplitIds(itemList):
             result.append({"id" : int(item)})
 
     return result
+
+
 
 
 
@@ -569,9 +573,14 @@ def permissions(request):
             startDate = form.cleaned_data["startDate"]
             endDate = form.cleaned_data["endDate"]     
             startTime = form.cleaned_data["startTime"] + ":00"
-            endTime = form.cleaned_data["endTime"] + ":00"        
+            endTime = form.cleaned_data["endTime"] + ":00"                  
 
-            days = SplitIds(days)
+            if len(str(days)) != 1:    
+                days = SplitIds(days)
+
+            else :
+                days = [{"id" : days}]
+
             startDate = str(startDate)
             endDate = str(endDate)
           
@@ -625,12 +634,18 @@ def editpermission(request):
             startDate = form.cleaned_data["startDate"]
             endDate = form.cleaned_data["endDate"]     
             startTime = form.cleaned_data["startTime"] + ":00"
-            endTime = form.cleaned_data["endTime"] + ":00"      
+            endTime = form.cleaned_data["endTime"] + ":00"     
 
 
             id = request.POST["id"];  
 
-            days = SplitIds(days)
+            if len(str(days)) != 1:    
+                days = SplitIds(days)
+
+            else:
+                days = [{"id" : days}]
+
+
             startDate = str(startDate)
             endDate = str(endDate)
           
