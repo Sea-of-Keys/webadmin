@@ -110,6 +110,8 @@
 
 
 
+
+
 <!-- Edit Modal HTML -->
 <div id="addUserModal" class="modal fade">
 	<div class="modal-dialog">
@@ -122,30 +124,52 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">	
-					<input id="usersToBeAdded" name="users" type="hidden">		
-					<input id="roomsToBeAdded" name="rooms" type="hidden">	
-					<input id="daysOfTheWeek" name="days" type="hidden">	
-					<input id="teamsToBeAdded" name="teams" type="hidden">
+					<input id="usersToBeAdded" name="users" value="." type="hidden">		
+					<input id="roomsToBeAdded" name="rooms" value="." type="hidden">	
+					<input id="daysOfTheWeek" name="days" value="." type="hidden">	
+					<input id="teamsToBeAdded" name="teams" value="." type="hidden">
+					<div>
+						Tilladelsen gælder:
+					</div>
+					<label class="m-0" for="teamSelect"><input name="teamOrUser" type="radio" id="teamSelect" value="team" />Hold</label>
+					<label class="m-0" for="userSelect"><input name="teamOrUser" type="radio" id="userSelect" value="user" />User</label>
+					
+					
+					<div style="display:none" id="team-option">
+						
+					<div>Tilføj hold</div>
+					{% for item in teams %}								
+					<div class="d-flex">
+						<label class="m-0" for="team{{item.id}}"><input name="team-option" data-multiselect="teamsToBeAdded" class="teamsToBeAdded multiSelectItem" type="radio" id="team{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+					</div>
+					{% endfor %}
 
-					<div>Tilføj brugere</div>				
+				</div>
+					
+				
+					<div style="display:none" id="user-option">
+
+
+						
+					<div>Tilføj brugere</div>		
 						
 					{% for item in users %}								
 					<div class="d-flex">
 						<label class="m-0" for="user{{item.id}}"><input name="user-option" data-multiselect="usersToBeAdded" class="usersToBeAdded multiSelectItem" type="radio" id="user{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
+
+
+					
 					{% endfor %}	
+
+					</div>
 					<div>Tilføj lokaler</div>
 					{% for item in rooms %}								
 					<div class="d-flex">
 						<label class="m-0" for="room{{item.id}}"><input name="room-option" data-multiselect="roomsToBeAdded" class="roomsToBeAdded multiSelectItem" type="radio" id="room{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
 					{% endfor %}	
-					<div>Tilføj hold</div>
-					{% for item in teams %}								
-					<div class="d-flex">
-						<label class="m-0" for="team{{item.id}}"><input name="team-option" data-multiselect="teamsToBeAdded" class="teamsToBeAdded multiSelectItem" type="radio" id="team{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
-					</div>
-					{% endfor %}	
+					
 					
 					<!--Date-->
 					<label for="exampleFormControlInput1" class="form-label">Tidspunkt fra</label>
@@ -155,10 +179,10 @@
 
 
 					<!--Time-->
-					<label for="timeStart">Start tid:</label>
-					<input type="time" id="timeStart" name="timeStart" min="00:00" max="23:59" required />
-					<label for="timeEnd">Slut tid</label>
-					<input type="time" id="timeEnd" name="timeEnd" min="00:00" max="23:59" required />
+					<label for="startTime">Start tid:</label>
+					<input type="time" id="startTime" name="startTime" min="00:00" max="23:59" required />
+					<label for="endTime">Slut tid</label>
+					<input type="time" id="endTime" name="endTime" min="00:00" max="23:59" required />
 
 					<!--Weekdays-->
 
@@ -202,6 +226,35 @@
 </div>
 
 <script>
+
+
+	var teamOption = document.getElementById("team-option");
+	var userOption = document.getElementById("user-option");
+
+	var teamSelect = document.getElementById("teamSelect");
+	var userSelect = document.getElementById("userSelect");
+
+
+	var usersToBeAdded = document.getElementById("usersToBeAdded");
+	var teamsToBeAdded = document.getElementById("teamsToBeAdded")
+
+	teamSelect.addEventListener("change", function(){
+
+		usersToBeAdded.value = ".";
+		teamOption.style.display = "block";
+		userOption.style.display = "none";
+
+	})
+
+	userSelect.addEventListener("change", function (){
+		teamsToBeAdded.value = ".";
+		userOption.style.display = "block";
+		teamOption.style.display = "none";
+	})
+
+
+
+
 
 
 	

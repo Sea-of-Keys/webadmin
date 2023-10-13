@@ -26,6 +26,8 @@ class NewPermission(forms.Form):
     days = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     startDate = forms.DateField()
     endDate = forms.DateField()
+    startTime = forms.CharField()
+    endTime = forms.CharField()
 
 class DeleteUser(forms.Form):
      id = forms.CharField(label="id", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
@@ -533,6 +535,15 @@ def ReplaceCommas(item):
          
         item = item[:-1] + ""
 
+
+    if item == ".":
+
+        item = None 
+    
+    elif "," not in item:
+         
+        item = int(item)   
+
     return item  
 
 def permissions(request):
@@ -543,48 +554,54 @@ def permissions(request):
     users = GetUsers(users)           
     teams = GetAPI("/team").json()["team"] 
 
-
-    
-
     permissions = GetAPI("/permission").json()["permissions"]
 
-   
-
-
- 
+    print("he eeer")
 
     permissionsPage = NewPaginator(request,permissions, 10,"permissionsPage")
-
-
 
     if request.method == "POST":
 
         form = NewPermission(request.POST)
 
+        print("her")
+
         if form.is_valid():
+
+            print("og her")
           
             newUser = ReplaceCommas(form.cleaned_data["users"])
             newRoom = ReplaceCommas(form.cleaned_data["rooms"])
             days =  ReplaceCommas(form.cleaned_data["days"])
             newTeam = ReplaceCommas(form.cleaned_data["teams"])
             startDate = form.cleaned_data["startDate"]
-            endDate = form.cleaned_data["endDate"]            
+            endDate = form.cleaned_data["endDate"]     
+            startTime = form.cleaned_data["startTime"] + ":00"
+            endTime = form.cleaned_data["endTime"] + ":00"        
 
             days = SplitIds(days)
+
+            startDate = str(startDate)
+            endDate = str(endDate)           
+
           
             obj = {
                 "room_id": newRoom,
                 "team_id": newTeam,
                 "user_id": newUser,
-                "start_date": "2023-10-12T15:11:41.175+02:00",
-                "end_date": "2023-10-12T15:11:41.175+02:00",
-                "start_time": "2023-10-12T15:11:41.175+02:00",
-                "end_time": "2023-10-12T15:11:41.175+02:00",
+                "start_date": startDate,
+                "end_date": endDate,
+                "start_time": startTime,
+                "end_time": endTime,
                 "weekdays": days
             }
 
-
             print(obj)
+
+            x = PostAPI("/permission", obj)
+
+           
+
 
             # print(newUsers)
             # print(newRooms)
@@ -593,9 +610,8 @@ def permissions(request):
             # print(startDate)
             # print(endDate)
 
-
-
-
+        return HttpResponseRedirect(reverse("permissions"))
+        
 
             
 
