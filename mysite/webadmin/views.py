@@ -19,8 +19,7 @@ class NewUser(forms.Form):
     email = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
 
-class NewPermission(forms.Form):
-    name = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
+class NewPermission(forms.Form):    
     users = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     rooms = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     teams = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
@@ -220,9 +219,10 @@ def addOrDeleteTeam(add, userId, teamIds):
 
     if add is True:
         x = requests.post(api_url + "/team/user",json=myobj)
+
+        print(myobj)
     else:
-        x = requests.delete(api_url + "/team/user",json=myobj)
-         
+        x = requests.delete(api_url + "/team/user",json=myobj)        
 
 
 def usersdeleteteam(request):
@@ -234,19 +234,18 @@ def usersdeleteteam(request):
 
         addOrDeleteTeam(False,userId,teamIds)
 
+
     return HttpResponseRedirect(reverse("users"))
 
-def useraddteam(request):
+def usersaddteam(request):
 
     if request.method == "POST":
 
         userId = request.POST["id"]
         teamIds = request.POST["ids"]
 
-        teamsFormatted = SplitIdsNoId(teamIds)
+        addOrDeleteTeam(True,userId,teamIds)
 
-        myobj = {"user_id" : int(userId), 'teams': teamsFormatted}   
-        x = requests.delete(api_url + "/team/user",json=myobj)
 
     return HttpResponseRedirect(reverse("users"))
 
@@ -526,6 +525,16 @@ def team(request,id):
 
     })
 
+
+
+def ReplaceCommas(item):
+    
+    if item[-1] == ",":
+         
+        item = item[:-1] + ""
+
+    return item  
+
 def permissions(request):
 
 
@@ -533,27 +542,69 @@ def permissions(request):
     users = GetAPI("/user").json()   
     users = GetUsers(users)           
     teams = GetAPI("/team").json()["team"] 
+
+
     
+
+    permissions = GetAPI("/permission").json()["permissions"]
+
+   
+
+
+ 
+
+    permissionsPage = NewPaginator(request,permissions, 10,"permissionsPage")
+
+
 
     if request.method == "POST":
 
         form = NewPermission(request.POST)
 
         if form.is_valid():
-            name = form.cleaned_data["name"]
-            newUsers = form.cleaned_data["users"]
-            newRooms = form.cleaned_data["rooms"]
-            days = form.cleaned_data["days"]
-            newTeams = form.cleaned_data["teams"]
+          
+            newUser = ReplaceCommas(form.cleaned_data["users"])
+            newRoom = ReplaceCommas(form.cleaned_data["rooms"])
+            days =  ReplaceCommas(form.cleaned_data["days"])
+            newTeam = ReplaceCommas(form.cleaned_data["teams"])
             startDate = form.cleaned_data["startDate"]
-            endDate = form.cleaned_data["endDate"]
+            endDate = form.cleaned_data["endDate"]            
+
+            days = SplitIds(days)
+          
+            obj = {
+                "room_id": newRoom,
+                "team_id": newTeam,
+                "user_id": newUser,
+                "start_date": "2023-10-12T15:11:41.175+02:00",
+                "end_date": "2023-10-12T15:11:41.175+02:00",
+                "start_time": "2023-10-12T15:11:41.175+02:00",
+                "end_time": "2023-10-12T15:11:41.175+02:00",
+                "weekdays": days
+            }
+
+
+            print(obj)
+
+            # print(newUsers)
+            # print(newRooms)
+            # print(newTeams)
+            # print(days)
+            # print(startDate)
+            # print(endDate)
+
+
+
+
+
             
 
     return render(request, "webadmin/permissions.html",{
 
         "users" : users,
         "rooms" : rooms,
-        "teams": teams
+        "teams": teams,
+        "permissionsPage" : permissionsPage
 
 
 

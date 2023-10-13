@@ -48,13 +48,18 @@
 							</span>
 						</th>
 						<th>ID</th>
-						<th>Name</th>
-						<th>Brugere i alt</th>
+						<th>Lokale ID</th>
+						<th>Hold ID</th>
+						<th>Bruger ID</th>
+						<th>Start dato</th>
+						<th>Slut dato</th>
+						<th>Ugedage</th>
+
 											
 					</tr>
 				</thead>
 				<tbody>
-                    {% for item in teamsPage.object_list  %}
+                    {% for item in permissionsPage.object_list  %}
 					<tr>
 						<td>
 							<span class="custom-checkbox">
@@ -63,8 +68,18 @@
 							</span>
 						</td>
 						<td>{{item.id}}</td>
-						<td data-id="{{item.id}}" class="user-name">{{item.name}}</td>
-						<td>{{item.totalUsers}}</td>
+						<td>{{item.room_id}}</td>
+						<td>{{item.team_id}}</td>
+						<td>{{item.user_id}}</td>
+						<td>{{item.start_date}}</td>
+						<td>{{item.end_date}}</td>
+						<td>		
+						{% for day in item.weekdays  %}
+
+						{{day.id}}
+
+						{% endfor %}
+						</td>		
 						<td>
 							<a data-id="{{item.id}}" href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a data-id="{{item.id}}" href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons"  data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -78,11 +93,11 @@
 			<div class="clearfix">
 				<div class="h-100 d-flex flex-column justify-content-end">
 					<div>
-					  {% if teamsPage.has_previous %}
-					  <a id="teams-previous" data-page="{{teamsPage.previous_page_number}}" data-param="teamsPage" class="btn next-previous btn-secondary pagination-button">Previous</a>
+					  {% if permissionsPage.has_previous %}
+					  <a id="permissions-previous" data-page="{{permissionsPage.previous_page_number}}" data-param="permissionsPage" class="btn next-previous btn-secondary pagination-button">Previous</a>
 					  {% endif %}
-					  {% if teamsPage.has_next %}
-					  <a id="teams-next" data-page="{{teamsPage.next_page_number}}" data-param="teamsPage" class="btn next-previous btn-primary pagination-button">Next</a>
+					  {% if permissionsPage.has_next %}
+					  <a id="permissions-next" data-page="{{permissionsPage.next_page_number}}" data-param="permissionsPage" class="btn next-previous btn-primary pagination-button">Next</a>
 					  {% endif %} 
 					</div>
 					</div> 
@@ -106,13 +121,7 @@
 					<h4 class="modal-title">Tilføj tilladelse</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">						
-				
-					<div class="form-group">
-						<label>Name</label>
-						<input name="name" type="text" class="form-control" required>
-					</div>
-
+				<div class="modal-body">	
 					<input id="usersToBeAdded" name="users" type="hidden">		
 					<input id="roomsToBeAdded" name="rooms" type="hidden">	
 					<input id="daysOfTheWeek" name="days" type="hidden">	
@@ -122,19 +131,19 @@
 						
 					{% for item in users %}								
 					<div class="d-flex">
-						<label class="m-0" for="user{{item.id}}"><input data-multiselect="usersToBeAdded" class="usersToBeAdded multiSelectItem" type="checkbox" id="user{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+						<label class="m-0" for="user{{item.id}}"><input name="user-option" data-multiselect="usersToBeAdded" class="usersToBeAdded multiSelectItem" type="radio" id="user{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
 					{% endfor %}	
 					<div>Tilføj lokaler</div>
 					{% for item in rooms %}								
 					<div class="d-flex">
-						<label class="m-0" for="room{{item.id}}"><input data-multiselect="roomsToBeAdded" class="roomsToBeAdded multiSelectItem" type="checkbox" id="room{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+						<label class="m-0" for="room{{item.id}}"><input name="room-option" data-multiselect="roomsToBeAdded" class="roomsToBeAdded multiSelectItem" type="radio" id="room{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
 					{% endfor %}	
 					<div>Tilføj hold</div>
 					{% for item in teams %}								
 					<div class="d-flex">
-						<label class="m-0" for="team{{item.id}}"><input data-multiselect="teamsToBeAdded" class="teamsToBeAdded multiSelectItem" type="checkbox" id="team{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
+						<label class="m-0" for="team{{item.id}}"><input name="team-option" data-multiselect="teamsToBeAdded" class="teamsToBeAdded multiSelectItem" type="radio" id="team{{item.id}}" value="{{item.id}}" /> {{item.name}}</label>  								
 					</div>
 					{% endfor %}	
 					
@@ -143,6 +152,14 @@
 					<input style="width: 300px;" type="date" class="form-control" name="startDate">    
 					<label for="exampleFormControlInput1" class="form-label">Til</label>
 					<input style="width: 300px;" type="date" class="form-control" name="endDate">
+
+
+					<!--Time-->
+					<label for="timeStart">Start tid:</label>
+					<input type="time" id="timeStart" name="timeStart" min="00:00" max="23:59" required />
+					<label for="timeEnd">Slut tid</label>
+					<input type="time" id="timeEnd" name="timeEnd" min="00:00" max="23:59" required />
+
 					<!--Weekdays-->
 
 					<div class="d-flex">
