@@ -172,10 +172,10 @@
 					
 					
 					<!--Date-->
-					<label for="exampleFormControlInput1" class="form-label">Tidspunkt fra</label>
-					<input style="width: 300px;" type="date" class="form-control" name="startDate">    
-					<label for="exampleFormControlInput1" class="form-label">Til</label>
-					<input style="width: 300px;" type="date" class="form-control" name="endDate">
+					<label for="startDate" class="form-label">Tidspunkt fra</label>
+					<input style="width: 300px;" type="date" id="startDate" class="form-control" name="startDate">    
+					<label for="endDate" class="form-label">Til</label>
+					<input style="width: 300px;" type="date" id="endDate" class="form-control" name="endDate">
 
 
 					<!--Time-->
@@ -298,15 +298,15 @@
 <div id="deleteUserModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="deleteteam" method="POST">
+			<form action="deletepermission" method="POST">
 				{% csrf_token %}
 				<input name="id" id="delete-id" type="hidden">
 				<div class="modal-header">						
-					<h4 class="modal-title">Slet hold</h4>
+					<h4 class="modal-title">Slet tilladelse</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<p>Er du sikker på du vil fjerne dette hold?</p>				
+					<p>Er du sikker på du vil fjerne denne tilladelse?</p>				
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Anuller">
@@ -320,15 +320,15 @@
 <div id="deleteMultipleModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="deleteteam" method="POST">
+			<form action="deletepermission" method="POST">
 				{% csrf_token %}
 				<input name="id" id="delete-ids" type="hidden">
 				<div class="modal-header">						
-					<h4 class="modal-title">Slet hold</h4>
+					<h4 class="modal-title">Slet tilladelser</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<p>Er du sikker på du vil fjerne disse hold?</p>				
+					<p>Er du sikker på du vil fjerne disse tilladelser?</p>				
 					<p id="all-delete-items"></p>
 				</div>
 				<div class="modal-footer">

@@ -552,23 +552,16 @@ def permissions(request):
     rooms = GetAPI("/room").json()["room"]
     users = GetAPI("/user").json()   
     users = GetUsers(users)           
-    teams = GetAPI("/team").json()["team"] 
-
-    permissions = GetAPI("/permission").json()["permissions"]
-
-    print("he eeer")
+    teams = GetAPI("/team").json()["team"]
+    permissions = GetAPI("/permission").json()["permissions"]    
 
     permissionsPage = NewPaginator(request,permissions, 10,"permissionsPage")
 
     if request.method == "POST":
 
-        form = NewPermission(request.POST)
+        form = NewPermission(request.POST)        
 
-        print("her")
-
-        if form.is_valid():
-
-            print("og her")
+        if form.is_valid():            
           
             newUser = ReplaceCommas(form.cleaned_data["users"])
             newRoom = ReplaceCommas(form.cleaned_data["rooms"])
@@ -580,10 +573,8 @@ def permissions(request):
             endTime = form.cleaned_data["endTime"] + ":00"        
 
             days = SplitIds(days)
-
             startDate = str(startDate)
-            endDate = str(endDate)           
-
+            endDate = str(endDate)
           
             obj = {
                 "room_id": newRoom,
@@ -598,22 +589,9 @@ def permissions(request):
 
             print(obj)
 
-            x = PostAPI("/permission", obj)
+            x = PostAPI("/permission", obj)      
 
-           
-
-
-            # print(newUsers)
-            # print(newRooms)
-            # print(newTeams)
-            # print(days)
-            # print(startDate)
-            # print(endDate)
-
-        return HttpResponseRedirect(reverse("permissions"))
-        
-
-            
+        return HttpResponseRedirect(reverse("permissions"))        
 
     return render(request, "webadmin/permissions.html",{
 
@@ -626,6 +604,11 @@ def permissions(request):
 
      })
 
+
+def deletepermission(request):
+     
+    deleteMultiple(request,"/permission/del")  
+    return HttpResponseRedirect(reverse("permissions"))   
 
 def login(request):    
 
