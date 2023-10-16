@@ -68,7 +68,7 @@ def NewPaginator(request,list, itemsPerPage, param):
 
 time = datetime.now().strftime('%H:%M')  
 
-api_url = "https://api.seaofkeys.com"
+api_url = "http://localhost:8006"
 
 
 def usersAmount(itemList):
@@ -125,12 +125,21 @@ def index (request):
     usersY = ["20","21","24","30","32","35","40"]   
 
     users = Users(usersX,usersY)
-
+    session_cookies_json = json.dumps(request.session.get("bear"))
+    print(session_cookies_json)
+    print(session_cookies_json)
+    print(session_cookies_json)
+    print(session_cookies_json)
+    print(request.session.get("bear"))
+    print(request.session.get("bear"))
+    print(request.session.get("bear"))
+    print(request.session.get("bear"))
     return render(request, "webadmin/index.html",{    
         # "usersTotal" : usersTotal,
         # "roomsTotal" : roomsTotal,
         # "teamsTotal" : teamsTotal,
         "users" : users, 
+        "session_cookies": session_cookies_json,
           
     })
 
@@ -206,7 +215,7 @@ def users (request):
 
             teamsFormatted = SplitIds(selectedTeams)        
 
-            url = "https://api.seaofkeys.com/user"
+            url = "http://localhost:8006/user"
             myobj = {"name" : name, 'email': email, "teams" : teamsFormatted}           
             x = requests.post(url, json=myobj)
             json_response = x.json()
@@ -296,7 +305,7 @@ def edituser(request):
         # password = request.POST["password"]
         # code = request.POST["code"]
 
-        url = "https://api.seaofkeys.com/user"
+        url = "http://localhost:8006/user"
         myobj = {"id" : int(id), "name" : name, 'email': email} 
     
         x = requests.put(url, json=myobj)
@@ -370,7 +379,7 @@ def editroom(request):
         id = request.POST["id"]
         name = request.POST["name"]       
 
-        url = "https://api.seaofkeys.com/room"
+        url = "http://localhost:8006/room"
         myobj = {"id" : int(id), "name" : name} 
     
         x = requests.put(url, json=myobj)
@@ -660,7 +669,7 @@ def login(request):
         password = request.POST['password']
         email = "mkronborg7@gmail.com"
         password = "Test"
-        url = "https://api.seaofkeys.com/auth/login"
+        url = "http://localhost:8006/auth/login"
 
         myobj = {'email': email, "password": password}
         x = requests.post(url, json=myobj)
@@ -669,10 +678,12 @@ def login(request):
             token = x.json()["token"]
 
             # Extract and store session cookies as a dictionary
+            authorization_header = x.headers.get('Authorization')
+            request.session['bear'] = authorization_header
+
             session_cookies = dict(x.cookies)
-
             request.session['token'] = session_cookies            
-
+            print("Session cookies: " + str(session_cookies))
             print(session_cookies)
 
             return HttpResponseRedirect(reverse("index"))
@@ -688,7 +699,7 @@ def logout(request):
     
     session_cookies = request.session['token']    
 
-    x = requests.get("https://api.seaofkeys.com/auth/logut",cookies=session_cookies)        
+    x = requests.get("http://localhost:8006/auth/logut",cookies=session_cookies)        
 
     request.session['token'] = None    
     
