@@ -32,11 +32,10 @@ class TestExamples(SimpleTestCase):
         url = reverse("example")   
         self.assertEquals(resolve(url).func, test_example)
 
-
     #Methods
-    def test_splitids(self):
+    def test_SplitIds(self):
 
-        result = SplitIds("1,2,3,4,5")        
+        result = SplitIds("1,2,3,4,5")
         item = [{"id" : 1,}, { "id" : 2, }, { "id" : 3, }, { "id" : 4, }, { "id" : 5, }]
 
         self.assertEquals(result,item) 

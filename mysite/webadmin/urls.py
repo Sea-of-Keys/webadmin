@@ -13,11 +13,6 @@ urlpatterns = [
     path("teams",views.teams, name="teams"),
     path("permissions", views.permissions, name="permissions"),
 
-    #Sub pages
-    path("user/<int:id>", views.user, name="user"),
-    path("room/<int:id>", views.room, name="room"),    
-    path("team/<int:id>", views.team, name="team"),
-
     #API calls
     #User
     path("deleteuser", views.deleteuser, name="deleteuser"),
@@ -36,15 +31,18 @@ urlpatterns = [
     path("deletepermission", views.deletepermission, name="deletepermission"),
     path("editpermission", views.editpermission, name="editpermission"),
 
-
     #Login/Logout
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
 
-
     #Unit test example
     path("test", views.test_example, name="example")
+
     
+    #Sub pages
+    # path("user/<int:id>", views.user, name="user"),
+    # path("room/<int:id>", views.room, name="room"),    
+    # path("team/<int:id>", views.team, name="team"),
     
     
 ]
