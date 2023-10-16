@@ -78,7 +78,6 @@ def usersAmount(itemList):
 
     return itemList
 
-
 def GetAPI(endpoint):
 
     x = requests.get(api_url + endpoint)
@@ -88,11 +87,27 @@ def PostAPI(endpoint, obj):
     x = requests.post(api_url + endpoint,json=obj)
     return x
 
+
+def ReplaceCommas(item):
+    
+    if item[-1] == ",":
+         
+        item = item[:-1] + ""
+
+    if item == ".":
+
+        item = None 
+    
+    elif "," not in item:
+         
+        item = int(item)   
+
+    return item  
+
 def index (request):
     
     if request.session.get("token") == None:            
             return redirect("/login")   
-
 
     usersTotal = GetAPI("/stats/users").json()["user_count"]
     roomsTotal = GetAPI("/stats/rooms").json()["user_count"]
@@ -109,9 +124,9 @@ def index (request):
     users = Users(usersX,usersY)
 
     return render(request, "webadmin/index.html",{    
-        "usersTotal" : usersTotal,
-        "roomsTotal" : roomsTotal,
-        "teamsTotal" : teamsTotal,
+        # "usersTotal" : usersTotal,
+        # "roomsTotal" : roomsTotal,
+        # "teamsTotal" : teamsTotal,
         "users" : users, 
           
     })
@@ -136,15 +151,12 @@ def GetUsers(result):
 
     return users
 
-
 def SplitIds(itemList):       
 
-    
-
-    allTeams = itemList.split(",")
+    newList = itemList.split(",")
     result = list()       
 
-    for item in allTeams:
+    for item in newList:
         if(item != ""):
 
             result.append({"id" : int(item)})
@@ -152,22 +164,17 @@ def SplitIds(itemList):
     return result
 
 
-
-
-
 def SplitIdsNoId(itemList):
      
-    allTeams = itemList.split(",")
+    newList = itemList.split(",")
     result = list()       
 
-    for item in allTeams:
+    for item in newList:
         if(item != ""):
 
             result.append(int(item))
 
     return result
-
-
 
 def users (request):    
 
@@ -225,11 +232,9 @@ def addOrDeleteTeam(add, userId, teamIds):
 
     if add is True:
         x = requests.post(api_url + "/team/user",json=myobj)
-
-        print(myobj)
+        
     else:
-        x = requests.delete(api_url + "/team/user",json=myobj)        
-
+        x = requests.delete(api_url + "/team/user",json=myobj)
 
 def usersdeleteteam(request):
 
@@ -252,12 +257,7 @@ def usersaddteam(request):
 
         addOrDeleteTeam(True,userId,teamIds)
 
-
     return HttpResponseRedirect(reverse("users"))
-
-
-
-
 
 
 def deleteMultiple(request,endpoint):  
@@ -290,47 +290,45 @@ def edituser(request):
         id = request.POST["id"]
         name = request.POST["name"]
         email = request.POST["email"]
-        password = request.POST["password"]
-        code = request.POST["code"]
+        # password = request.POST["password"]
+        # code = request.POST["code"]
 
         url = "https://api.seaofkeys.com/user"
-        myobj = {"id" : int(id), "name" : name, 'email': email, "password": password, "code" : code} 
+        myobj = {"id" : int(id), "name" : name, 'email': email} 
     
         x = requests.put(url, json=myobj)
         json_response = x.json()   
 
-    return HttpResponseRedirect(reverse("users"))    
+    return HttpResponseRedirect(reverse("users"))   
 
-          
+# def user(request,id):
 
-def user(request,id):
+#     if request.session.get("token") == None:            
+#             return redirect("/login")   
 
-    if request.session.get("token") == None:            
-            return redirect("/login")   
+#     time = datetime.now().strftime("%H:%M %D")
+#     currentUser = User(id,"Morten","bindzus@mail.dk",time) 
+#     teams = []
 
-    time = datetime.now().strftime("%H:%M %D")
-    currentUser = User(id,"Morten","bindzus@mail.dk",time) 
-    teams = []
+#     userHistory = []
 
-    userHistory = []
+#     for x in range(10):   
+#         userHistory.append(historyInstance("Kronborg","Mødelokale 1", x, time)) 
 
-    for x in range(10):   
-        userHistory.append(historyInstance("Kronborg","Mødelokale 1", x, time)) 
+#     for x in range(5):
+#         teams.append(Team(x,"Kantinedamerne"))
 
-    for x in range(5):
-        teams.append(Team(x,"Kantinedamerne"))
+#     #Pagination
+#     team_page = NewPaginator(request,teams,3,"teamPage")
+#     history_page = NewPaginator(request,userHistory,3,"userHistory")
 
-    #Pagination
-    team_page = NewPaginator(request,teams,3,"teamPage")
-    history_page = NewPaginator(request,userHistory,3,"userHistory")
-
-    return render(request, "webadmin/user.html",{
-        "user" : currentUser,
-        "teams" : teams,
-        "history": userHistory,
-        "teamPage" : team_page,
-        "historyPage" : history_page
-    })
+#     return render(request, "webadmin/user.html",{
+#         "user" : currentUser,
+#         "teams" : teams,
+#         "history": userHistory,
+#         "teamPage" : team_page,
+#         "historyPage" : history_page
+#     })
 
 
 def rooms (request):
@@ -345,9 +343,7 @@ def rooms (request):
         obj = {"name" : request.POST["name"]}
         PostAPI("/room", obj)  
 
-    rooms = GetAPI("/room").json()["room"]  
-
-    print(teams)
+    rooms = GetAPI("/room").json()["room"]
     
     roomsPage = NewPaginator(request,rooms,5,"roomsPage")
     
@@ -379,32 +375,32 @@ def editroom(request):
 
     return HttpResponseRedirect(reverse("rooms"))     
 
-def room(request,id):
+# def room(request,id):
 
-    if request.session.get("token") == None:            
-            return redirect("/login")   
-
-
-    teams = []
-    history = []
-    time = datetime.now().strftime("%H:%M %D")    
-    room = Room(1,"Mødelokale",time)
-
-    for x in range(23):
-        teams.append(Team(x,"Kantinedamerne"))      
-        history.append(historyInstance("Bruger","Dør 1",x,time))
-
-    teamRoomsPage = NewPaginator(request,teams,5,"teamRoomsPage")
-    historyPage = NewPaginator(request,history,5,"historyPage")
+#     if request.session.get("token") == None:            
+#             return redirect("/login")   
 
 
-    return render(request, "webadmin/room.html",{
+#     teams = []
+#     history = []
+#     time = datetime.now().strftime("%H:%M %D")    
+#     room = Room(1,"Mødelokale",time)
 
-        "room" : room,
-        "teams" : teams,
-        "teamRoomsPage" : teamRoomsPage,
-        "historyPage" : historyPage
-    })
+#     for x in range(23):
+#         teams.append(Team(x,"Kantinedamerne"))      
+#         history.append(historyInstance("Bruger","Dør 1",x,time))
+
+#     teamRoomsPage = NewPaginator(request,teams,5,"teamRoomsPage")
+#     historyPage = NewPaginator(request,history,5,"historyPage")
+
+
+#     return render(request, "webadmin/room.html",{
+
+#         "room" : room,
+#         "teams" : teams,
+#         "teamRoomsPage" : teamRoomsPage,
+#         "historyPage" : historyPage
+#     })
 
 
 
@@ -508,50 +504,33 @@ def editteam(request):
     
     return HttpResponseRedirect(reverse("teams"))     
 
-def team(request,id):
+# def team(request,id):
 
-    if request.session.get("token") == None:            
-            return redirect("/login")   
+#     if request.session.get("token") == None:            
+#             return redirect("/login")   
 
-    users = []
-    team = Team(1,"Køkkendamerne")
-
-
-    for x in range(25):
-
-        users.append(User(x,"Morten","morten@mail.dk",time))
-
-    teamUsersPage = NewPaginator(request,users,5,"teamUsersPage")
-
-    return render(request, "webadmin/team.html",{
-
-        "teamUsersPage" : teamUsersPage,
-        "team" : team,
-        "users" : users,       
-
-    })
+#     users = []
+#     team = Team(1,"Køkkendamerne")
 
 
+#     for x in range(25):
 
-def ReplaceCommas(item):
-    
-    if item[-1] == ",":
-         
-        item = item[:-1] + ""
+#         users.append(User(x,"Morten","morten@mail.dk",time))
+
+#     teamUsersPage = NewPaginator(request,users,5,"teamUsersPage")
+
+#     return render(request, "webadmin/team.html",{
+
+#         "teamUsersPage" : teamUsersPage,
+#         "team" : team,
+#         "users" : users,     
+
+#     })
 
 
-    if item == ".":
 
-        item = None 
-    
-    elif "," not in item:
-         
-        item = int(item)   
-
-    return item  
 
 def permissions(request):
-
 
     rooms = GetAPI("/room").json()["room"]
     users = GetAPI("/user").json()   
@@ -573,13 +552,9 @@ def permissions(request):
             startDate = form.cleaned_data["startDate"]
             endDate = form.cleaned_data["endDate"]     
             startTime = form.cleaned_data["startTime"] + ":00"
-            endTime = form.cleaned_data["endTime"] + ":00"                  
+            endTime = form.cleaned_data["endTime"] + ":00"   
 
-            if len(str(days)) != 1:    
-                days = SplitIds(days)
-
-            else :
-                days = [{"id" : days}]
+            days = ConvertDays(days)
 
             startDate = str(startDate)
             endDate = str(endDate)
@@ -608,8 +583,6 @@ def permissions(request):
         "teams": teams,
         "permissionsPage" : permissionsPage
 
-
-
      })
 
 
@@ -617,6 +590,19 @@ def deletepermission(request):
      
     deleteMultiple(request,"/permission/del")  
     return HttpResponseRedirect(reverse("permissions"))   
+
+
+
+def ConvertDays(days):
+
+    if len(str(days)) != 1:    
+                days = SplitIds(days)
+
+    else:
+        days = [{"id" : days}]
+
+
+    return days
 
 
 def editpermission(request):
@@ -634,17 +620,10 @@ def editpermission(request):
             startDate = form.cleaned_data["startDate"]
             endDate = form.cleaned_data["endDate"]     
             startTime = form.cleaned_data["startTime"] + ":00"
-            endTime = form.cleaned_data["endTime"] + ":00"     
+            endTime = form.cleaned_data["endTime"] + ":00"   
+            id = request.POST["id"]; 
 
-
-            id = request.POST["id"];  
-
-            if len(str(days)) != 1:    
-                days = SplitIds(days)
-
-            else:
-                days = [{"id" : days}]
-
+            days = ConvertDays(days)          
 
             startDate = str(startDate)
             endDate = str(endDate)
@@ -659,9 +638,7 @@ def editpermission(request):
                 "start_time": startTime,
                 "end_time": endTime,
                 "weekdays": days
-            }
-
-            print(obj)
+            }            
 
             x = requests.put(api_url + "/permission/",json=obj) 
 
@@ -678,7 +655,6 @@ def login(request):
         email = request.POST["email_test"]
         password = request.POST["password"]
 
-
         email = "mkronborg7@gmail.com"
         password = "Test"
 
@@ -686,11 +662,9 @@ def login(request):
 
         myobj = {'email': email, "password": password}
         x = requests.post(url, json=myobj)
-        json_response = x.json()     
-
+        json_response = x.json()    
         token = json_response["token"]
-
-        session = requests.session()
+      
         request.session['token'] = token
 
         return HttpResponseRedirect(reverse("index"))
@@ -704,5 +678,11 @@ def login(request):
 def logout(request):
 
     request.session['token'] = None
+
+    print(reverse("login"))
     
     return HttpResponseRedirect(reverse("login"))
+
+def test_example(request):
+
+    return HttpResponseRedirect(reverse("index"))

@@ -40,6 +40,11 @@ urlpatterns = [
     #Login/Logout
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
+
+
+    #Unit test example
+    path("test", views.test_example, name="example")
+    
     
     
 ]
