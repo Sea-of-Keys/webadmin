@@ -78,10 +78,13 @@ def usersAmount(itemList):
 
     return itemList
 
-def GetAPI(endpoint):
+def GetAPI(endpoint, request):
 
-    x = requests.get(api_url + endpoint)
-    return x    
+    session_cookies = request.session.get('token')    
+
+    if session_cookies:
+        x = requests.get(api_url + endpoint, cookies=session_cookies)
+        return x    
 
 def PostAPI(endpoint, obj):
     x = requests.post(api_url + endpoint,json=obj)
@@ -107,11 +110,11 @@ def ReplaceCommas(item):
 def index (request):
     
     if request.session.get("token") == None:            
-            return redirect("/login")   
+            return redirect("/login")
 
-    usersTotal = GetAPI("/stats/users").json()["user_count"]
-    roomsTotal = GetAPI("/stats/rooms").json()["user_count"]
-    teamsTotal = GetAPI("/stats/teams").json()["user_count"]
+    usersTotal = GetAPI("/stats/users",request).json()["user_count"]
+    roomsTotal = GetAPI("/stats/rooms",request).json()["user_count"]
+    teamsTotal = GetAPI("/stats/teams",request).json()["user_count"]
 
     class Users:
         def __init__(self,usersX,usersY):
@@ -181,10 +184,10 @@ def users (request):
     if request.session.get("token") == None:            
             return redirect("/login")   
 
-    json_response = GetAPI("/user").json()
+    json_response = GetAPI("/user",request).json()
     user_page = NewPaginator(request,json_response,5,"userPage")
 
-    result = GetAPI("/team").json()["team"]
+    result = GetAPI("/team",request).json()["team"]
     teams = GetTeams(result)
  
     if request.method == "POST":
@@ -343,7 +346,7 @@ def rooms (request):
         obj = {"name" : request.POST["name"]}
         PostAPI("/room", obj)  
 
-    rooms = GetAPI("/room").json()["room"]
+    rooms = GetAPI("/room",request).json()["room"]
     
     roomsPage = NewPaginator(request,rooms,5,"roomsPage")
     
@@ -409,10 +412,10 @@ def teams(request):
     if request.session.get("token") == None:            
             return redirect("/login") 
 
-    users = GetAPI("/user").json()
+    users = GetAPI("/user", request).json()
     users = GetUsers(users)
 
-    teams = GetAPI("/team").json()["team"]  
+    teams = GetAPI("/team",request).json()["team"]  
     teamsPage = NewPaginator(request,teams,6,"teamsPage")
 
     teamsPage = usersAmount(teamsPage)    
@@ -532,11 +535,11 @@ def editteam(request):
 
 def permissions(request):
 
-    rooms = GetAPI("/room").json()["room"]
-    users = GetAPI("/user").json()   
+    rooms = GetAPI("/room",request).json()["room"]
+    users = GetAPI("/user",request).json()   
     users = GetUsers(users)           
-    teams = GetAPI("/team").json()["team"]
-    permissions = GetAPI("/permission").json()["permissions"]    
+    teams = GetAPI("/team",request).json()["team"]
+    permissions = GetAPI("/permission",request).json()["permissions"]    
     permissionsPage = NewPaginator(request,permissions, 10,"permissionsPage")
 
     if request.method == "POST":
@@ -645,41 +648,49 @@ def editpermission(request):
         return HttpResponseRedirect(reverse("permissions")) 
 
 
-def login(request):    
+def login(request):
+
 
     email = ""
     password = ""
 
-    if request.method == "POST":
-
-        email = request.POST["email_test"]
-        password = request.POST["password"]
-
+    if request.method == 'POST':
+        
+        email = request.POST['email_test']
+        password = request.POST['password']
         email = "mkronborg7@gmail.com"
         password = "Test"
-
         url = "https://api.seaofkeys.com/auth/login"
 
         myobj = {'email': email, "password": password}
         x = requests.post(url, json=myobj)
-        json_response = x.json()    
-        token = json_response["token"]
-      
-        request.session['token'] = token
 
-        return HttpResponseRedirect(reverse("index"))
+        if x.status_code == 200:
+            token = x.json()["token"]
 
-    return render(request, "webadmin/login.html",{
-        "email" : email,
-        "password" : password
-        
+            # Extract and store session cookies as a dictionary
+            session_cookies = dict(x.cookies)
+
+            request.session['token'] = session_cookies            
+
+            print(session_cookies)
+
+            return HttpResponseRedirect(reverse("index"))
+
+        return HttpResponse("Login failed")
+
+    return render(request, "webadmin/login.html", {
+        "email": email,
+        "password": password
     })
 
 def logout(request):
+    
+    session_cookies = request.session['token']    
 
-    request.session['token'] = None
+    x = requests.get("https://api.seaofkeys.com/auth/logut",cookies=session_cookies)        
 
-    print(reverse("login"))
+    request.session['token'] = None    
     
     return HttpResponseRedirect(reverse("login"))
 
