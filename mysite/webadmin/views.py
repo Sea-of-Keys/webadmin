@@ -72,8 +72,11 @@ def GetAPI(endpoint, request):
         x = requests.get(api_url + endpoint, cookies=session_cookies)
         return x    
 
-def PostAPI(endpoint, obj):
-    x = requests.post(api_url + endpoint,json=obj)
+def PostAPI(endpoint, obj,request):
+
+    session_cookies = request.session.get('token')  
+
+    x = requests.post(api_url + endpoint,json=obj, cookies=session_cookies)
     return x
 
 
@@ -167,32 +170,12 @@ def SplitIdsNoId(itemList):
 def users (request):    
 
     if request.session.get("token") == None:            
-            return redirect("/login")   
+            return redirect("/login")      
 
     json_response = GetAPI("/user",request).json()
     user_page = NewPaginator(request,json_response,5,"userPage")
-
     result = GetAPI("/team",request).json()["team"]
-    teams = GetTeams(result)
- 
-    if request.method == "POST":
-              
-        newUser = NewUser(request.POST)
-
-        if newUser.is_valid():
-
-            name = newUser.cleaned_data["name"]
-            email = newUser.cleaned_data["email"]
-            selectedTeams = newUser.cleaned_data["teams"]                   
-
-            teamsFormatted = SplitIds(selectedTeams)        
-
-            url = "https://api.seaofkeys.com/user"
-            myobj = {"name" : name, 'email': email, "teams" : teamsFormatted}           
-            x = requests.post(url, json=myobj)
-            json_response = x.json()
-
-            return HttpResponseRedirect(reverse("users"))
+    teams = GetTeams(result)    
    
     return render(request, "webadmin/users.html",{  
              
@@ -201,18 +184,41 @@ def users (request):
         
     })
 
+def newUser(request):
 
-def addOrDeleteTeam(add, userId, teamIds):
+    if request.method == "POST":
+              
+        newUser = NewUser(request.POST)
+
+        if newUser.is_valid():
+
+            name = newUser.cleaned_data["name"]
+            email = newUser.cleaned_data["email"]
+            selectedTeams = newUser.cleaned_data["teams"]
+            teamsFormatted = SplitIds(selectedTeams) 
+
+            session_cookies = request.session.get("token")
+
+            url = api_url + "/user"
+            myobj = {"name" : name, 'email': email, "teams" : teamsFormatted}           
+            x = requests.post(url, json=myobj, cookies=session_cookies)
+            json_response = x.json()
+
+    return HttpResponseRedirect(reverse("users"))
+
+def addOrDeleteTeam(add, userId, teamIds,request):
      
     teamsFormatted = SplitIdsNoId(teamIds)
 
     myobj = {"user_id" : int(userId), 'teams': teamsFormatted}  
 
+    session_cookies = request.session.get('token')  
+
     if add is True:
-        x = requests.post(api_url + "/team/user",json=myobj)
+        x = requests.post(api_url + "/team/user",json=myobj,cookies=session_cookies)
         
     else:
-        x = requests.delete(api_url + "/team/user",json=myobj)
+        x = requests.delete(api_url + "/team/user",json=myobj, cookies=session_cookies)
 
 def usersdeleteteam(request):
 
@@ -221,8 +227,7 @@ def usersdeleteteam(request):
         userId = request.POST["id"]
         teamIds = request.POST["ids"]
 
-        addOrDeleteTeam(False,userId,teamIds)
-
+        addOrDeleteTeam(False,userId,teamIds,request)
 
     return HttpResponseRedirect(reverse("users"))
 
@@ -240,7 +245,9 @@ def usersaddteam(request):
 
 def deleteMultiple(request,endpoint):  
 
-    if request.method == "POST":         
+    if request.method == "POST":      
+
+        session_cookies = request.session.get('token')   
 
         id = request.POST["id"]
         id = id.split(",")
@@ -254,7 +261,7 @@ def deleteMultiple(request,endpoint):
                   ids.append({ "id": int(item) })       
         
         url = api_url + endpoint          
-        x = requests.delete(url, json=ids)       
+        x = requests.delete(url, json=ids,cookies=session_cookies)       
 
 def deleteuser(request):
         
@@ -271,10 +278,12 @@ def edituser(request):
         # password = request.POST["password"]
         # code = request.POST["code"]
 
-        url = "https://api.seaofkeys.com/user"
+        session_cookies = request.session.get("token")
+
+        url = api_url + "/user"
         myobj = {"id" : int(id), "name" : name, 'email': email} 
     
-        x = requests.put(url, json=myobj)
+        x = requests.put(url, json=myobj, cookies=session_cookies)
         json_response = x.json()   
 
     return HttpResponseRedirect(reverse("users"))   
@@ -290,7 +299,7 @@ def rooms (request):
         print(request.POST["teams"])
 
         obj = {"name" : request.POST["name"]}
-        PostAPI("/room", obj)  
+        PostAPI("/room", obj,request)  
 
     rooms = GetAPI("/room",request).json()["room"]
     
@@ -316,10 +325,12 @@ def editroom(request):
         id = request.POST["id"]
         name = request.POST["name"]       
 
-        url = "https://api.seaofkeys.com/room"
+        url = api_url + "/room"
         myobj = {"id" : int(id), "name" : name} 
-    
-        x = requests.put(url, json=myobj)
+
+        session_cookies = request.session.get("token")        
+
+        x = requests.put(url, json=myobj,cookies=session_cookies)
         json_response = x.json()   
 
     return HttpResponseRedirect(reverse("rooms")) 
@@ -354,7 +365,7 @@ def teams(request):
         
         obj = {"name" : name, "users" : userObj}            
                 
-        PostAPI("/team",obj).status_code       
+        PostAPI("/team",obj,request).status_code       
 
         return HttpResponseRedirect(reverse("teams"))    
         
@@ -375,11 +386,15 @@ def teamsaddusers(request):
         ids = SplitIdsNoId(ids)
         obj = {"team_id" : int(id), "users" : ids}      
 
+
+        session_cookies = request.session.get("token")
+        
+
         print(obj)  
 
         url = api_url + "/team/add"
 
-        x = requests.post(url,json=obj)
+        x = requests.post(url,json=obj,cookies=session_cookies)
 
         print(x.status_code)
 
@@ -390,6 +405,8 @@ def teamsdeleteusers(request):
 
     if request.method == "POST":
 
+        session_cookies = request.session.get('token')       
+
         id = request.POST["id"]        
         ids = request.POST["ids"]             
         ids = SplitIdsNoId(ids)     
@@ -398,7 +415,7 @@ def teamsdeleteusers(request):
 
         url = api_url + "/team/remove"
 
-        x = requests.delete(url,json=obj)
+        x = requests.delete(url,json=obj,cookies=session_cookies)
 
         print(x.status_code)
 
@@ -418,9 +435,11 @@ def editteam(request):
         name = request.POST["name"] 
         url = api_url + "/team"
        
-        myobj = {"id" : int(id), "name" : name}                
+        myobj = {"id" : int(id), "name" : name}          
+
+        session_cookies = request.session.get("token")      
     
-        x = requests.put(url, json=myobj)
+        x = requests.put(url, json=myobj,cookies=session_cookies)
         json_response = x.json()   
     
     return HttpResponseRedirect(reverse("teams"))
@@ -463,11 +482,9 @@ def permissions(request):
                 "start_time": startTime,
                 "end_time": endTime,
                 "weekdays": days
-            }
+            }            
 
-            print(obj)
-
-            x = PostAPI("/permission", obj)      
+            x = PostAPI("/permission", obj,request)      
 
         return HttpResponseRedirect(reverse("permissions"))        
 
@@ -522,6 +539,8 @@ def editpermission(request):
 
             startDate = str(startDate)
             endDate = str(endDate)
+
+            session_cookies = request.session.get("token")
           
             obj = {
                 "id" : int(id),
@@ -535,7 +554,7 @@ def editpermission(request):
                 "weekdays": days
             }            
 
-            x = requests.put(api_url + "/permission/",json=obj) 
+            x = requests.put(api_url + "/permission/",json=obj,cookies=session_cookies) 
 
         return HttpResponseRedirect(reverse("permissions")) 
 
@@ -552,7 +571,9 @@ def login(request):
         password = request.POST['password']
         email = "mkronborg7@gmail.com"
         password = "Test"
-        url = "https://api.seaofkeys.com/auth/login"
+        url = api_url + "/auth/login"
+
+        session_cookies = request.session.get("token")        
 
         myobj = {'email': email, "password": password}
         x = requests.post(url, json=myobj)
@@ -563,9 +584,9 @@ def login(request):
             # Extract and store session cookies as a dictionary
             session_cookies = dict(x.cookies)
 
-            request.session['token'] = session_cookies            
-
+            request.session['token'] = session_cookies
             print(session_cookies)
+            
 
             return HttpResponseRedirect(reverse("index"))
 
@@ -579,7 +600,7 @@ def login(request):
 def logout(request):
     
     session_cookies = request.session['token']
-    x = requests.get("https://api.seaofkeys.com/auth/logut",cookies=session_cookies)
+    x = requests.get(api_url + "/auth/logout",cookies=session_cookies)
     request.session['token'] = None    
     
     return HttpResponseRedirect(reverse("login"))
@@ -587,8 +608,6 @@ def logout(request):
 def test_example(request):
 
     return HttpResponseRedirect(reverse("index"))
-
-
 
 # def team(request,id):
 
