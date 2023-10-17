@@ -10,10 +10,6 @@ import json
 import hashlib
 import requests
 
-class Timeperiod(forms.Form):
-    start = forms.DateField(label="Start", required=True)
-    end = forms.DateField(label="End", required=True, )
-
 class NewUser(forms.Form):
     name = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
     email = forms.CharField(label="password", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
@@ -29,8 +25,6 @@ class NewPermission(forms.Form):
     startTime = forms.CharField()
     endTime = forms.CharField()
 
-class DeleteUser(forms.Form):
-     id = forms.CharField(label="id", required=True, widget=forms.TextInput(attrs={'placeholder': 'Beskrivelser'}))
 
 class User:
         def __init__(self, id,name, email,CreatedAt):
@@ -43,14 +37,6 @@ class Team:
         def __init__(self,id,name):
             self.id = id
             self.name = name
-
-class historyInstance:
-    def __init__(self, user, embedded, id, timestamp):
-        self.user = user
-        self.embedded = embedded
-        self.id = id
-        self.timestamp = timestamp
-
 
 class Room:
         def __init__(self,id,name, timestamp):
@@ -115,7 +101,7 @@ def index (request):
     usersTotal = GetAPI("/stats/users",request).json()["user_count"]
     roomsTotal = GetAPI("/stats/rooms",request).json()["user_count"]
     teamsTotal = GetAPI("/stats/teams",request).json()["user_count"]
-
+    
     class Users:
         def __init__(self,usersX,usersY):
             self.usersX = usersX
@@ -123,13 +109,12 @@ def index (request):
 
     usersX = ["24-09-2023", "25-09-2023","26-09-2023", "27-09-2023", "28-09-2023","29-09-2023","30-09-2023"]
     usersY = ["20","21","24","30","32","35","40"]   
-
     users = Users(usersX,usersY)
 
     return render(request, "webadmin/index.html",{    
-        # "usersTotal" : usersTotal,
-        # "roomsTotal" : roomsTotal,
-        # "teamsTotal" : teamsTotal,
+        "usersTotal" : usersTotal,
+        "roomsTotal" : roomsTotal,
+        "teamsTotal" : teamsTotal,
         "users" : users, 
           
     })
@@ -191,9 +176,7 @@ def users (request):
     teams = GetTeams(result)
  
     if request.method == "POST":
-
-        #Hvis man har sat en dato
-        # timeperiodForm = Timeperiod(request.POST)
+              
         newUser = NewUser(request.POST)
 
         if newUser.is_valid():
@@ -211,12 +194,7 @@ def users (request):
             x = requests.post(url, json=myobj)
             json_response = x.json()
 
-            return HttpResponseRedirect(reverse("users"))    
-
-        # if timeperiodForm.is_valid():
-
-        #     start = timeperiodForm.cleaned_data["start"]
-        #     end = timeperiodForm.cleaned_data["end"]
+            return HttpResponseRedirect(reverse("users"))  
 
    
     return render(request, "webadmin/users.html",{  
@@ -304,35 +282,6 @@ def edituser(request):
 
     return HttpResponseRedirect(reverse("users"))   
 
-# def user(request,id):
-
-#     if request.session.get("token") == None:            
-#             return redirect("/login")   
-
-#     time = datetime.now().strftime("%H:%M %D")
-#     currentUser = User(id,"Morten","bindzus@mail.dk",time) 
-#     teams = []
-
-#     userHistory = []
-
-#     for x in range(10):   
-#         userHistory.append(historyInstance("Kronborg","Mødelokale 1", x, time)) 
-
-#     for x in range(5):
-#         teams.append(Team(x,"Kantinedamerne"))
-
-#     #Pagination
-#     team_page = NewPaginator(request,teams,3,"teamPage")
-#     history_page = NewPaginator(request,userHistory,3,"userHistory")
-
-#     return render(request, "webadmin/user.html",{
-#         "user" : currentUser,
-#         "teams" : teams,
-#         "history": userHistory,
-#         "teamPage" : team_page,
-#         "historyPage" : history_page
-#     })
-
 
 def rooms (request):
 
@@ -376,35 +325,7 @@ def editroom(request):
         x = requests.put(url, json=myobj)
         json_response = x.json()   
 
-    return HttpResponseRedirect(reverse("rooms"))     
-
-# def room(request,id):
-
-#     if request.session.get("token") == None:            
-#             return redirect("/login")   
-
-
-#     teams = []
-#     history = []
-#     time = datetime.now().strftime("%H:%M %D")    
-#     room = Room(1,"Mødelokale",time)
-
-#     for x in range(23):
-#         teams.append(Team(x,"Kantinedamerne"))      
-#         history.append(historyInstance("Bruger","Dør 1",x,time))
-
-#     teamRoomsPage = NewPaginator(request,teams,5,"teamRoomsPage")
-#     historyPage = NewPaginator(request,history,5,"historyPage")
-
-
-#     return render(request, "webadmin/room.html",{
-
-#         "room" : room,
-#         "teams" : teams,
-#         "teamRoomsPage" : teamRoomsPage,
-#         "historyPage" : historyPage
-#     })
-
+    return HttpResponseRedirect(reverse("rooms")) 
 
 
 def teams(request):
@@ -505,33 +426,7 @@ def editteam(request):
         x = requests.put(url, json=myobj)
         json_response = x.json()   
     
-    return HttpResponseRedirect(reverse("teams"))     
-
-# def team(request,id):
-
-#     if request.session.get("token") == None:            
-#             return redirect("/login")   
-
-#     users = []
-#     team = Team(1,"Køkkendamerne")
-
-
-#     for x in range(25):
-
-#         users.append(User(x,"Morten","morten@mail.dk",time))
-
-#     teamUsersPage = NewPaginator(request,users,5,"teamUsersPage")
-
-#     return render(request, "webadmin/team.html",{
-
-#         "teamUsersPage" : teamUsersPage,
-#         "team" : team,
-#         "users" : users,     
-
-#     })
-
-
-
+    return HttpResponseRedirect(reverse("teams"))
 
 def permissions(request):
 
@@ -697,3 +592,89 @@ def logout(request):
 def test_example(request):
 
     return HttpResponseRedirect(reverse("index"))
+
+
+
+# def team(request,id):
+
+#     if request.session.get("token") == None:            
+#             return redirect("/login")   
+
+#     users = []
+#     team = Team(1,"Køkkendamerne")
+
+
+#     for x in range(25):
+
+#         users.append(User(x,"Morten","morten@mail.dk",time))
+
+#     teamUsersPage = NewPaginator(request,users,5,"teamUsersPage")
+
+#     return render(request, "webadmin/team.html",{
+
+#         "teamUsersPage" : teamUsersPage,
+#         "team" : team,
+#         "users" : users,     
+
+#     })
+
+
+
+
+# def user(request,id):
+
+#     if request.session.get("token") == None:            
+#             return redirect("/login")   
+
+#     time = datetime.now().strftime("%H:%M %D")
+#     currentUser = User(id,"Morten","bindzus@mail.dk",time) 
+#     teams = []
+
+#     userHistory = []
+
+#     for x in range(10):   
+#         userHistory.append(historyInstance("Kronborg","Mødelokale 1", x, time)) 
+
+#     for x in range(5):
+#         teams.append(Team(x,"Kantinedamerne"))
+
+#     #Pagination
+#     team_page = NewPaginator(request,teams,3,"teamPage")
+#     history_page = NewPaginator(request,userHistory,3,"userHistory")
+
+#     return render(request, "webadmin/user.html",{
+#         "user" : currentUser,
+#         "teams" : teams,
+#         "history": userHistory,
+#         "teamPage" : team_page,
+#         "historyPage" : history_page
+#     })
+
+
+
+# def room(request,id):
+
+#     if request.session.get("token") == None:            
+#             return redirect("/login")   
+
+
+#     teams = []
+#     history = []
+#     time = datetime.now().strftime("%H:%M %D")    
+#     room = Room(1,"Mødelokale",time)
+
+#     for x in range(23):
+#         teams.append(Team(x,"Kantinedamerne"))      
+#         history.append(historyInstance("Bruger","Dør 1",x,time))
+
+#     teamRoomsPage = NewPaginator(request,teams,5,"teamRoomsPage")
+#     historyPage = NewPaginator(request,history,5,"historyPage")
+
+
+#     return render(request, "webadmin/room.html",{
+
+#         "room" : room,
+#         "teams" : teams,
+#         "teamRoomsPage" : teamRoomsPage,
+#         "historyPage" : historyPage
+#     })
