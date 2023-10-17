@@ -183,9 +183,7 @@ def users (request):
 
             name = newUser.cleaned_data["name"]
             email = newUser.cleaned_data["email"]
-            selectedTeams = newUser.cleaned_data["teams"] 
-            # password = newUser.cleaned_data["password"]
-            # code = newUser.cleaned_data["code"]           
+            selectedTeams = newUser.cleaned_data["teams"]                   
 
             teamsFormatted = SplitIds(selectedTeams)        
 
@@ -194,8 +192,7 @@ def users (request):
             x = requests.post(url, json=myobj)
             json_response = x.json()
 
-            return HttpResponseRedirect(reverse("users"))  
-
+            return HttpResponseRedirect(reverse("users"))
    
     return render(request, "webadmin/users.html",{  
              
@@ -581,10 +578,8 @@ def login(request):
 
 def logout(request):
     
-    session_cookies = request.session['token']    
-
-    x = requests.get("https://api.seaofkeys.com/auth/logut",cookies=session_cookies)        
-
+    session_cookies = request.session['token']
+    x = requests.get("https://api.seaofkeys.com/auth/logut",cookies=session_cookies)
     request.session['token'] = None    
     
     return HttpResponseRedirect(reverse("login"))
