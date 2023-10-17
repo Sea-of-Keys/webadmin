@@ -558,44 +558,45 @@ def editpermission(request):
 
         return HttpResponseRedirect(reverse("permissions")) 
 
+def set_cookie_and_redirect(cook, redirect_url):
+    session_cookies = dict(cook)
+    response = HttpResponseRedirect(redirect_url)
+
+    for cookie_name, cookie_value in session_cookies.items():
+        response.set_cookie(cookie_name, cookie_value, domain=".seaofkeys.com")
+
+    return response
 
 def login(request):
-
-
     email = ""
     password = ""
 
     if request.method == 'POST':
-        
         email = request.POST['email_test']
         password = request.POST['password']
         email = "mkronborg7@gmail.com"
-        password = "Test"
-        url = api_url + "/auth/login"
+        password = "Test"  
+        url = "https://api.seaofkeys.com/auth/login"
 
-        session_cookies = request.session.get("token")        
+        url = api_url + "/auth/login"
 
         myobj = {'email': email, "password": password}
         x = requests.post(url, json=myobj)
 
         if x.status_code == 200:
             token = x.json()["token"]
-
-            # Extract and store session cookies as a dictionary
-            session_cookies = dict(x.cookies)
-
+            session_cookies = dict(x.cookies)         
             request.session['token'] = session_cookies
-            print(session_cookies)
-            
 
-            return HttpResponseRedirect(reverse("index"))
-
-        return HttpResponse("Login failed")
+            redirect_url = reverse("index")
+            response = set_cookie_and_redirect(x.cookies, redirect_url)
+            return response
 
     return render(request, "webadmin/login.html", {
         "email": email,
         "password": password
     })
+
 
 def logout(request):
     
