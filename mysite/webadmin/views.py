@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
-from django.shortcuts import redirect
+from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.urls import reverse
 from django import forms
 from datetime import datetime, timedelta
@@ -112,9 +112,9 @@ def index (request):
     if request.session.get("token") == None:            
             return redirect("/login")
 
-    usersTotal = GetAPI("/stats/users",request).json()["user_count"]
-    roomsTotal = GetAPI("/stats/rooms",request).json()["user_count"]
-    teamsTotal = GetAPI("/stats/teams",request).json()["user_count"]
+    # usersTotal = GetAPI("/stats/users",request).json()["user_count"]
+    # roomsTotal = GetAPI("/stats/rooms",request).json()["user_count"]
+    # teamsTotal = GetAPI("/stats/teams",request).json()["user_count"]
 
     class Users:
         def __init__(self,usersX,usersY):
@@ -125,21 +125,21 @@ def index (request):
     usersY = ["20","21","24","30","32","35","40"]   
 
     users = Users(usersX,usersY)
-    session_cookies_json = json.dumps(request.session.get("bear"))
-    print(session_cookies_json)
-    print(session_cookies_json)
-    print(session_cookies_json)
-    print(session_cookies_json)
-    print(request.session.get("bear"))
-    print(request.session.get("bear"))
-    print(request.session.get("bear"))
-    print(request.session.get("bear"))
+    # session_cookies_json = json.dumps(request.session.get("bear"))
+    # print(session_cookies_json)
+    # print(session_cookies_json)
+    # print(session_cookies_json)
+    # print(session_cookies_json)
+    # print(request.session.get("bear"))
+    # print(request.session.get("bear"))
+    # print(request.session.get("bear"))
+    # print(request.session.get("bear"))
     return render(request, "webadmin/index.html",{    
         # "usersTotal" : usersTotal,
         # "roomsTotal" : roomsTotal,
         # "teamsTotal" : teamsTotal,
         "users" : users, 
-        "session_cookies": session_cookies_json,
+        "session_cookies": "dfkgldfjgd",
           
     })
 
@@ -655,16 +655,111 @@ def editpermission(request):
             x = requests.put(api_url + "/permission/",json=obj) 
 
         return HttpResponseRedirect(reverse("permissions")) 
+# def login(request):
+#     email = ""
+#     password = ""
 
+#     if request.method == 'POST':
+#         email = request.POST['email_test']
+#         password = request.POST['password']
+#         email = "mkronborg7@gmail.com"
+#         password = "Test"
+#         url = "http://localhost:8006/auth/login"
+
+#         myobj = {'email': email, "password": password}
+#         x = requests.post(url, json=myobj)
+
+#         if x.status_code == 200:
+#             token = x.json()["token"]
+#             session_cookies = dict(x.cookies)
+#             request.session['token'] = session_cookies
+#             set_cookie(x.cookies)
+#             return HttpResponseRedirect(reverse("index")) 
+
+
+
+#     return render(request, "webadmin/login.html", {
+#         "email": email,
+#         "password": password
+#     })
+def logout(request):
+
+    session_cookies = request.session['token']
+    x = requests.get(api_url + "/auth/logout",cookies=session_cookies)
+    request.session['token'] = None
+
+    return HttpResponseRedirect(reverse("login"))
+def set_cookie(cook):
+
+    session_cookies = dict(cook)
+    response = HttpResponseRedirect(reverse("index"))
+            
+    # Set the cookies in the response to pass to the browser
+    for cookie_name, cookie_value in session_cookies.items():
+        response.set_cookie(cookie_name, cookie_value)
+
+        return response
+
+    return HttpResponse("Login failed")
+
+
+
+
+
+
+
+# def loginsd(request):
+
+
+#     email = ""
+#     password = ""
+
+#     if request.method == 'POST':
+
+#         session = requests.Session()
+#         email = request.POST['email_test']
+#         password = request.POST['password']
+#         email = "mkronborg7@gmail.com"
+#         password = "Test"
+#         url = "http://localhost:8006/auth/login"
+
+#         myobj = {'email': email, "password": password}
+#         x = session.post(url, json=myobj)
+
+#         if x.status_code == 200:
+#             token = x.json()["token"]
+
+#             # Extract and store session cookies as a dictionary
+#             # authorization_header = x.headers.get('Authorization')
+#             # request.session['bear'] = authorization_header
+
+#             session_cookies = dict(x.cookies)
+#             request.session['token'] = session_cookies            
+#             print("Session cookies: " + str(session_cookies))
+#             print(session_cookies)
+
+#             return HttpResponseRedirect(reverse("index"))
+
+#         return HttpResponse("Login failed")
+
+#     return render(request, "webadmin/login.html", {
+#         "email": email,
+#         "password": pa, HttpResponseRedirectssword
+#     })
+def set_cookie_and_redirect(cook, redirect_url):
+    session_cookies = dict(cook)
+    response = HttpResponseRedirect(redirect_url)
+    
+    for cookie_name, cookie_value in session_cookies.items():
+        response.set_cookie(cookie_name, cookie_value)
+
+    return response
 
 def login(request):
-
-
     email = ""
     password = ""
 
     if request.method == 'POST':
-        
         email = request.POST['email_test']
         password = request.POST['password']
         email = "mkronborg7@gmail.com"
@@ -676,35 +771,14 @@ def login(request):
 
         if x.status_code == 200:
             token = x.json()["token"]
-
-            # Extract and store session cookies as a dictionary
-            authorization_header = x.headers.get('Authorization')
-            request.session['bear'] = authorization_header
-
             session_cookies = dict(x.cookies)
-            request.session['token'] = session_cookies            
-            print("Session cookies: " + str(session_cookies))
-            print(session_cookies)
+            request.session['token'] = session_cookies
 
-            return HttpResponseRedirect(reverse("index"))
-
-        return HttpResponse("Login failed")
+            redirect_url = reverse("index")
+            response = set_cookie_and_redirect(x.cookies, redirect_url)
+            return response
 
     return render(request, "webadmin/login.html", {
         "email": email,
         "password": password
     })
-
-def logout(request):
-    
-    session_cookies = request.session['token']    
-
-    x = requests.get("http://localhost:8006/auth/logut",cookies=session_cookies)        
-
-    request.session['token'] = None    
-    
-    return HttpResponseRedirect(reverse("login"))
-
-def test_example(request):
-
-    return HttpResponseRedirect(reverse("index"))

@@ -36,7 +36,7 @@ urlpatterns = [
     path("logout", views.logout, name="logout"),
 
     #Unit test example
-    path("test", views.test_example, name="example")
+    # path("test", views.test_example, name="example")
 
     
     #Sub pages

@@ -2,10 +2,9 @@ const api_url = "http://localhost:8006/stats/users";
 
 // Define the session cookies as an object
 // Create a Headers object and add the cookies to it
-console.log(`${session_cookies}`);
 
-const headers = new Headers();
-headers.append("Authorization", `${session_cookies}`);
+// const headers = new Headers();
+// headers.append("Authorization", `${session_cookies}`);
 
 // Define the URL for the fetch request
 // const session_cookiess = "Jdfsd";
@@ -13,10 +12,11 @@ headers.append("Authorization", `${session_cookies}`);
 // Define the fetch request
 fetch(api_url, {
   method: "GET",
-  headers: {
-    Authorization: `${session_cookies}`,
-    sessin_id: `${session_cookies}`,
-  },
+  credentials: "include",
+  // headers: {
+  //   Authorization: `${session_cookies}`,
+  //   sessin_id: `${session_cookies}`,
+  // },
 })
   .then((response) => {
     if (response.ok) {
