@@ -100,6 +100,9 @@ def index (request):
     
     if request.session.get("token") == None:            
             return redirect("/login")
+        
+        
+    request.COOKIES.get('key', 'default')
 
     usersTotal = GetAPI("/stats/users",request).json()["user_count"]
     roomsTotal = GetAPI("/stats/rooms",request).json()["user_count"]
