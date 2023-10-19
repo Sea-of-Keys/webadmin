@@ -299,9 +299,7 @@ def rooms (request):
     if request.session.get("token") == None:            
             return redirect("/login")
 
-    if request.method == "POST":         
-
-        print(request.POST["teams"])
+    if request.method == "POST":
 
         obj = {"name" : request.POST["name"]}
         PostAPI("/room", obj,request)  
