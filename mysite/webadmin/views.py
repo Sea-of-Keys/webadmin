@@ -121,6 +121,7 @@ def index (request):
         "users" : users, 
           
     })
+    
 
 def GetTeams(result):
      
@@ -173,7 +174,7 @@ def users (request):
             return redirect("/login")      
 
     json_response = GetAPI("/user",request).json()
-    user_page = NewPaginator(request,json_response,5,"userPage")
+    user_page = NewPaginator(request,json_response,10,"userPage")
     result = GetAPI("/team",request).json()["team"]
     teams = GetTeams(result)    
    
@@ -560,6 +561,19 @@ def editpermission(request):
             x = requests.put(api_url + "/permission/",json=obj,cookies=session_cookies) 
 
         return HttpResponseRedirect(reverse("permissions")) 
+ 
+
+def history(request):
+
+    history = GetAPI("/history",request).json()["history"]
+    history_page = NewPaginator(request,history,10,"historyPage")
+
+    return render(request, "webadmin/history.html",{
+
+        "history_page" : history_page
+
+    })
+
 
 def set_cookie_and_redirect(cook, redirect_url):
     session_cookies = dict(cook)
@@ -568,7 +582,7 @@ def set_cookie_and_redirect(cook, redirect_url):
     for cookie_name, cookie_value in session_cookies.items():
         response.set_cookie(cookie_name, cookie_value, max_age=3600, domain=".seaofkeys.com")
 
-    return response
+    return response    
 
 def login(request):
     email = ""
