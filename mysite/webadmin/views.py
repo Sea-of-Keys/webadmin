@@ -110,7 +110,7 @@ def index (request):
             self.usersX = usersX
             self.usersY = usersY
 
-    usersX = ["24-09-2023", "25-09-2023","26-09-2023", "27-09-2023", "28-09-2023","29-09-2023","30-09-2023"]
+    usersX = ["16-10-2023", "17-10-2023","18-10-2023", "19-10-2023", "20-10-2023","21-10-2023","22-10-2023"]
     usersY = ["20","21","24","30","32","35","40"]   
     users = Users(usersX,usersY)
 
@@ -146,7 +146,7 @@ def GetUsers(result):
 def SplitIds(itemList):       
 
     newList = itemList.split(",")
-    result = list()       
+    result = list()  
 
     for item in newList:
         if(item != ""):
@@ -243,7 +243,7 @@ def usersaddteam(request):
         userId = request.POST["id"]
         teamIds = request.POST["ids"]
 
-        addOrDeleteTeam(True,userId,teamIds)
+        addOrDeleteTeam(True,userId,teamIds,request)
 
     return HttpResponseRedirect(reverse("users"))
 
@@ -510,6 +510,11 @@ def deletepermission(request):
 
 
 def ConvertDays(days):
+
+
+    if days == None:
+
+        return None
 
     if len(str(days)) != 1:    
                 days = SplitIds(days)
