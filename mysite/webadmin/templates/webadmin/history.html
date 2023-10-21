@@ -27,27 +27,23 @@
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-						</th>
+						
 						<th>ID</th>
-						<th>Name</th>											
+						<th>Tidspunkt</th>	
+						<th>Tilladelse ID</th>		
+						<th>Lokale ID</th>		
+						<th>Bruger</th>						
 					</tr>
 				</thead>
 				<tbody>
                     {% for item in history_page.object_list  %}
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input class="item-checkbox" data-id="{{item.id}}" type="checkbox" id="checkbox{{forloop.counter}}" name="options[]" value="{{forloop.counter}}">
-								<label for="checkbox1"></label>
-							</span>
-						</td>
+					<tr>						
 						<td>{{item.id}}</td>
-						<td data-id="{{item.id}}" class="user-name">{{item.name}}</td>						
+						<td>{{item.CreatedAt}}</td>
+						<td>{{item.permission_id}}</td>
+						<td>{{item.Permission.room_id}}</td>
+						<td>{{item.User.name}}</td>
+											
 					</tr>
                     {% endfor %}
 				</tbody>
