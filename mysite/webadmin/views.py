@@ -388,13 +388,9 @@ def teamsaddusers(request):
         id = request.POST["id"]        
         ids = request.POST["ids"]
         ids = SplitIdsNoId(ids)
-        obj = {"team_id" : int(id), "users" : ids}      
+        obj = {"team_id" : int(id), "users" : ids}
 
-
-        session_cookies = request.session.get("token")
-        
-
-        print(obj)  
+        session_cookies = request.session.get("token") 
 
         url = api_url + "/team/add"
 
